@@ -1,4 +1,5 @@
 import nmap  # Thư viện điều khiển Nmap từ Python (python-nmap)
+import socket
 
 class Scanner:
     def __init__(self, ports='1-1024', nmap_path=None):
@@ -11,11 +12,31 @@ class Scanner:
         """
         # Lưu lại chuỗi ports cho lần quét
         self.ports = ports
-        # Tạo phiên bản PortScanner để gọi Nmap
-        self.nm = nmap.PortScanner()
+        # Kiểm tra Nmap đã cài chưa
+        try:
+            self.nm = nmap.PortScanner()
+        except nmap.PortScannerError:
+            print("[ERROR] Nmap is not installed or not in PATH.")
+            raise
         # Nếu người dùng cung cấp đường dẫn nmap, gán vào thuộc tính
         if nmap_path:
             self.nm.nmap_path = nmap_path
+
+    def is_valid_host(self, host):
+        # Kiểm tra IP hoặc hostname hợp lệ
+        try:
+            socket.inet_aton(host)
+            if host.count('.') == 3 and all(0 <= int(part) <= 255 for part in host.split('.')):
+                return True
+        except Exception:
+            pass
+        # Kiểm tra hostname hợp lệ (RFC 1035)
+        if len(host) > 253:
+            return False
+        import re
+        hostname_regex = r"^(?!-)[A-Za-z0-9-]{1,63}(?<!-)$"
+        parts = host.split('.')
+        return all(re.match(hostname_regex, part) for part in parts)
 
     def scan_host(self, host):
         """
@@ -26,6 +47,11 @@ class Scanner:
         Trả về:
             dict: { port: {'service': tên_service, 'version': phiên_bản} }
         """
+        # Kiểm tra hợp lệ host đầu vào
+        if not self.is_valid_host(host):
+            print(f"[ERROR] Invalid host: {host}")
+            return {}
+
         # Khởi tạo kết quả rỗng
         result = {}
 
@@ -65,6 +91,8 @@ class Scanner:
                     arguments='-sT'
                 )
                 scan_hosts = scan_data.get('scan', {})
+                if not scan_hosts:
+                    return result
                 first_ip = next(iter(scan_hosts))
                 host_data = scan_hosts[first_ip]
                 tcp_info = host_data.get('tcp', {})
@@ -83,10 +111,13 @@ class Scanner:
             service_name = info.get('name')
             # Lấy version (nếu có)
             version = info.get('version', '')
+            # Lấy trạng thái port (open/closed)
+            state = info.get('state', '')
             # Đưa vào kết quả
             result[port] = {
                 'service': service_name,
-                'version': version
+                'version': version,
+                'state': state
             }
             idx += 1
 
@@ -94,3 +125,7 @@ class Scanner:
         print(f"[DEBUG] scan_host({host}) returned ports: {list(result.keys())}")
         # Trả về kết quả cuối cùng
         return result
+
+if __name__ == "__main__":
+    scanner = Scanner()
+    print(scanner.scan_host("127.0.0.1"))

@@ -1,5 +1,10 @@
 import requests  # Thư viện HTTP
 from bs4 import BeautifulSoup  # Thư viện phân tích HTML
+import re
+
+def is_valid_cve_id(cve_id):
+    # Kiểm tra định dạng CVE-YYYY-NNNN+
+    return re.match(r"^CVE-\d{4}-\d{4,}$", cve_id, re.IGNORECASE) is not None
 
 class ExploitDBFetcher:
     BASE_URL = 'https://www.exploit-db.com/search?cve='  # URL cơ bản để tìm kiếm theo CVE ID
@@ -8,6 +13,11 @@ class ExploitDBFetcher:
         """
         Trả về danh sách URL exploit từ Exploit-DB cho CVE_ID
         """
+        # Kiểm tra hợp lệ CVE ID
+        if not is_valid_cve_id(cve_id):
+            print(f"[ERROR] Invalid CVE ID: {cve_id}")
+            return []
+
         # 1. Xây dựng URL truy vấn từ BASE_URL và CVE ID
         url = f"{self.BASE_URL}{cve_id}"
 
@@ -25,7 +35,6 @@ class ExploitDBFetcher:
             resp = requests.get(url, headers=headers, timeout=10)
             resp.raise_for_status()  # nếu code >=400, ném exception
         except requests.RequestException as e:
-            # In lỗi và trả về danh sách rỗng
             print(f"[ERROR] Cannot fetch {url}: {e}")
             return []
 
@@ -36,12 +45,10 @@ class ExploitDBFetcher:
         elements = soup.select('table#search-results a[data-exploit-id]')
         links = []
         idx = 0
-        # Dùng while thay for để tuân thủ yêu cầu
         while idx < len(elements):
             a_tag = elements[idx]
             href = a_tag.get('href')  # đường dẫn tương đối
             if href:
-                # Ghép với domain để thành URL đầy đủ
                 full_url = 'https://www.exploit-db.com' + href
                 links.append(full_url)
             idx += 1

@@ -33,6 +33,9 @@ class NVDFetcher:
         Tìm CVE theo keyword, trả về list dict các CVE:
         {id, severity, score, desc, exploits}
         """
+        if not keyword or len(keyword.strip()) < 3:
+            print("[ERROR] Keyword quá ngắn hoặc rỗng.")
+            return []
         cves = []
         try:
             print(f"[DEBUG] Querying NVD for: {keyword}")
@@ -83,8 +86,9 @@ class NVDFetcher:
                     if 'exploit-db.com' in url:
                         exploits.append(url)
                     j += 1
-                # Bổ sung PoC từ Exploit-DB
-                exploits += self.exploit_fetcher.fetch(e.id)
+                # Bổ sung PoC từ Exploit-DB (chỉ khi là CVE ID hợp lệ)
+                if e.id.upper().startswith("CVE-"):
+                    exploits += self.exploit_fetcher.fetch(e.id)
 
                 # Loại trùng exploit
                 unique_exploits = []
@@ -99,10 +103,16 @@ class NVDFetcher:
                     'id': detail.id,
                     'severity': severity,
                     'score': score,
-                    'desc': desc,
+                    'desc': desc if desc else "(No description)",
                     'exploits': unique_exploits
                 })
                 idx_entry += 1
         except Exception as ex:
             print(f"[ERROR] NVD fetch fail for {keyword}: {ex}")
         return cves
+
+if __name__ == "__main__":
+    fetcher = NVDFetcher()
+    results = fetcher.search_cves("apache", results_per_page=2)
+    for cve in results:
+        print(cve)

@@ -27,14 +27,18 @@ class ReportGenerator:
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         lines = [f"Report generated: {now}\n\n"]
 
-        # 2. Chuyển dict thành list để dùng while
+        # 2. Kiểm tra đầu vào rỗng
+        if not results:
+            lines.append("No scan results to report.\n")
+
+        # 3. Chuyển dict thành list để dùng while
         host_items = list(results.items())  # [(ip, ports_dict), ...]
         i = 0
         while i < len(host_items):
             ip, ports = host_items[i]
             lines.append(f"Host: {ip}\n")
 
-            # 3. Xử lý từng port
+            # 4. Xử lý từng port
             port_items = list(ports.items())  # [(port, info_dict), ...]
             j = 0
             while j < len(port_items):
@@ -44,7 +48,7 @@ class ReportGenerator:
                 # Ghi thông tin port
                 lines.append(f"  Port {port}/{service} {version}\n")
 
-                # 4. Xử lý từng CVE
+                # 5. Xử lý từng CVE
                 cve_list = info.get('cves', [])
                 k = 0
                 while k < len(cve_list):
@@ -56,7 +60,7 @@ class ReportGenerator:
                         f"    - {cve['id']} [{cve['severity']} (Score: {score})]: {cve['desc']}\n"
                     )
 
-                    # 5. Ghi exploit URL hoặc thông báo không có
+                    # 6. Ghi exploit URL hoặc thông báo không có
                     exploits = cve.get('exploits', [])
                     if exploits:
                         m = 0
@@ -71,7 +75,14 @@ class ReportGenerator:
                 j += 1
             i += 1
 
-        # 6. Ghi file và thông báo
-        with open(self.output_file, 'w', encoding='utf-8') as f:
-            f.writelines(lines)
-        print(f"Report saved to {self.output_file}")
+        # 7. Ghi file và thông báo, có xử lý ngoại lệ
+        try:
+            with open(self.output_file, 'w', encoding='utf-8') as f:
+                f.writelines(lines)
+            print(f"Report saved to {self.output_file}")
+        except Exception as e:
+            print(f"[ERROR] Cannot write report: {e}")
+
+if __name__ == "__main__":
+    rg = ReportGenerator()
+    rg.write({})
