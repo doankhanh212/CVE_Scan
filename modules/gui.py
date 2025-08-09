@@ -62,7 +62,7 @@ class GUIController:
 
         # Nếu không có host nào, cảnh báo và dừng
         if not hosts:
-            messagebox.showwarning("Warning", "Vui lòng nhập ít nhất một host. ")
+            messagebox.showwarning("Warning", "Vui lòng nhập ít nhất một host.")
             return
 
         # 2. Xóa log cũ và khởi tạo kết quả trống
