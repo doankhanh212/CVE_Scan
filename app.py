@@ -4,3 +4,5 @@ from modules.gui import GUIController  # Import lớp điều khiển GUI từ m
 if __name__ == '__main__':
     # Khởi tạo và chạy giao diện GUI
     GUIController().run()
+
+
