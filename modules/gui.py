@@ -51,6 +51,50 @@ class GUIController:
         t.daemon = True
         t.start()
 
+    def scan_and_collect(self, hosts):
+        """Quét các host và thu thập kết quả, trả về dict kết quả."""
+        results = {}
+        for host in hosts:
+            self.log.insert(tk.END, f"Scanning {host}...\n")
+            self.log.see(tk.END)
+            try:
+                ports = self.scanner.scan_host(host)
+            except Exception as e:
+                self.log.insert(tk.END, f"  Scan error: {e}\n")
+                continue
+            self.log.insert(tk.END, f"  Found ports: {list(ports.keys())}\n")
+            results[host] = self.collect_port_info(host, ports)
+            self.log.insert(tk.END, f"Done {host}.\n\n")
+            self.log.see(tk.END)
+        return results
+
+    def collect_port_info(self, host, ports):
+        """Thu thập thông tin từng port và CVE cho một host."""
+        port_results = {}
+        for port, svc in ports.items():
+            service = svc.get('service') or 'unknown'
+            version = svc.get('version') or ''
+            info = {'service': service, 'version': version, 'cves': []}
+            keyword = f"{service} {version}".strip()
+            if keyword:
+                self.log.insert(tk.END, f"  Query NVD for: {keyword}\n")
+                self.log.see(tk.END)
+                try:
+                    cves = self.nvd.search_cves(keyword)
+                except Exception as e:
+                    self.log.insert(tk.END, f"    NVD error: {e}\n")
+                    cves = []
+                if not cves:
+                    self.log.insert(tk.END, f"    No CVEs found for {keyword}\n")
+                for cve in cves:
+                    self.log.insert(
+                        tk.END,
+                        f"    Found CVE: {cve['id']} (Score: {cve.get('score')})\n"
+                    )
+                    info['cves'].append(cve)
+            port_results[port] = info
+        return port_results
+
     def run_scan(self):
         raw = self.hosts_text.get('1.0', tk.END).strip()
         host_lines = raw.splitlines()
@@ -68,44 +112,7 @@ class GUIController:
             return
 
         self.log.delete('1.0', tk.END)
-        results = {}
-
-        for host in hosts:
-            self.log.insert(tk.END, f"Scanning {host}...\n")
-            self.log.see(tk.END)
-            try:
-                ports = self.scanner.scan_host(host)
-            except Exception as e:
-                self.log.insert(tk.END, f"  Scan error: {e}\n")
-                continue
-            self.log.insert(tk.END, f"  Found ports: {list(ports.keys())}\n")
-            results[host] = {}
-
-            for port, svc in ports.items():
-                service = svc.get('service') or 'unknown'
-                version = svc.get('version') or ''
-                info = {'service': service, 'version': version, 'cves': []}
-                keyword = f"{service} {version}".strip()
-                if keyword:
-                    self.log.insert(tk.END, f"  Query NVD for: {keyword}\n")
-                    self.log.see(tk.END)
-                    try:
-                        cves = self.nvd.search_cves(keyword)
-                    except Exception as e:
-                        self.log.insert(tk.END, f"    NVD error: {e}\n")
-                        cves = []
-                    if not cves:
-                        self.log.insert(tk.END, f"    No CVEs found for {keyword}\n")
-                    for cve in cves:
-                        self.log.insert(
-                            tk.END,
-                            f"    Found CVE: {cve['id']} (Score: {cve.get('score')})\n"
-                        )
-                        info['cves'].append(cve)
-                results[host][port] = info
-            self.log.insert(tk.END, f"Done {host}.\n\n")
-            self.log.see(tk.END)
-
+        results = self.scan_and_collect(hosts)
         self.reporter.write(results)
         self.last_results = results
         messagebox.showinfo("Info", "Scan hoàn tất và lưu report.txt")
@@ -129,20 +136,24 @@ class GUIController:
                 'CVE ID', 'Severity', 'Score', 'Description', 'Exploit URLs'
             ])
             for host, ports in self.last_results.items():
-                for port, info in ports.items():
-                    service = info['service']
-                    version = info['version']
-                    cve_list = info.get('cves', [])
-                    if cve_list:
-                        for cve in cve_list:
-                            writer.writerow([
-                                host, port, service, version,
-                                cve['id'], cve['severity'], cve.get('score') or '',
-                                cve['desc'], ';'.join(cve.get('exploits', []))
-                            ])
-                    else:
-                        writer.writerow([host, port, service, version, '', '', '', '', ''])
+                self.write_csv_rows(writer, host, ports)
         messagebox.showinfo("Info", f"Đã xuất CSV: {path}")
+
+    def write_csv_rows(self, writer, host, ports):
+        """Ghi các dòng CSV cho một host."""
+        for port, info in ports.items():
+            service = info['service']
+            version = info['version']
+            cve_list = info.get('cves', [])
+            if cve_list:
+                for cve in cve_list:
+                    writer.writerow([
+                        host, port, service, version,
+                        cve['id'], cve['severity'], cve.get('score') or '',
+                        cve['desc'], ';'.join(cve.get('exploits', []))
+                    ])
+            else:
+                writer.writerow([host, port, service, version, '', '', '', '', ''])
 
     def run(self):
         self.root.mainloop()
