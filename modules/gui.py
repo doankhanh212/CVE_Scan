@@ -19,7 +19,6 @@ import threading  # chạy background thread để không block GUI
 import os         # truy xuất biến môi trường, thao tác file
 import re         # regex: kiểm tra định dạng IP/hostname
 import queue      # queue để truyền message thread-safe từ background -> GUI
-import time       # (tuỳ chọn) dùng cho sleep/delay nếu cần; có thể bỏ nếu không dùng
 
 # ----------------------------------------
 # Hàm kiểm tra IP hoặc hostname hợp lệ
