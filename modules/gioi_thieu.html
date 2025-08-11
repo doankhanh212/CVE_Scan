@@ -1,0 +1,148 @@
+<!--
+  Team — single-file HTML + CSS (Giới thiệu thành viên)
+  - Đã cập nhật: tách Giảng viên ra thành phần riêng, đặt ở trên cùng bên phải cột thông tin nhóm để dễ nhìn và thêm ảnh.
+  - Hướng dẫn: đặt ảnh giảng viên tại `images/giangvien.jpg` hoặc đổi src theo tên file của bạn.
+  - Để đổi màu chủ đạo sửa biến CSS tại :root (--accent).
+-->
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Giới thiệu nhóm — Team</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: linear-gradient(135deg,#0f172a 0%, #061228 100%);
+      --accent: #06b6d4;
+      --muted: #94a3b8;
+      --card-bg: rgba(255,255,255,0.04);
+      --radius: 14px;
+      --max-width: 1000px;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:#e6eef6;padding:36px}
+    .wrap{max-width:var(--max-width);margin:0 auto}
+    header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;color:#021024}
+    h1{margin:0;font-size:20px}
+    .sub{color:var(--muted);font-size:13px}
+
+    main{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:22px;border-radius:18px;backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(2,8,23,0.6)}
+
+    .grid{display:grid;grid-template-columns:2fr 3fr;gap:18px}
+
+    /* Left column (thông tin đề tài) */
+    .panel{background:var(--card-bg);padding:16px;border-radius:12px}
+    .panel h2{margin:0 0 8px;font-size:16px}
+    .panel p{margin:6px 0;color:var(--muted);font-size:14px}
+
+    /* Team area */
+    .right-col{display:flex;flex-direction:column;gap:12px}
+
+    .instructor-wrap{display:flex;justify-content:center}
+    .member{background:rgba(255,255,255,0.03);padding:14px;border-radius:12px;text-align:center}
+    .avatar{width:92px;height:92px;border-radius:50%;overflow:hidden;margin:0 auto 10px;border:3px solid rgba(255,255,255,0.03)}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .name{font-weight:700;margin:4px 0}
+    .role{color:var(--accent);font-size:13px}
+    .bio{color:var(--muted);font-size:13px;margin-top:6px}
+
+    /* Larger card for instructor */
+    .member.instructor{background:linear-gradient(180deg, rgba(6,182,212,0.06), rgba(124,58,237,0.03));border:1px solid rgba(6,182,212,0.08);display:flex;gap:14px;align-items:center;padding:16px}
+    .member.instructor .avatar{width:120px;height:120px;border-radius:10px;margin:0}
+    .member.instructor .meta{flex:1;text-align:left}
+    .member.instructor .role{color:#ffd166}
+
+    .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+
+    footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:center}
+
+    @media (max-width:900px){.grid{grid-template-columns:1fr}.instructor-wrap{justify-content:flex-start}.member.instructor{flex-direction:row}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Giới thiệu thành viên</h1>
+          <div class="sub">Đồ án: Công cụ quét lỗ hổng CVE (Python + Tkinter)</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="grid">
+        <section class="panel">
+          <h2>Đề tài đồ án</h2>
+          <p><strong>Công cụ quét lỗ hổng CVE</strong></p>
+          <p>Ứng dụng Python tích hợp giao diện đồ họa (GUI) cho phép quét cổng dịch vụ trên các máy chủ, xác định phiên bản dịch vụ và tự động tra cứu các lỗ hổng bảo mật (CVE) từ cơ sở dữ liệu NVD.</p>
+          <p>Tính năng chính:</p>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>Quét port và dịch vụ bằng Nmap để phát hiện các dịch vụ đang hoạt động.</li>
+            <li>Tìm kiếm CVE theo tên & phiên bản dịch vụ, phân loại theo CVSS.</li>
+            <li>Thu thập liên kết exploit từ Exploit-DB để đánh giá khả năng khai thác.</li>
+            <li>Xuất báo cáo TXT/CSV cho mục đích lưu trữ và chia sẻ.</li>
+            <li>Giao diện thân thiện (Tkinter), phù hợp cả người dùng kỹ thuật và phi kỹ thuật.</li>
+          </ul>
+
+          <h3 style="margin-top:12px">Mục tiêu</h3>
+          <ul style="color:var(--muted);padding-left:18px">
+            <li>Tự động hóa quá trình tìm lỗ hổng và giảm sai sót thủ công.</li>
+            <li>Kết hợp nhiều nguồn dữ liệu: Nmap, NVD API, Exploit-DB.</li>
+            <li>Tiết kiệm thời gian cho pentester và quản trị hệ thống.</li>
+            <li>Hỗ trợ quét nhiều host đồng thời và xuất báo cáo dễ dùng.</li>
+          </ul>
+
+        </section>
+
+        <aside class="right-col">
+          <!-- Instructor: tách riêng, nằm trên cùng trong cột phải -->
+          <div class="instructor-wrap">
+            <article class="member instructor">
+              <div class="avatar"><img src="images/giangvien.jpg" alt="Nguyễn Hải Sơn"></div>
+              <div class="meta">
+                <div class="name">Nguyễn Hải Sơn</div>
+                <div class="role">Giảng viên hướng dẫn</div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Thành viên nhóm (riêng, không lẫn với giảng viên) -->
+          <div>
+            <h3 style="margin:6px 0 10px">Thành viên nhóm</h3>
+            <div class="team-grid">
+              <article class="member">
+                <div class="avatar"><img src="images/member-1.jpg" alt="Đoàn Hoàng Quốc Khánh"></div>
+                <div class="name">Đoàn Hoàng Quốc Khánh</div>
+              </article>
+
+              <article class="member">
+                <div class="avatar"><img src="images/member-2.jpg" alt="Nguyễn Thanh Hậu"></div>
+                <div class="name">Nguyễn Thanh Hậu</div>
+              </article>
+
+              <article class="member">
+                <div class="avatar"><img src="images/member-3.jpg" alt="Ngô Gia Nguyên"></div>
+                <div class="name">Ngô Gia Nguyên</div>
+              </article>
+
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+    </main>
+
+    <footer>
+      © 2025 — Đồ án: Công cụ quét lỗ hổng CVE.
+    </footer>
+  </div>
+</body>
+</html>

@@ -19,6 +19,7 @@ import threading  # chạy background thread để không block GUI
 import os         # truy xuất biến môi trường, thao tác file
 import re         # regex: kiểm tra định dạng IP/hostname
 import queue      # queue để truyền message thread-safe từ background -> GUI
+import webbrowser # mở trình duyệt web
 
 # ----------------------------------------
 # Hàm kiểm tra IP hoặc hostname hợp lệ
@@ -83,7 +84,14 @@ class GUIController:
         # ScrolledText để hiển thị log (chỉ cập nhật từ main thread)
         self.log = scrolledtext.ScrolledText(self.root, height=15, width=70, state='normal')
         self.log.grid(row=3, column=0, columnspan=4, padx=5, pady=5)
-
+           # Nút mở trang giới thiệu thành viên
+        about_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'gioi_thieu.html')
+        self.about_button = tk.Button(
+        self.root,
+        text="Giới thiệu thành viên",
+        command=lambda: webbrowser.open('file://' + about_path))
+        self.about_button.grid(row=2, column=3, pady=5)
+ 
         # Lưu kết quả lần cuối để export CSV sau này
         self.last_results = {}
 
