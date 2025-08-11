@@ -116,7 +116,7 @@ class ExploitDBFetcher:
 # -------------------------
 if __name__ == "__main__":
     fetcher = ExploitDBFetcher()
-    cve = "CVE-2023-23397"  # CVE ví dụ
+    cve = "CVE-2023-50071"  # CVE ví dụ
     links = fetcher.fetch(cve, limit=5)
     print(f"Found {len(links)} exploits for {cve}:")
     for link in links:
