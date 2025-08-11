@@ -45,7 +45,7 @@ class ReportGenerator:
         if not results:
             lines.append("No scan results to report.\n")
 
-        # 3. Chuyển dict thành list để dùng while (theo yêu cầu tránh for lồng nhau)
+        # 3. Chuyển dict thành list để dùng while 
         # host_items sẽ là list các tuple: [(ip, ports_dict), ...]
         host_items = list(results.items())
         i = 0
