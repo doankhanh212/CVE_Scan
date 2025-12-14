@@ -1,120 +1,147 @@
-import datetime  # Thư viện xử lý ngày giờ
+"""
+Module ReportGenerator: Xuất kết quả quét ra file báo cáo text.
+- Ghi kết quả quét (host, port, service) và CVE (ID, severity, score) vào file report.txt
+"""
+
+import datetime  # Thư viện xử lý ngày giờ (tạo timestamp)
+
 
 class ReportGenerator:
     """
-    Lớp ReportGenerator: ghi kết quả quét vào file văn bản (report.txt theo mặc định).
-
-    - output_file: đường dẫn file đầu ra, mặc định 'report.txt'.
-    - write(results): ghi cấu trúc kết quả vào file theo định dạng dễ đọc.
+    Lớp xuất báo cáo quét vào file văn bản.
+    - Ghi format: Host -> Port -> Service -> CVE -> Exploit URLs
+    - Dễ đọc, dễ parse bằng text editor hoặc tools khác
     """
 
     def __init__(self, output_file='report.txt'):
-        # Thiết lập đường dẫn file đầu ra (có thể thay đổi khi khởi tạo instance)
+        """
+        Khởi tạo ReportGenerator instance.
+        
+        Tham số:
+        - output_file (str): đường dẫn file output, mặc định 'report.txt'
+        
+        Hành động:
+        - Lưu output_file path để dùng trong hàm write()
+        """
         self.output_file = output_file
 
     def write(self, results):
         """
-        Ghi kết quả quét và CVE vào file văn bản.
+        Ghi kết quả quét và CVE vào file báo cáo text.
 
         Tham số:
-        results: dict dạng:
+        - results (dict): dữ liệu quét dạng:
             {
                 ip_address: {
                     port_number: {
-                        'service': str,
-                        'version': str,
+                        'service': str (ví dụ: 'http', 'ssh'),
+                        'version': str (ví dụ: '1.18.0'),
                         'cves': [
-                            {'id', 'severity', 'score', 'desc', 'exploits'}
+                            {
+                                'id': 'CVE-YYYY-XXXXX',
+                                'severity': 'Critical|High|Medium|Low',
+                                'score': float or 'N/A',
+                                'desc': 'Mô tả lỗ hổng',
+                                'exploits': ['url1', 'url2', ...]
+                            },
+                            ...
                         ]
                     }
                 }
             }
 
         Quy trình:
-        1. Tạo timestamp cho báo cáo
-        2. Nếu results rỗng -> ghi thông báo
-        3. Duyệt mỗi host -> mỗi port -> mỗi CVE, ghi chi tiết
-        4. Xử lý ngoại lệ khi ghi file
+        1. Tạo timestamp cho báo cáo (để biết khi nào quét)
+        2. Nếu results rỗng, ghi thông báo "No scan results"
+        3. Duyệt từng host -> port -> CVE, xây dựng list dòng text
+        4. Ghi tất cả dòng vào file (một lần)
+        5. Xử lý exception nếu có lỗi file I/O
         """
-        # 1. Tạo timestamp cho báo cáo (format: YYYY-MM-DD HH:MM:SS)
+        # 1. Tạo timestamp báo cáo (format: YYYY-MM-DD HH:MM:SS)
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # lines là list các dòng sẽ ghép và ghi vào file
+        # Khởi tạo list dòng text (sẽ ghép và ghi vào file)
         lines = [f"Report generated: {now}\n\n"]
 
-        # 2. Nếu không có kết quả, thêm dòng tương ứng
+        # 2. Kiểm tra kết quả rỗng
         if not results:
             lines.append("No scan results to report.\n")
 
-        # 3. Chuyển dict thành list để dùng while 
-        # host_items sẽ là list các tuple: [(ip, ports_dict), ...]
+        # 3. Chuyển dict thành list để duyệt (để support while loop)
+        # host_items: list các tuple [(ip1, ports_dict1), (ip2, ports_dict2), ...]
         host_items = list(results.items())
         i = 0
-        # Dùng while để duyệt từng host
+        # Duyệt từng host
         while i < len(host_items):
             ip, ports = host_items[i]
             # Thêm tiêu đề host vào báo cáo
             lines.append(f"Host: {ip}\n")
 
-            # 4. Xử lý từng port (chuyển sang list để dùng while/index)
+            # Chuyển port dict thành list để duyệt (hỗ trợ while loop)
+            # port_items: list các tuple [(port1, info1), (port2, info2), ...]
             port_items = list(ports.items())
             j = 0
+            # Duyệt từng port
             while j < len(port_items):
                 port, info = port_items[j]
-                # Lấy service/version với fallback nếu thiếu
+                # Lấy service name và version (fallback 'unknown' hoặc '' nếu thiếu)
                 service = info.get('service') or 'unknown'
                 version = info.get('version') or ''
 
-                # Ghi dòng port: ví dụ "  Port 80/http 2.4.49"
+                # Ghi dòng port: "  Port 80/http 2.4.49" hoặc "  Port 22/ssh "
                 lines.append(f"  Port {port}/{service} {version}\n")
 
-                # 5. Xử lý từng CVE ứng với port đó
+                # Xử lý CVE của port này
                 cve_list = info.get('cves', [])
                 k = 0
+                # Duyệt từng CVE
                 while k < len(cve_list):
                     cve = cve_list[k]
 
-                    # Chọn score để hiển thị: nếu score có giá trị hợp lệ thì dùng,
-                    # nếu là 'N/A' hoặc '', hiển thị 'N/A'
+                    # Chuẩn bị score để hiển thị
+                    # Nếu score là None, rỗng, hoặc 'N/A' thì hiển thị 'N/A'
                     score = cve['score'] if cve['score'] not in (None, '', 'N/A') else 'N/A'
 
-                    # Ghi thông tin CVE: ID, severity, score, mô tả
-                    # Ví dụ: "    - CVE-2023-xxxxx [High (Score: 7.5)]: Mô tả"
+                    # Ghi info CVE: ID, severity level, score, mô tả
+                    # Ví dụ: "    - CVE-2023-50071 [High (Score: 7.5)]: Mô tả lỗ hổng"
                     lines.append(
                         f"    - {cve['id']} [{cve['severity']} (Score: {score})]: {cve['desc']}\n"
                     )
 
-                    # 6. Ghi các exploit URL nếu có, hoặc ghi thông báo không có exploit
+                    # Duyệt và ghi các exploit URLs (hoặc ghi "No exploits" nếu không có)
                     exploits = cve.get('exploits', [])
                     if exploits:
-                        # Dùng while để duyệt exploit list
+                        # Duyệt từng exploit URL
                         m = 0
                         while m < len(exploits):
                             lines.append(f"       * Exploit: {exploits[m]}\n")
                             m += 1
                     else:
-                        # Nếu không có exploit, ghi dòng thông báo
+                        # Không có exploit nào, ghi thông báo
                         lines.append("       * No exploits found on Exploit-DB\n")
 
                     k += 1
 
-                # Thêm dòng trống để ngăn cách giữa các port
+                # Thêm dòng trống để ngăn cách giữa các port (format đẹp)
                 lines.append("\n")
                 j += 1
             i += 1
 
-        # 7. Ghi file và xử lý ngoại lệ
+        # 4. Ghi tất cả dòng vào file (một lần)
         try:
+            # Mở file với encoding utf-8 (hỗ trợ ký tự tiếng Việt)
             with open(self.output_file, 'w', encoding='utf-8') as f:
-                # Ghi tất cả dòng vào file cùng lúc
+                # Ghi tất cả dòng cùng lúc (hiệu quả hơn ghi từng dòng)
                 f.writelines(lines)
-            # In thông báo trên console khi ghi thành công
+            # Log thành công trên console
             print(f"Report saved to {self.output_file}")
         except Exception as e:
-            # Nếu có lỗi khi ghi file (quyền, disk full, path invalid), in lỗi
+            # Xử lý exception: lỗi quyền file, disk đầy, path invalid, v.v.
             print(f"[ERROR] Cannot write report: {e}")
 
 
-# Nếu file này chạy đơn lẻ để test, tạo instance và gọi write với dict rỗng
+# Entry point: khi chạy file này trực tiếp để test
 if __name__ == "__main__":
+    # Khởi tạo ReportGenerator instance
     rg = ReportGenerator()
+    # Test với dict rỗng (sẽ ghi "No scan results to report")
     rg.write({})

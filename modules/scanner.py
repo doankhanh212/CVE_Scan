@@ -1,172 +1,304 @@
 # modules/scanner.py
-# Scanner sử dụng python-nmap (nmap wrapper) để thực hiện quét port và phát hiện service/version
-# Yêu cầu: Nmap phải được cài trên hệ thống và python-nmap (gói `nmap`) phải được cài trong môi trường Python.
+"""
+Scanner wrapper (fixed imports + safer handling).
+- Fallback imports for local vs package layout
+"""
 
-import nmap  # Thư viện điều khiển Nmap từ Python (python-nmap cung cấp PortScanner)
-import socket  # Dùng để kiểm tra địa chỉ IP hợp lệ
+import socket
+import ipaddress
+import csv
+
+# Try to import python-nmap if available
+try:
+    import nmap
+except Exception:
+    nmap = None
+
+# try relative/module imports for cpe_builder / nvd fetcher compatibility
+try:
+    from modules.cpe_builder import build_cpe
+except Exception:
+    try:
+        from cpe_builder import build_cpe
+    except Exception:
+        build_cpe = None
+
+try:
+    from modules.nvd_fetcher import get_cve_by_cpe
+except Exception:
+    try:
+        from nvd_fetcher import get_cve_by_cpe
+    except Exception:
+        get_cve_by_cpe = None
 
 
 class Scanner:
-    """
-    Lớp Scanner: gói chức năng để quét một host, thu thập thông tin port/service/version.
 
-    Thiết kế:
-    - Dùng python-nmap (nmap.PortScanner) để gọi Nmap.
-    - Trả về dict dạng { port: {'service': tên_service, 'version': phiên_bản, 'state': trạng_thái} }
-    - Các vòng lặp được viết bằng while theo yêu cầu tránh for lồng nhau.
-    """
-
-    def __init__(self, ports='1-1024', nmap_path=None):
-        """
-        Khởi tạo Scanner.
-
-        Tham số:
-            ports (str): chuỗi định nghĩa port để quét (ví dụ '1-1024' hoặc '22,80,443')
-            nmap_path (str|None): nếu Nmap không nằm trong PATH, truyền đường dẫn tới binary nmap
-        """
-        # Lưu lại dải port cần quét để dùng trong các lần gọi scan
+    def __init__(self, ports="1-1024", nmap_path=None):
         self.ports = ports
 
-        # Khởi tạo PortScanner - python-nmap sẽ gọi binary nmap phía dưới
-        try:
-            self.nm = nmap.PortScanner()
-        except nmap.PortScannerError:
-            # Nếu không cài Nmap hoặc python-nmap không tìm thấy binary, PortScanner() sẽ ném lỗi
-            print("[ERROR] Nmap is not installed or not in PATH.")
-            raise
+        if nmap is None:
+            # not fatal — scanner methods will return empty results, GUI can fallback
+            self.nm = None
+        else:
+            try:
+                self.nm = nmap.PortScanner()
+            except nmap.PortScannerError:
+                print("[ERROR] Nmap is not installed or not accessible!")
+                self.nm = None
 
-        # Nếu người dùng chỉ định đường dẫn nmap cụ thể, gán vào thuộc tính của PortScanner
-        # Lưu ý: một số phiên bản python-nmap hỗ trợ set path qua self.nm.nmap_path
-        if nmap_path:
-            # Thiết lập đường dẫn tới nmap binary (nếu cần)
-            self.nm.nmap_path = nmap_path
+        if nmap_path and self.nm:
+            try:
+                self.nm.nmap_path = nmap_path
+            except Exception:
+                pass
 
     def is_valid_host(self, host):
-        """
-        Kiểm tra host có phải địa chỉ IPv4 hợp lệ hoặc hostname hợp lệ theo RFC-ish.
-
-        Trả về True nếu hợp lệ, False nếu không.
-        """
-        # 1) Thử parse như IPv4: socket.inet_aton sẽ ném exception nếu không phải dạng IPv4
         try:
-            # inet_aton chấp nhận một số chuỗi nhưng không kiểm tra giới hạn 0-255 kỹ,
-            # vì vậy ta thêm kiểm tra phần tử sau khi split
             socket.inet_aton(host)
-            if host.count('.') == 3 and all(0 <= int(part) <= 255 for part in host.split('.')):
+            if host.count('.') == 3 and all(0 <= int(p) <= 255 for p in host.split(".")):
                 return True
         except Exception:
-            # Nếu không phải IPv4, tiếp tục kiểm tra như hostname
             pass
+        return False
 
-        # 2) Kiểm tra hostname: đảm bảo tổng độ dài <= 253 ký tự
-        if len(host) > 253:
-            return False
+    def extract_os(self, host_data):
+        osmatches = host_data.get("osmatch", []) or []
+        if not osmatches:
+            return "Unknown"
 
-        # Regex đơn giản cho từng label của hostname (1-63 ký tự, không bắt đầu/ket thúc bằng '-')
-        import re
-        hostname_regex = r"^(?!-)[A-Za-z0-9-]{1,63}(?<!-)$"
-        parts = host.split('.')
-        # Mỗi phần phải match hostname_regex
-        return all(re.match(hostname_regex, part) for part in parts)
+        name = osmatches[0].get("name", "").lower()
+
+        if "windows" in name:
+            return "Windows"
+        if "linux" in name:
+            return "Linux"
+
+        return "Unknown"
 
     def scan_host(self, host):
         """
-        Thực hiện quét service/version trên host.
-
-        Tham số:
-            host (str): địa chỉ IP hoặc hostname
-        Trả về:
-            dict: mapping port -> { 'service': str, 'version': str, 'state': str }
-
-        Quy trình:
-        - Validate host
-        - Dùng nmap -sV để phát hiện service/version
-        - Nếu không có kết quả TCP, thử lại bằng -sT (TCP connect)
-        - Trích xuất thông tin và trả về
+        Returns dict of ports -> info
+        If nmap not installed returns {} quietly.
         """
-        # Kiểm tra hợp lệ host trước khi quét
         if not self.is_valid_host(host):
-            print(f"[ERROR] Invalid host: {host}")
             return {}
 
-        # Kết quả cuối cùng (port -> info)
-        result = {}
+        if not self.nm:
+            # nmap unavailable
+            return {}
 
-        # Bước 1: Thực thi lệnh nmap -sV để dò service/version
         try:
             scan_data = self.nm.scan(
                 hosts=host,
                 ports=self.ports,
-                arguments='-sV'  # -sV: service/version detection
+                arguments='-T4 -sS -sV'
             )
-            # In debug raw data để hỗ trợ phát triển (có thể thay bằng logging.debug)
-            print(f"[DEBUG] raw scan_data for {host}: {scan_data}")
-        except Exception as e:
-            # Bắt lỗi khi gọi nmap (binary lỗi, quyền, v.v.)
-            print(f"[ERROR] Nmap scan error for {host}: {e}")
-            return result
+        except Exception:
+            return {}
 
-        # Bước 2: Trích phần 'scan' (nơi python-nmap lưu dữ liệu của host)
-        scan_hosts = scan_data.get('scan', {})
-        # Nếu không có key 'scan' hoặc rỗng -> không có kết quả
+        scan_hosts = scan_data.get("scan", {}) or {}
         if not scan_hosts:
+            return {}
+
+        first_ip = next(iter(scan_hosts))
+        host_data = scan_hosts[first_ip] or {}
+
+        # Extract OS
+        os_detected = self.extract_os(host_data)
+
+        # Extract port info
+        ports_result = {}
+        tcp_info = host_data.get("tcp", {}) or {}
+        for port, info in tcp_info.items():
+            try:
+                pnum = int(port)
+            except Exception:
+                pnum = port
+            ports_result[pnum] = {
+                "service": info.get("name", ""),
+                "version": info.get("version", ""),
+                "product": info.get("product", ""),
+                "state": info.get("state", ""),
+                "os": os_detected,
+                "scripts": {}
+            }
+
+        # Extract hostscript outputs
+        script_output = {}
+        if "hostscript" in host_data:
+            for item in host_data.get("hostscript", []):
+                script_output[item.get("id")] = item.get("output", "")
+
+        # Extract per-port scripts (if present)
+        if "ports" in host_data:
+            for p in host_data.get("ports", []):
+                if isinstance(p, dict) and "script" in p:
+                    for sid, out in p.get("script", {}).items():
+                        script_output[sid] = out
+
+        for port in list(ports_result.keys()):
+            ports_result[port]["scripts"] = script_output
+
+        return ports_result
+    
+
+    
+    def basic_scan_with_cve(self, host):
+        """
+        BASIC SCAN:
+        nmap → port/service/version → CPE → CVE
+        """
+    
+        # 1️⃣ BẮT BUỘC: gọi nmap
+        ports = self.scan_host(host)
+        if not ports:
+            return {}
+    
+        results = {}
+    
+        for port, info in ports.items():
+            service = info.get("service")
+            version = info.get("version")
+    
+            results[port] = {
+                "service": service,
+                "version": version,
+                "cves": []
+            }
+    
+            # 2️⃣ Không có service/version thì bỏ qua CVE
+            if not service or not version:
+                continue
+            
+            # 3️⃣ Build CPE
+            if build_cpe is None:
+                continue
+            
+            cpe = build_cpe(service, version)
+            if not cpe or cpe == "N/A":
+                continue
+            
+            # 4️⃣ Query CVE
+            if get_cve_by_cpe:
+                try:
+                    cves = get_cve_by_cpe(cpe)
+                    if cves:
+                        results[port]["cves"] = cves
+                except Exception:
+                    pass
+                
+        return results
+
+    
+
+
+    def scan_range(self, network_cidr):
+        result = {}
+        try:
+            net = ipaddress.ip_network(network_cidr, strict=False)
+        except Exception:
             return result
 
-        # Bước 3: Lấy host đầu tiên trong kết quả (chúng ta chỉ scan 1 host tại một lần gọi)
-        first_ip = next(iter(scan_hosts))
-        host_data = scan_hosts[first_ip]
+        ip_list = list(net.hosts())
+        for ip in ip_list:
+            ip_str = str(ip)
+            host_result = self.scan_host(ip_str)
+            if host_result:
+                result[ip_str] = host_result
 
-        # Bước 4: Lấy thông tin TCP nếu có
-        tcp_info = host_data.get('tcp', {})
-
-        # Bước 5: Nếu không có TCP info (ví dụ do scan mode cần quyền), thử lại với -sT
-        if not tcp_info:
-            print(f"[DEBUG] No tcp_info, retrying basic scan for {host}")
-            try:
-                # Thử lại bằng -sT (TCP connect scan) như phương án dự phòng
-                scan_data = self.nm.scan(
-                    hosts=host,
-                    ports=self.ports,
-                    arguments='-sT'
-                )
-                scan_hosts = scan_data.get('scan', {})
-                if not scan_hosts:
-                    return result
-                first_ip = next(iter(scan_hosts))
-                host_data = scan_hosts[first_ip]
-                tcp_info = host_data.get('tcp', {})
-                print(f"[DEBUG] retry raw scan_data for {host}: {scan_data}")
-            except Exception as e:
-                # Nếu retry cũng lỗi, trả về rỗng
-                print(f"[ERROR] Retry scan error for {host}: {e}")
-                return result
-
-        # Bước 6: Duyệt các port trong tcp_info
-        # Chuyển dict thành list các tuple để duyệt bằng while
-        port_items = list(tcp_info.items())  # [(port, info_dict), ...]
-        idx = 0
-        while idx < len(port_items):
-            port, info = port_items[idx]
-
-            # Lấy tên service; trường 'name' do python-nmap cung cấp (nmap service name)
-            service_name = info.get('name')
-
-            # Lấy version (nếu có); một số trường version có thể rỗng
-            version = info.get('version', '')
-
-            # Lấy trạng thái port (ví dụ: 'open', 'closed', 'filtered')
-            state = info.get('state', '')
-
-            # Lưu vào result theo cấu trúc mong muốn
-            result[port] = {
-                'service': service_name,
-                'version': version,
-                'state': state
-            }
-            idx += 1
-
-        # Bước 7: Log debug danh sách port đã thu được
-        print(f"[DEBUG] scan_host({host}) returned ports: {list(result.keys())}")
-
-        # Trả về kết quả (có thể rỗng nếu không tìm thấy port mở)
         return result
+
+
+# ==============================
+# FULL PIPELINE (CPE → CVE → CSV)
+# ==============================
+def full_scan_pipeline(ip, software_list, output_csv="scan_report.csv"):
+    """
+    Luồng đầy đủ:
+        1. Software → CPE
+        2. CPE → CVE
+        3. Xuất CSV
+    """
+    results = []
+    all_records = []
+
+    print(f"[+] Bắt đầu quét thiết bị {ip}")
+
+    for sw in software_list or []:
+        name = sw.get("name")
+        version = sw.get("version")
+
+        # (1) software → CPE
+        if build_cpe is None:
+            cpe = "N/A"
+        else:
+            cpe = build_cpe(name, version)
+        if cpe == "N/A":
+            print(f"[WARN] Không tạo được CPE cho {name} {version}")
+            continue
+
+        print(f"[INFO] CPE cho {name} {version}: {cpe}")
+
+        # (2) lấy CVE theo CPE
+        if get_cve_by_cpe is None:
+            cve_list = []
+        else:
+            cve_list = get_cve_by_cpe(cpe)
+
+        if not cve_list:
+            print(f"[INFO] Không tìm thấy CVE cho {cpe}")
+            continue
+
+        # (3) lưu record
+        for cve in cve_list:
+            # cve structure might be v2 or older; normalize
+            try:
+                cve_id = cve.get("cve", {}).get("id") if isinstance(cve, dict) else None
+                # fallback if already friendly dict
+                if not cve_id:
+                    cve_id = cve.get("cve_id") or cve.get("id") or "N/A"
+            except Exception:
+                cve_id = "N/A"
+
+            # Extract CVSS if present
+            cvss_v3 = None
+            cvss_v2 = None
+            try:
+                metrics = cve.get("cve", {}).get("metrics", {}) if isinstance(cve, dict) else {}
+                if "cvssMetricV31" in metrics:
+                    cvss_v3 = metrics["cvssMetricV31"][0]["cvssData"]["baseScore"]
+                elif "cvssMetricV30" in metrics:
+                    cvss_v3 = metrics["cvssMetricV30"][0]["cvssData"]["baseScore"]
+                if "cvssMetricV2" in metrics:
+                    cvss_v2 = metrics["cvssMetricV2"][0]["cvssData"]["baseScore"]
+            except Exception:
+                pass
+
+            item = {
+                "ip": ip,
+                "software": name,
+                "version": version,
+                "cpe": cpe,
+                "cve_id": cve_id,
+                "cvss_v3": cvss_v3,
+                "cvss_v2": cvss_v2,
+            }
+            all_records.append(item)
+
+    # (4) xuất CSV
+    if all_records:
+        try:
+            with open(output_csv, "w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=all_records[0].keys())
+                writer.writeheader()
+                for r in all_records:
+                    writer.writerow(r)
+            print(f"[+] Báo cáo đã lưu tại: {output_csv}")
+        except Exception as e:
+            print("[ERROR] Cannot write CSV:", e)
+    else:
+        print("[!] Không có dữ liệu để xuất báo cáo.")
+
+    return all_records
+

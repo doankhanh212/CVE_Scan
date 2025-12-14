@@ -1,0 +1,2576 @@
+{
+  "cpe::cpe:2.3:a:cisco:cisco_packet:9.0.0.700:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:notepad:notepad_64-bit:8.8.8:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_office:16.0.10363.20015:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:teamviewer:teamviewer:15.72.6:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:vlc:vlc_media:3.0.20:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:winrar:winrar_5.91:5.91.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:12.0.40664:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:common:common_desktop:1.62.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:8.0.56336:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:10.0.40219:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_update:2.84.0.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:windows:windows_subsystem:5.10.16:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:11.0.61030:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:oracle:oracle_virtualbox:7.1.12:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:9.0.30729.6161:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:9.0.30729:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:office:office_16:16.0.10363.20015:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:dell:dell_touchpad:8.1206.101.112:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:8.0.61000:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:14.26.28720:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:crowdsec:crowdsec:1.7.4:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:omada:omada_guard:1.1.15.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:easyconnect:easyconnect:7,6,7,201:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:foxit:foxit_reader:10.0.0.35798:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:google:google_chrome:142.0.7444.176:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:hp:hp_color:1.20 (5/2/2023):*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:hp:hp_easy:2.0.1.70:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:k-lite:k-lite_codec:15.6.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_edge:142.0.3595.94:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:nmap:nmap_7.98:7.98:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:npcap:npcap:1.83:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:samsung:samsung_scan:1.03.05.28:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:sangforvnc:sangforvnc:7,1,0,2:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:xvid:xvid_video:1.3.5:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:12.0.40664.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:12.0.30501.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:11.0.61030.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_edge:143.0.3650.75:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:8.0.61001:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:microsoft_visual:14.26.28720.3:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:ultraviewer:ultraviewer_phin:6.6.124:*:*:*:*:*:*:*": [],
+  "keyword::msrpc": [],
+  "keyword::netbios-ssn": [],
+  "keyword::microsoft-ds": [],
+  "cpe::cpe:2.3:a:teamviewer:teamviewer:5.0.8703:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:videolan:vlc_media_player:3.0.20:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:oracle:vm_virtualbox:7.1.12:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:db:db_browser:3.13.1:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*": [
+    {
+      "cve": {
+        "id": "CVE-2020-15637",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2020-08-20T01:17:13.617",
+        "lastModified": "2024-11-21T05:05:55.040",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to disclose sensitive information on affected installations of Foxit PhantomPDF 9.7.1.29511. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the SetLocalDescription method. By performing actions in JavaScript, an attacker can cause a pointer to be reused after it has been freed. An attacker can leverage this in conjunction with other vulnerabilities to execute code in the context of the current process. Was ZDI-CAN-10972."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos revelar informaci\u00f3n confidencial sobre instalaciones afectadas de Foxit PhantomPDF versi\u00f3n 9.7.1.29511. Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso. El fallo espec\u00edfico se presenta dentro del m\u00e9todo SetLocalDescription. Al llevar a cabo acciones en JavaScript, un atacante puede hacer que un puntero sea reutilizado despu\u00e9s de que haya sido liberado. Un atacante puede aprovechar esto junto con otras vulnerabilidades para ejecutar c\u00f3digo en el contexto del proceso actual. Fue ZDI-CAN-10972."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N",
+                "baseScore": 3.3,
+                "baseSeverity": "LOW",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "LOW",
+                "integrityImpact": "NONE",
+                "availabilityImpact": "NONE"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 1.4
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:L/I:N/A:N",
+                "baseScore": 3.3,
+                "baseSeverity": "LOW",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "LOW",
+                "integrityImpact": "NONE",
+                "availabilityImpact": "NONE"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 1.4
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:N/A:N",
+                "baseScore": 4.3,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "NONE",
+                "availabilityImpact": "NONE"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 2.9,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-416"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "E4AAAEB5-8D1E-4BDA-90D7-990D64010E14"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "8173DAD0-F5A1-457C-8624-2431B73F46D6"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.html",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-20-932/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.html",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-20-932/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2020-15638",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2020-08-20T01:17:13.727",
+        "lastModified": "2024-11-21T05:05:55.160",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit PhantomPDF 9.7.2.29539. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the NodeProperties::InferReceiverMapsUnsafe method. The issue results from the lack of proper validation of user-supplied data, which can result in a type confusion condition. An attacker can leverage this vulnerability to execute code in the context of the current process. Was ZDI-CAN-10950."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit PhantomPDF versi\u00f3n 9.7.2.29539. Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso. El fallo espec\u00edfico se presenta dentro del m\u00e9todo NodeProperties::InferReceiverMapsUnsafe. El problema resulta de una falta de comprobaci\u00f3n apropiada de los datos suministrados por parte del usuario, lo que puede resultar en una condici\u00f3n de confusi\u00f3n de tipo. Un atacante puede aprovechar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual. Fue ZDI-CAN-10950."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-843"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "E4AAAEB5-8D1E-4BDA-90D7-990D64010E14"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "8173DAD0-F5A1-457C-8624-2431B73F46D6"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.html",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-20-933/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.html",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-20-933/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2020-11493",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "2020-09-04T04:15:11.733",
+        "lastModified": "2024-11-21T04:58:00.553",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "In Foxit Reader and PhantomPDF before 10.0.1, and PhantomPDF before 9.7.3, attackers can obtain sensitive information about an uninitialized object because of direct transformation from PDF Object to Stream without concern for a crafted XObject."
+          },
+          {
+            "lang": "es",
+            "value": "En Foxit Reader y PhantomPDF versiones anteriores a 10.0.1, y PhantomPDF versiones anteriores a 9.7.3, los atacantes pueden obtener informaci\u00f3n confidencial sobre un objeto no inicializado debido a una transformaci\u00f3n directa de un Objecto PDF a un Transmisi\u00f3n sin preocuparse por un XObject dise\u00f1ado"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:H",
+                "baseScore": 8.1,
+                "baseSeverity": "HIGH",
+                "attackVector": "NETWORK",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "NONE",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 2.8,
+              "impactScore": 5.2
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:N/A:P",
+                "baseScore": 5.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "NONE",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 4.9,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-345"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.2.29539",
+                    "matchCriteriaId": "5B9FCA78-7061-411B-9F18-AC73AE55DB64"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "E4AAAEB5-8D1E-4BDA-90D7-990D64010E14"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "8173DAD0-F5A1-457C-8624-2431B73F46D6"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "cve@mitre.org",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2020-12247",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "2020-09-04T04:15:11.827",
+        "lastModified": "2024-11-21T04:59:22.673",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "In Foxit Reader and PhantomPDF before 10.0.1, and PhantomPDF before 9.7.3, attackers can obtain sensitive information from an out-of-bounds read because a text-string index continues to be used after splitting a string into two parts. A crash may also occur."
+          },
+          {
+            "lang": "es",
+            "value": "En Foxit Reader y PhantomPDF versiones anteriores a 10.0.1, y PhantomPDF versiones anteriores a 9.7.3, los atacantes pueden obtener informaci\u00f3n confidencial de una lectura fuera de l\u00edmites porque es usado un \u00edndice de cadena de texto despu\u00e9s de dividir una cadena en dos partes.&#xa0;Tambi\u00e9n puede ocurrir un bloqueo"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:H",
+                "baseScore": 7.1,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "NONE",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.2
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:N/A:P",
+                "baseScore": 5.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "NONE",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 4.9,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-125"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.2.29539",
+                    "matchCriteriaId": "5B9FCA78-7061-411B-9F18-AC73AE55DB64"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "E4AAAEB5-8D1E-4BDA-90D7-990D64010E14"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "8173DAD0-F5A1-457C-8624-2431B73F46D6"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "cve@mitre.org",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2020-12248",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "2020-09-04T04:15:11.907",
+        "lastModified": "2024-11-21T04:59:22.823",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "In Foxit Reader and PhantomPDF before 10.0.1, and PhantomPDF before 9.7.3, attackers can execute arbitrary code via a heap-based buffer overflow because dirty image-resource data is mishandled."
+          },
+          {
+            "lang": "es",
+            "value": "En Foxit Reader y PhantomPDF versiones anteriores a 10.0.1, y PhantomPDF versiones anteriores a 9.7.3, los atacantes pueden ejecutar c\u00f3digo arbitrario por medio de un desbordamiento de b\u00fafer en la regi\u00f3n heap de la memoria porque los datos de recursos de im\u00e1genes sucios son manejados inapropiadamente"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 8.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "NETWORK",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 2.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-787"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.2.29539",
+                    "matchCriteriaId": "5B9FCA78-7061-411B-9F18-AC73AE55DB64"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "E4AAAEB5-8D1E-4BDA-90D7-990D64010E14"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.0.0.35798",
+                    "matchCriteriaId": "8173DAD0-F5A1-457C-8624-2431B73F46D6"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "cve@mitre.org",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2021-31456",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2021-05-07T21:15:07.947",
+        "lastModified": "2024-11-21T06:05:42.343",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit Reader 10.1.1.37576. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the handling of Annotation objects. The issue results from the lack of validating the existence of an object prior to performing operations on the object. An attacker can leverage this vulnerability to execute code in the context of the current process. Was ZDI-CAN-13102."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit Reader versi\u00f3n 10.1.1.37576.&#xa0;Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso.&#xa0;El fallo espec\u00edfico se presenta en el manejo de objetos de Annotation.&#xa0;El problema es debido a una falta de comprobaci\u00f3n de la existencia de un objeto antes de llevar a cabo operaciones en el objeto.&#xa0;Un atacante puede aprovechar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual. Fue ZDI-CAN-13102"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-416"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.5.29616",
+                    "matchCriteriaId": "65FB00E8-95E0-4FE3-85A5-E10312B70B94"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "10.0.0.0",
+                    "versionEndIncluding": "10.1.37598",
+                    "matchCriteriaId": "91E69DBC-810D-4F3B-98A1-62489DDE099F"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "F281102A-172A-4BDD-9E41-8337B7EA1B3B"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-545/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-545/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2021-31457",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2021-05-07T21:15:07.980",
+        "lastModified": "2024-11-21T06:05:42.473",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit Reader 10.1.1.37576. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the handling of Annotation objects. The issue results from the lack of validating the existence of an object prior to performing operations on the object. An attacker can leverage this vulnerability to execute code in the context of the current process. Was ZDI-CAN-13147."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit Reader versi\u00f3n 10.1.1.37576.&#xa0;Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso.&#xa0;El fallo espec\u00edfico se presenta en el manejo de objetos de Annotation.&#xa0;El problema es debido a una falta de comprobaci\u00f3n de la existencia de un objeto antes de llevar a cabo operaciones en el objeto.&#xa0;Un atacante puede aprovechar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual. Fue ZDI-CAN-13147"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-416"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.5.29616",
+                    "matchCriteriaId": "65FB00E8-95E0-4FE3-85A5-E10312B70B94"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "10.0.0.0",
+                    "versionEndIncluding": "10.1.37598",
+                    "matchCriteriaId": "91E69DBC-810D-4F3B-98A1-62489DDE099F"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "F281102A-172A-4BDD-9E41-8337B7EA1B3B"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-546/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-546/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2021-31458",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2021-05-07T21:15:08.017",
+        "lastModified": "2024-11-21T06:05:42.607",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit Reader 10.1.1.37576. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the handling of Annotation objects. The issue results from the lack of validating the existence of an object prior to performing operations on the object. An attacker can leverage this vulnerability to execute code in the context of the current process. Was ZDI-CAN-13150."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit Reader versi\u00f3n 10.1.1.37576.&#xa0;Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso.&#xa0;El fallo espec\u00edfico se presenta en el manejo de objetos de Annotation.&#xa0;El problema es debido a una falta de comprobaci\u00f3n de la existencia de un objeto antes de llevar a cabo operaciones en el objeto.&#xa0;Un atacante puede aprovechar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual. Fue ZDI-CAN-13150"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-416"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.5.29616",
+                    "matchCriteriaId": "65FB00E8-95E0-4FE3-85A5-E10312B70B94"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "10.0.0.0",
+                    "versionEndIncluding": "10.1.37598",
+                    "matchCriteriaId": "91E69DBC-810D-4F3B-98A1-62489DDE099F"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "F281102A-172A-4BDD-9E41-8337B7EA1B3B"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-547/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-547/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2021-31459",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2021-05-07T21:15:08.057",
+        "lastModified": "2024-11-21T06:05:42.723",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit Reader 10.1.1.37576. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the handling of XFA Forms. The issue results from the lack of validating the existence of an object prior to performing operations on the object. An attacker can leverage this vulnerability to execute code in the context of the current process. Was ZDI-CAN-13162."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit Reader versi\u00f3n 10.1.1.37576.&#xa0;Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso.&#xa0;El fallo espec\u00edfico se presenta dentro del manejo de los Formularios XFA.&#xa0;El problema es debido a una falta de comprobaci\u00f3n de la existencia de un objeto antes de llevar a cabo operaciones en el objeto.&#xa0;Un atacante puede aprovechar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual. Fue ZDI-CAN-13162"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-416"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.5.29616",
+                    "matchCriteriaId": "65FB00E8-95E0-4FE3-85A5-E10312B70B94"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "10.0.0.0",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "17967F7B-45AF-4CC9-8631-22D7A79CB2F7"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "F281102A-172A-4BDD-9E41-8337B7EA1B3B"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-548/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-548/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2021-31460",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2021-05-07T21:15:08.097",
+        "lastModified": "2024-11-21T06:05:42.853",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit Reader 10.1.1.37576. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the processing of XFA templates. The issue results from the lack of validating the existence of an object prior to performing operations on the object. An attacker can leverage this vulnerability to execute code in the context of the current process. Was ZDI-CAN-13096."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit Reader versi\u00f3n 10.1.1.37576.&#xa0;Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso.&#xa0;El fallo espec\u00edfico se presenta dentro del procesamiento de plantillas XFA.&#xa0;El problema es debido a una falta de comprobaci\u00f3n de la existencia de un objeto antes de llevar a cabo operaciones en el objeto.&#xa0;Un atacante puede aprovechar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual. Fue ZDI-CAN-13096"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-416"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.5.29616",
+                    "matchCriteriaId": "65FB00E8-95E0-4FE3-85A5-E10312B70B94"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "10.0.0.0",
+                    "versionEndIncluding": "10.1.37598",
+                    "matchCriteriaId": "91E69DBC-810D-4F3B-98A1-62489DDE099F"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "F281102A-172A-4BDD-9E41-8337B7EA1B3B"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-549/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-549/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2021-31461",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2021-05-07T21:15:08.137",
+        "lastModified": "2024-11-21T06:05:42.983",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit Reader 10.1.1.37576. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the the handling of app.media objects. The issue results from the lack of proper validation of user-supplied data, which can result in a type confusion condition. An attacker can leverage this vulnerability to execute code in the context of the current process Was ZDI-CAN-13333."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit Reader versi\u00f3n 10.1.1.37576.&#xa0;Es requerida una interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso.&#xa0;El fallo espec\u00edfico se presenta dentro del manejo de los objetos app.media.&#xa0;El problema es debido a una falta de comprobaci\u00f3n apropiada de los datos suministrados por el usuario, lo que puede resultar en una condici\u00f3n de confusi\u00f3n de tipos.&#xa0;Un atacante puede aprovechar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual Was ZDI-CAN-13333"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Secondary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-843"
+              }
+            ]
+          },
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-843"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.5.29616",
+                    "matchCriteriaId": "65FB00E8-95E0-4FE3-85A5-E10312B70B94"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "10.0.0.0",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "17967F7B-45AF-4CC9-8631-22D7A79CB2F7"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "F281102A-172A-4BDD-9E41-8337B7EA1B3B"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-550/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Patch",
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-550/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2021-31473",
+        "sourceIdentifier": "zdi-disclosures@trendmicro.com",
+        "published": "2021-05-21T15:15:07.793",
+        "lastModified": "2024-11-21T06:05:44.710",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "This vulnerability allows remote attackers to execute arbitrary code on affected installations of Foxit Reader 10.1.3.37598. User interaction is required to exploit this vulnerability in that the target must visit a malicious page or open a malicious file. The specific flaw exists within the browseForDoc function. The issue results from the lack of proper validation of user-supplied data, which can result in a write past the end of an allocated data structure. An attacker can leverage this vulnerability to execute code in the context of the current process. Was ZDI-CAN-13523."
+          },
+          {
+            "lang": "es",
+            "value": "Esta vulnerabilidad permite a atacantes remotos ejecutar c\u00f3digo arbitrario en instalaciones afectadas de Foxit Reader versi\u00f3n 10.1.3.37598.&#xa0;Es requerido la interacci\u00f3n del usuario para explotar esta vulnerabilidad, ya que el objetivo debe visitar una p\u00e1gina maliciosa o abrir un archivo malicioso.&#xa0;El fallo espec\u00edfico se presenta dentro de la funci\u00f3n browseForDoc.&#xa0;El problema es debido a una falta de validaci\u00f3n apropiada de los datos suministrados por el usuario, lo que puede resultar en una escritura m\u00e1s all\u00e1 del final de una estructura de datos asignada.&#xa0;Un atacante puede explotar esta vulnerabilidad para ejecutar c\u00f3digo en el contexto del proceso actual.&#xa0;Fue ZDI-CAN-13523"
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV30": [
+            {
+              "source": "zdi-disclosures@trendmicro.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+                "baseScore": 6.8,
+                "accessVector": "NETWORK",
+                "accessComplexity": "MEDIUM",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "MEDIUM",
+              "exploitabilityScore": 8.6,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": true
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "zdi-disclosures@trendmicro.com",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-787"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "operator": "AND",
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "9.7.5.29616",
+                    "matchCriteriaId": "65FB00E8-95E0-4FE3-85A5-E10312B70B94"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:phantompdf:*:*:*:*:*:*:*:*",
+                    "versionStartIncluding": "10.0.0.0",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "17967F7B-45AF-4CC9-8631-22D7A79CB2F7"
+                  },
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:foxitsoftware:reader:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "10.1.3.37598",
+                    "matchCriteriaId": "F281102A-172A-4BDD-9E41-8337B7EA1B3B"
+                  }
+                ]
+              },
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": false,
+                    "criteria": "cpe:2.3:o:microsoft:windows:-:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "A2572D17-1DE6-457B-99CC-64AFD54487EA"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-561/",
+            "source": "zdi-disclosures@trendmicro.com",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          },
+          {
+            "url": "https://www.foxitsoftware.com/support/security-bulletins.php",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Vendor Advisory"
+            ]
+          },
+          {
+            "url": "https://www.zerodayinitiative.com/advisories/ZDI-21-561/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory",
+              "VDB Entry"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "cpe::cpe:2.3:a:google:google_chrome:143.0.7499.42:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:nmap:nmap:7.98:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:nmap:npcap:0.992:*:*:*:*:*:*:*": [
+    {
+      "cve": {
+        "id": "CVE-2019-11490",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "2019-04-24T03:29:00.267",
+        "lastModified": "2024-11-21T04:21:11.503",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "An issue was discovered in Npcap 0.992. Sending a malformed .pcap file with the loopback adapter using either pcap_sendqueue_queue() or pcap_sendqueue_transmit() results in kernel pool corruption. This could lead to arbitrary code executing inside the Windows kernel and allow escalation of privileges."
+          },
+          {
+            "lang": "es",
+            "value": "Se descubri\u00f3 un problema en Npcap 0.992. El env\u00edo de un archivo .pcap malformado con el adaptador loopback usando pcap_sendqueue_queue_queue() o pcap_sendqueue_transmit() da como resultado la corrupci\u00f3n del pool de n\u00facleos. Esto podr\u00eda llevar a la ejecuci\u00f3n arbitraria de c\u00f3digo dentro del kernel de Windows y permitir la escalada de privilegios."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV30": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.0",
+                "vectorString": "CVSS:3.0/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+                "baseScore": 7.8,
+                "baseSeverity": "HIGH",
+                "attackVector": "LOCAL",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "LOW",
+                "userInteraction": "NONE",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 1.8,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:L/AC:L/Au:N/C:C/I:C/A:C",
+                "baseScore": 7.2,
+                "accessVector": "LOCAL",
+                "accessComplexity": "LOW",
+                "authentication": "NONE",
+                "confidentialityImpact": "COMPLETE",
+                "integrityImpact": "COMPLETE",
+                "availabilityImpact": "COMPLETE"
+              },
+              "baseSeverity": "HIGH",
+              "exploitabilityScore": 3.9,
+              "impactScore": 10.0,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": false
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-415"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:nmap:npcap:0.992:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "D9F2D880-CB47-4041-9526-2BB17DF1FDD8"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "https://github.com/nmap/nmap/issues/1568",
+            "source": "cve@mitre.org",
+            "tags": [
+              "Exploit",
+              "Issue Tracking",
+              "Patch",
+              "Third Party Advisory"
+            ]
+          },
+          {
+            "url": "https://github.com/nmap/nmap/issues/1568",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Exploit",
+              "Issue Tracking",
+              "Patch",
+              "Third Party Advisory"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "keyword::domain 2.78": [],
+  "keyword::http": [],
+  "keyword::https": [],
+  "cpe::cpe:2.3:o:hp:apollo_domain_os:-:*:*:*:*:*:*:*": [
+    {
+      "cve": {
+        "id": "CVE-1999-1493",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "1991-12-18T05:00:00.000",
+        "lastModified": "2025-04-03T01:03:51.193",
+        "vulnStatus": "Deferred",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "Vulnerability in crp in Hewlett Packard Apollo Domain OS SR10 through SR10.3 allows remote attackers to gain root privileges via insecure system calls, (1) pad_$dm_cmd and (2) pad_$def_pfk()."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:L/Au:N/C:C/I:C/A:C",
+                "baseScore": 10.0,
+                "accessVector": "NETWORK",
+                "accessComplexity": "LOW",
+                "authentication": "NONE",
+                "confidentialityImpact": "COMPLETE",
+                "integrityImpact": "COMPLETE",
+                "availabilityImpact": "COMPLETE"
+              },
+              "baseSeverity": "HIGH",
+              "exploitabilityScore": 10.0,
+              "impactScore": 10.0,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": true,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": false
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "NVD-CWE-Other"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:o:hp:apollo_domain_os:*:*:*:*:*:*:*:*",
+                    "versionEndIncluding": "sr10.3",
+                    "matchCriteriaId": "976B0F09-89B1-45AA-A8F2-CA473ECDB300"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "http://www.cert.org/advisories/CA-1991-23.html",
+            "source": "cve@mitre.org",
+            "tags": [
+              "Patch",
+              "Third Party Advisory",
+              "US Government Resource"
+            ]
+          },
+          {
+            "url": "http://www.securityfocus.com/bid/34",
+            "source": "cve@mitre.org"
+          },
+          {
+            "url": "https://exchange.xforce.ibmcloud.com/vulnerabilities/7158",
+            "source": "cve@mitre.org"
+          },
+          {
+            "url": "http://www.cert.org/advisories/CA-1991-23.html",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Patch",
+              "Third Party Advisory",
+              "US Government Resource"
+            ]
+          },
+          {
+            "url": "http://www.securityfocus.com/bid/34",
+            "source": "af854a3a-2127-422b-91ae-364da2661108"
+          },
+          {
+            "url": "https://exchange.xforce.ibmcloud.com/vulnerabilities/7158",
+            "source": "af854a3a-2127-422b-91ae-364da2661108"
+          }
+        ]
+      }
+    }
+  ],
+  "cpe::cpe:2.3:a:http:http:1.30:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:phz76:rtspserver:1.0.0:*:*:*:*:*:*:*": [
+    {
+      "cve": {
+        "id": "CVE-2023-6888",
+        "sourceIdentifier": "cna@vuldb.com",
+        "published": "2023-12-17T01:15:27.783",
+        "lastModified": "2024-11-21T08:44:46.013",
+        "vulnStatus": "Modified",
+        "cveTags": [],
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "A vulnerability classified as critical was found in PHZ76 RtspServer 1.0.0. This vulnerability affects the function ParseRequestLine of the file RtspMesaage.cpp. The manipulation leads to stack-based buffer overflow. The attack can be initiated remotely. The exploit has been disclosed to the public and may be used. The identifier of this vulnerability is VDB-248248. NOTE: The vendor was contacted early about this disclosure but did not respond in any way."
+          },
+          {
+            "lang": "es",
+            "value": "Una vulnerabilidad fue encontrada en PHZ76 RtspServer 1.0.0 y clasificada como cr\u00edtica. Esta vulnerabilidad afecta a la funci\u00f3n ParseRequestLine del archivo RtspMesaage.cpp. La manipulaci\u00f3n conduce a un desbordamiento de b\u00fafer en la regi\u00f3n stack de la memoria. El ataque se puede iniciar de forma remota. El exploit ha sido divulgado al p\u00fablico y puede utilizarse. El identificador de esta vulnerabilidad es VDB-248248. NOTA: Se contact\u00f3 primeramente con el proveedor sobre esta divulgaci\u00f3n, pero no respondi\u00f3 de ninguna manera."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {
+              "source": "cna@vuldb.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L",
+                "baseScore": 6.3,
+                "baseSeverity": "MEDIUM",
+                "attackVector": "NETWORK",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "REQUIRED",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "LOW",
+                "integrityImpact": "LOW",
+                "availabilityImpact": "LOW"
+              },
+              "exploitabilityScore": 2.8,
+              "impactScore": 3.4
+            },
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "3.1",
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                "baseScore": 9.8,
+                "baseSeverity": "CRITICAL",
+                "attackVector": "NETWORK",
+                "attackComplexity": "LOW",
+                "privilegesRequired": "NONE",
+                "userInteraction": "NONE",
+                "scope": "UNCHANGED",
+                "confidentialityImpact": "HIGH",
+                "integrityImpact": "HIGH",
+                "availabilityImpact": "HIGH"
+              },
+              "exploitabilityScore": 3.9,
+              "impactScore": 5.9
+            }
+          ],
+          "cvssMetricV2": [
+            {
+              "source": "cna@vuldb.com",
+              "type": "Secondary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+                "baseScore": 7.5,
+                "accessVector": "NETWORK",
+                "accessComplexity": "LOW",
+                "authentication": "NONE",
+                "confidentialityImpact": "PARTIAL",
+                "integrityImpact": "PARTIAL",
+                "availabilityImpact": "PARTIAL"
+              },
+              "baseSeverity": "HIGH",
+              "exploitabilityScore": 10.0,
+              "impactScore": 6.4,
+              "acInsufInfo": false,
+              "obtainAllPrivilege": false,
+              "obtainUserPrivilege": false,
+              "obtainOtherPrivilege": false,
+              "userInteractionRequired": false
+            }
+          ]
+        },
+        "weaknesses": [
+          {
+            "source": "cna@vuldb.com",
+            "type": "Secondary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-121"
+              }
+            ]
+          },
+          {
+            "source": "nvd@nist.gov",
+            "type": "Primary",
+            "description": [
+              {
+                "lang": "en",
+                "value": "CWE-787"
+              }
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "nodes": [
+              {
+                "operator": "OR",
+                "negate": false,
+                "cpeMatch": [
+                  {
+                    "vulnerable": true,
+                    "criteria": "cpe:2.3:a:phz76:rtspserver:1.0.0:*:*:*:*:*:*:*",
+                    "matchCriteriaId": "FEF8411B-772E-4B20-817D-894D4ADADB6A"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "references": [
+          {
+            "url": "http://www.huiyao.love/2023/12/08/rtspserver-stackoverflow-vulnerability/",
+            "source": "cna@vuldb.com",
+            "tags": [
+              "Exploit"
+            ]
+          },
+          {
+            "url": "https://github.com/hu1y40/PoC/blob/main/rtspserver_stackoverflow_poc.py",
+            "source": "cna@vuldb.com",
+            "tags": [
+              "Exploit"
+            ]
+          },
+          {
+            "url": "https://vuldb.com/?ctiid.248248",
+            "source": "cna@vuldb.com",
+            "tags": [
+              "Permissions Required",
+              "Third Party Advisory"
+            ]
+          },
+          {
+            "url": "https://vuldb.com/?id.248248",
+            "source": "cna@vuldb.com",
+            "tags": [
+              "Third Party Advisory"
+            ]
+          },
+          {
+            "url": "http://www.huiyao.love/2023/12/08/rtspserver-stackoverflow-vulnerability/",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Exploit"
+            ]
+          },
+          {
+            "url": "https://github.com/hu1y40/PoC/blob/main/rtspserver_stackoverflow_poc.py",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Exploit"
+            ]
+          },
+          {
+            "url": "https://vuldb.com/?ctiid.248248",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Permissions Required",
+              "Third Party Advisory"
+            ]
+          },
+          {
+            "url": "https://vuldb.com/?id.248248",
+            "source": "af854a3a-2127-422b-91ae-364da2661108",
+            "tags": [
+              "Third Party Advisory"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "cpe::cpe:2.3:a:vmware-auth:vmware-auth:1.10:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:vmware-auth:vmware-auth:1.0:*:*:*:*:*:*:*": []
+}

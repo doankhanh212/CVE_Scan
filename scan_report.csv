@@ -1,0 +1,14 @@
+ip,software,version,cpe,cve_id,cvss_v3,cvss_v2
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2020-15637,3.3,4.3
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2020-15638,7.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2020-11493,8.1,5.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2020-12247,7.1,5.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2020-12248,8.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2021-31456,7.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2021-31457,7.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2021-31458,7.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2021-31459,7.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2021-31460,7.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2021-31461,7.8,6.8
+192.168.100.15,Foxit Reader,10.0.0.35798,cpe:2.3:a:foxitsoftware:reader:10.0.0.35798:*:*:*:*:*:*:*,CVE-2021-31473,7.8,6.8
+192.168.100.15,Npcap,1.83,cpe:2.3:a:nmap:npcap:0.992:*:*:*:*:*:*:*,CVE-2019-11490,7.8,7.2
