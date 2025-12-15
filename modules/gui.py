@@ -14,6 +14,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext
 from tkinter import ttk
 from PIL import Image, ImageTk
+from collections import defaultdict
 
 # imports attempt: prefer modules.* but fallback to local
 try:
@@ -83,6 +84,18 @@ class GUIController:
         # =======================
         self.root = tk.Tk()
         self.root.title("Công cụ quét lỗ hổng CVE")
+        try:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            icon_path = os.path.join(base_dir, "images", "HQG.ico")
+    
+            if os.path.exists(icon_path):
+                self.root.iconbitmap(icon_path)
+            else:
+                print("Không tìm thấy icon:", icon_path)
+    
+        except Exception as e:
+            print("Không load được icon HQG:", e)
+    
         self.root.geometry("880x760")
 
         # =======================
@@ -154,61 +167,64 @@ class GUIController:
         self.canvas.bind_all("<MouseWheel>", _on_mousewheel)
 
         # =======================
-        # HEADER (LOGO LEFT – TEXT RIGHT)
+        # HEADER (LOGO + TITLE)
         # =======================
-        header = tk.Frame(self.main_frame, bg="#0f172a", height=110)
+        header = tk.Frame(self.main_frame, bg="#0b1220", height=90)
         header.pack(fill="x")
         header.pack_propagate(False)
 
-        header_inner = tk.Frame(header, bg="#0f172a")
-        header_inner.pack(fill="both", padx=20, pady=15)
+        header_inner = tk.Frame(header, bg="#0b1220")
+        header_inner.pack(fill="both", padx=24)
 
         # ---- LEFT: LOGO ----
+        logo_frame = tk.Frame(header_inner, bg="#0b1220")
+        logo_frame.pack(side="left", fill="y")
+
         try:
             logo_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
-                "modules", "images", "logoHQG.png"
+                "images", "HQG.png"
             )
             img = Image.open(logo_path)
-            img = img.resize((160, 70), Image.LANCZOS)
+            img.thumbnail((165, 50), Image.LANCZOS)  # giữ tỉ lệ
             self.logo_img = ImageTk.PhotoImage(img)
 
             tk.Label(
-                header_inner,
+                logo_frame,
                 image=self.logo_img,
-                bg="#0f172a"
-            ).pack(side="left", padx=(0, 20))
+                bg="#0b1220"
+            ).pack(anchor="center", pady=20)
 
         except Exception:
             tk.Label(
-                header_inner,
+                logo_frame,
                 text="HQG",
-                font=("Segoe UI", 28, "bold"),
-                fg="#0ea5e9",
-                bg="#0f172a"
-            ).pack(side="left", padx=(0, 20))
+                font=("Segoe UI", 26, "bold"),
+                fg="#38bdf8",
+                bg="#0b1220"
+            ).pack(anchor="center", pady=18)
 
         # ---- RIGHT: TEXT ----
-        text_frame = tk.Frame(header_inner, bg="#0f172a")
-        text_frame.pack(side="left", fill="y")
+        text_frame = tk.Frame(header_inner, bg="#0b1220")
+        text_frame.pack(side="left", fill="y", padx=(18, 0))
 
         tk.Label(
             text_frame,
             text="CÔNG CỤ QUÉT LỖ HỔNG CVE",
-            font=("Segoe UI", 20, "bold"),
+            font=("Segoe UI Semibold", 18),
             fg="white",
-            bg="#0f172a"
-        ).pack(anchor="w")
+            bg="#0b1220"
+        ).pack(anchor="w", pady=(20, 2))
 
         tk.Label(
             text_frame,
             text="NVD • CPE • CVSS • Authenticated Scan",
-            font=("Segoe UI", 11),
-            fg="#cbd5e1",
-            bg="#0f172a"
-        ).pack(anchor="w", pady=(4, 0))
+            font=("Segoe UI", 10),
+            fg="#94a3b8",
+            bg="#0b1220"
+        ).pack(anchor="w")
 
-        ttk.Separator(self.main_frame, orient="horizontal").pack(fill="x", pady=8)
+        ttk.Separator(self.main_frame, orient="horizontal").pack(fill="x")
 
         # =======================
         # CONTENT
@@ -441,52 +457,80 @@ class GUIController:
     # FULL PIPELINE ADDON (CPE → CVE → REPORT)
     # =================================================================
     def run_full_pipeline(self, host, software_list=None):
+        """
+        Authenticated Scan:
+        - Nhận danh sách software
+        - Build CPE
+        - Query CVE
+        - Hiển thị log dạng tóm tắt (user-friendly)
+        - Trả về raw results để export/report
+        """
         try:
-            self.enqueue_log("\n==============================")
+            # ===============================
+            # HEADER
+            # ===============================
+            self.enqueue_log("\n" + "=" * 30)
             self.log(f"Phân tích CVE cho {host}", "SYSTEM")
-            self.enqueue_log("==============================\n")
+            self.enqueue_log("=" * 30)
 
-            sample_software = [
-                {"name": "nginx", "version": "1.18.0"},
-                {"name": "openssh", "version": "8.2"}
-            ]
-
+            # Fallback demo software (chỉ dùng khi test)
             if software_list is None:
-                software_list = sample_software
+                software_list = [
+                    {"name": "nginx", "version": "1.18.0"},
+                    {"name": "openssh", "version": "8.2"}
+                ]
 
+            # ===============================
+            # RUN CORE PIPELINE
+            # ===============================
             results = full_scan_pipeline(host, software_list)
+
             if not results:
                 self.log(f"Không phát hiện CVE cho {host}", "SUCCESS")
                 return None
 
-            # Only print CVE rows
-            count = 0
+            # ===============================
+            # GROUP & SUMMARY
+            # ===============================
+            summary = defaultdict(list)
 
             for item in results:
-                ip = item.get("ip", "")
-                sw = item.get("software", "")
-                ver = item.get("version", "")
-                cpe = item.get("cpe", "")
-                cid = item.get("cve_id", "")
-                v3 = item.get("cvss_v3", "")
-                v2 = item.get("cvss_v2", "")
+                sw = item.get("software")
+                ver = item.get("version")
+                cid = item.get("cve_id")
+                score = item.get("cvss_v3") or item.get("cvss_v2")
 
-                if not cid or cid == "N/A":
-                    continue
+                if cid:
+                    summary[(sw, ver)].append((cid, score))
 
-                line = f"{ip},{sw},{ver},{cpe},{cid},{v3},{v2}"
-                self.enqueue_log(line)
-                count += 1
+            # ===============================
+            # USER-FRIENDLY LOG OUTPUT
+            # ===============================
+            for (sw, ver), cves in summary.items():
+                scores = [s for _, s in cves if isinstance(s, (int, float))]
+                max_score = max(scores) if scores else "N/A"
 
-            if count == 0:
-                self.enqueue_log("No CVE found for this host.")
+                self.log(f"🧩 {sw} {ver}", "INFO")
+                self.log(f"   ↳ Tổng số CVE: {len(cves)}", "WARN")
+                self.log(f"   ↳ CVSS cao nhất: {max_score}", "WARN")
 
-            self.enqueue_log(f"\nFULL PIPELINE FINISHED for {host}\n")
+                # Show max 3 CVE để không spam
+                for cid, score in cves[:3]:
+                    score_txt = score if score is not None else "N/A"
+                    self.log(f"      • {cid} (CVSS {score_txt})", "SYSTEM")
+
+            # ===============================
+            # FOOTER
+            # ===============================
+            self.log(f"Hoàn tất phân tích CVE cho {host}", "SUCCESS")
+            self.enqueue_log("")
+    
             return results
-
+    
         except Exception as e:
             self.log(f"Lỗi khi phân tích CVE cho {host}: {e}", "ERROR")
             return None
+
 
     # =================================================================
     # SCAN LOGIC
