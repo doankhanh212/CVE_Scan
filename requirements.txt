@@ -1,18 +1,12 @@
-import requests  # Thư viện gửi HTTP (GET/POST...), đơn giản và phổ biến
-import re  # Thư viện regex (biểu thức chính quy) để kiểm tra định dạng CVE ID
-import tkinter as tk  # Thao tác GUI cơ bản (cửa sổ, widget, v.v.)
-from tkinter import filedialog, messagebox, scrolledtext
-# - filedialog: mở hộp thoại lưu/mở file
-# - messagebox: hiển thị hộp thoại thông báo/warning/error
-# - scrolledtext: widget Text có scrollbar tích hợp (dùng cho log)
-# Các thư viện chuẩn hữu ích
-import csv        # ghi/đọc CSV
-import threading  # chạy background thread để không block GUI
-import os         # truy xuất biến môi trường, thao tác file
-import re         # regex: kiểm tra định dạng IP/hostname
-import queue      # queue để truyền message thread-safe từ background -> GUI
-import nvdlib  # Thư viện tương tác với NVD API (nvdlib cung cấp các hàm searchCVE, getCVE,...)
-import datetime  # Thư viện xử lý ngày giờ
-import nmap  # Thư viện điều khiển Nmap từ Python (python-nmap cung cấp PortScanner)
-import socket  # Dùng để kiểm tra địa chỉ IP hợp lệ
-import webbrowser # mở trình duyệt web
+beautifulsoup4
+packaging
+pillow
+paramiko
+pywinrm
+python-nmap
+rapidfuzz
+reportlab
+requests
+
+# Dev/testing
+pytest

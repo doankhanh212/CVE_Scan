@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  cve_scan:
+    build: .
+    image: cve_scan:latest
+    container_name: cve_scan
+    environment:
+      - TZ=UTC
+      # Optional: pass your NVD API key to be injected into config.json
+      # - NVD_API_KEY=your_api_key_here
+      - SCREEN_W=1366
+      - SCREEN_H=768
+      - SCREEN_D=24
+      - DISPLAY=:0
+    ports:
+      - "6080:6080" # noVNC web UI
+      - "5900:5900" # VNC (optional)
+    volumes:
+      - ./config.json:/app/config.json
+      - nvd_data:/app/modules/cve/nvd_data
+      - backups:/app/backups
+    restart: unless-stopped
+
+volumes:
+  nvd_data: {}
+  backups: {}

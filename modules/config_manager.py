@@ -13,14 +13,19 @@ CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
 class ConfigManager:
     @staticmethod
     def load():
+        default = {"nvd_api_key": "", "use_local_db": False, "local_db_path": ""}
         if not os.path.exists(CONFIG_PATH):
-            return {"nvd_api_key": ""}
+            return default
         try:
             with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+                # ensure default keys exist
+                for k, v in default.items():
+                    data.setdefault(k, v)
+                return data
         except Exception as e:
             logger.warning("Cannot load config: %s", e)
-            return {"nvd_api_key": ""}
+            return default
 
     @staticmethod
     def save(data: dict):
