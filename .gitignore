@@ -1,0 +1,38 @@
+# Python cache and build
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dylib
+*.egg-info/
+*.egg
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE/editor
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# App/runtime data & local artifacts
+modules/cve/nvd_data/
+modules/cve/nvd_cve.db
+backups/
+nvd_cache.json
+config.json
+
+# Local exports and test CSVs
+*.csv
+
+# Logs
+*.log
