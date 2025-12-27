@@ -134,6 +134,7 @@ class GUIController:
         # =======================
         self.last_results = {}
         self.scanning = False
+        self.stop_event = threading.Event()
 
         # =======================
         # BUILD GUI (LUÔN PHẢI CHẠY)
@@ -168,7 +169,14 @@ class GUIController:
             if phase == "ping":
                 # keep ping percent internally but do not update the overall UI
                 self._ping_percent = int(percent)
-                # optionally log or show a transient message (currently omitted)
+                # update Hosts Alive KPI if message carries alive count
+                try:
+                    if isinstance(message, dict) and "alive" in message:
+                        alive_count = int(message.get("alive", 0))
+                        self._alive_count = alive_count
+                        self.kpi_cards["hosts_alive"].config(text=str(alive_count))
+                except Exception:
+                    pass
                 return
 
             elif phase == "scan":
@@ -380,21 +388,21 @@ class GUIController:
         mode_frame.pack(padx=10, pady=6, anchor="w")
 
         tk.Label(mode_frame, text="Scan Mode:", font=("Arial", 10), bg=self.theme["bg"], fg=self.theme["text"]).grid(row=0, column=0, sticky="w")
-        self.scan_mode_var = tk.StringVar(self.root, value="Basic Scan")
+        self.scan_mode_var = tk.StringVar(self.root, value="Quét không xác thực")
         self.scan_mode_cb = ttk.Combobox(
             mode_frame,
             textvariable=self.scan_mode_var,
             state="readonly",
             width=24
         )
-        self.scan_mode_cb["values"] = ("Basic Scan", "Authenticated Scan")
+        self.scan_mode_cb["values"] = ("Quét không xác thực", "Quét có xác thực")
         self.scan_mode_cb.grid(row=0, column=1, padx=6)
         self.scan_mode_cb.bind("<<ComboboxSelected>>", lambda e: self._on_mode_change())
 
         # =======================
         # AUTH FRAME (initially hidden; shown side-by-side on Authenticated mode)
         self.auth_wrapper = tk.Frame(self.host_auth_container, bg=self.theme["bg"])
-        self.auth_frame = tk.LabelFrame(self.auth_wrapper, text="Authenticated Scan Credentials", bg=self.theme["panel"], fg=self.theme["text"], bd=1, relief="solid")
+        self.auth_frame = tk.LabelFrame(self.auth_wrapper, text="Thông tin xác thực", bg=self.theme["panel"], fg=self.theme["text"], bd=1, relief="solid")
         self.auth_frame.pack(fill="both", expand=True, padx=6, pady=2)
 
         tk.Label(self.auth_frame, text="Username:", bg=self.theme["panel"], fg=self.theme["text"]).grid(row=0, column=0, sticky="w", padx=6, pady=4)
@@ -434,25 +442,25 @@ class GUIController:
         btn_frame = tk.Frame(self.main_frame, bg=self.theme["bg"])
         btn_frame.pack(pady=10)
 
-        tk.Button(btn_frame, text="Run Scan", command=self.start_scan_thread,
+        tk.Button(btn_frame, text="Bắt đầu quét", command=self.start_scan_thread,
               bg="#2563eb", fg="white", activebackground="#1d4ed8", width=12, relief="flat").grid(row=0, column=0, padx=6)
 
         # Export menu (CSV/HTML/PDF)
-        self.export_menu_btn = tk.Menubutton(btn_frame, text="Export", bg=self.theme["button"], fg=self.theme["button_fg"], activebackground=self.theme["muted"], relief="flat", width=11)
+        self.export_menu_btn = tk.Menubutton(btn_frame, text="Xuất báo cáo", bg=self.theme["button"], fg=self.theme["button_fg"], activebackground=self.theme["muted"], relief="flat", width=11)
         self.export_menu = tk.Menu(self.export_menu_btn, tearoff=0, bg=self.theme["panel"], fg=self.theme["text"], activebackground=self.theme["muted"], activeforeground=self.theme["text"])
-        self.export_menu.add_command(label="Export CSV", command=self.export_csv)
-        self.export_menu.add_command(label="Export HTML", command=self.export_html)
-        self.export_menu.add_command(label="Export PDF", command=self.export_pdf)
+        self.export_menu.add_command(label="Xuất CSV", command=self.export_csv)
+        self.export_menu.add_command(label="Xuất HTML", command=self.export_html)
+        self.export_menu.add_command(label="Xuất PDF", command=self.export_pdf)
         self.export_menu_btn.config(menu=self.export_menu)
         self.export_menu_btn.grid(row=0, column=1, padx=6)
         self.export_menu_btn.config(state=tk.DISABLED)
 
-        tk.Button(btn_frame, text="Clear Log",
+        tk.Button(btn_frame, text="Xóa log",
               command=lambda: self.log_box.delete("1.0", tk.END),
               bg="#e67e22", fg="white", activebackground="#d97706", width=11, relief="flat").grid(row=0, column=2, padx=6)
 
         # Use a safe handler so missing attributes won't raise during button creation
-        tk.Button(btn_frame, text="⚙ Settings", command=self._handle_open_settings,
+        tk.Button(btn_frame, text="⚙ Cài đặt", command=self._handle_open_settings,
               width=9, bg=self.theme["button"], fg=self.theme["button_fg"], activebackground=self.theme["muted"], relief="flat").grid(row=0, column=3, padx=6)
         
         # =======================
@@ -462,13 +470,13 @@ class GUIController:
         summary_frame = tk.Frame(self.main_frame, bg=self.theme["bg"])
         summary_frame.pack(fill="x", padx=10, pady=(8, 4))
 
-        # KPI cards: Hosts Alive, Hosts Scanned, Open Services, CVEs Found
+        # KPI cards
         self.kpi_cards = {}
         for idx, (title, var_name) in enumerate([
-            ("Hosts Alive", "hosts_alive"),
-            ("Hosts Scanned", "hosts_scanned"),
-            ("Open Services", "open_services"),
-            ("CVEs Found", "cves_found")
+            ("Tổng host", "hosts_alive"),
+            ("Host đã quét", "hosts_scanned"),
+            ("Dịch vụ mở", "open_services"),
+            ("CVE phát hiện", "cves_found")
         ]):
             card = tk.Frame(summary_frame, bd=1, relief="ridge", padx=12, pady=8, bg=self.theme["card"], highlightbackground=self.theme["muted"], highlightcolor=self.theme["muted"], highlightthickness=1)
             card.grid(row=0, column=idx, padx=6, sticky="nsew")
@@ -493,7 +501,7 @@ class GUIController:
         hosts_frame = tk.Frame(self.main_frame, bg=self.theme["bg"])
         hosts_frame.pack(fill="both", expand=True, padx=10, pady=(6,8))
         tk.Label(hosts_frame, text="Hosts & Services:", font=("Arial", 11, "bold"), bg=self.theme["bg"], fg=self.theme["text"]).pack(anchor="w")
-        # Streamlined columns: remove Service; show Product and Version clearly
+        # Streamlined columns: show IP/hostname, Port, Service, Version, Severity, CVE count
         columns = ("host", "port_proto", "product", "version", "severity", "cve_count")
         table_container = tk.Frame(hosts_frame, bg=self.theme["bg"]) 
         table_container.pack(fill="both", expand=True, pady=6)
@@ -504,17 +512,18 @@ class GUIController:
         
         self.hosts_tree.pack(side="left", fill="both", expand=True)
         yscroll.pack(side="right", fill="y")
-        self.hosts_tree.heading("host", text="Host", anchor="center")
+        # Headers: Host now displays as 'hostname (ip)' or 'ip' for user-friendly view
+        self.hosts_tree.heading("host", text="Host (IP)", anchor="w")
         self.hosts_tree.heading("port_proto", text="Port", anchor="center")
         self.hosts_tree.heading("product", text="Service", anchor="center")
         self.hosts_tree.heading("version", text="Version", anchor="center")
         self.hosts_tree.heading("severity", text="Severity", anchor="center")
         self.hosts_tree.heading("cve_count", text="CVEs", anchor="center")
-        # column widths
-        self.hosts_tree.column("host", width=150, anchor="center")
-        self.hosts_tree.column("port_proto", width=110, anchor="center")
-        self.hosts_tree.column("product", width=180, anchor="center")
-        self.hosts_tree.column("version", width=120, anchor="center")
+        # column widths: expand host column for hostname display
+        self.hosts_tree.column("host", width=200, anchor="w")
+        self.hosts_tree.column("port_proto", width=90, anchor="center")
+        self.hosts_tree.column("product", width=160, anchor="w")
+        self.hosts_tree.column("version", width=110, anchor="center")
         self.hosts_tree.column("severity", width=90, anchor="center")
         self.hosts_tree.column("cve_count", width=60, anchor="center")
 
@@ -534,16 +543,24 @@ class GUIController:
         # =======================
         overall_frame = tk.Frame(self.main_frame, bg=self.theme["bg"])
         overall_frame.pack(fill="x", padx=10, pady=(2, 8))
-        ttk.Label(overall_frame, text="Progress:").pack(side="left")
+        ttk.Label(overall_frame, text="Tiến độ:").pack(side="left")
         self.overall_var = tk.IntVar(self.root, value=0)
         self.overall_bar = ttk.Progressbar(overall_frame, variable=self.overall_var, maximum=100, length=420, style="Blue.Horizontal.TProgressbar")
         self.overall_bar.pack(side="left", padx=6)
         self.overall_label = tk.Label(overall_frame, text="0%", width=10, anchor="w", bg=self.theme["bg"], fg=self.theme["text"])
         self.overall_label.pack(side="left")
 
+        # Stop scan button (Cancel & Save Progress)
+        def _stop_scan():
+            self.stop_event.set()
+            self.log("Dừng scan — sẽ hoàn thành IP hiện tại rồi dừng...", "WARN")
+
+        tk.Button(overall_frame, text="Dừng", command=_stop_scan, bg="#ef4444", fg="white").pack(side="left", padx=6)
+
         # internal per-phase tracking
         self._ping_percent = 0
         self._scan_percent = 0
+        self._alive_count = 0
 
         # Export button will be enabled only when overall reaches 100%
         try:
@@ -557,7 +574,7 @@ class GUIController:
         # =======================
         tk.Label(
             self.main_frame,
-            text="Log Output:",
+            text="Nhật ký:",
             font=("Arial", 11, "bold"),
             bg=self.theme["bg"],
             fg=self.theme["text"]
@@ -682,7 +699,7 @@ class GUIController:
 
     def _on_mode_change(self):
         mode = self.scan_mode_var.get()
-        if mode == "Authenticated Scan":
+        if mode == "Quét có xác thực":
             if not getattr(self.auth_wrapper, "_packed", False):
                 self.auth_wrapper.grid(row=0, column=1, sticky="nsew", padx=8)
                 self.auth_wrapper._packed = True
@@ -843,8 +860,8 @@ class GUIController:
                 cve_count = sum(1 for p in ports for c in p.get("cves", []) if c.get("id"))
                 self.log(f"Scanned {host} ({len(ports)} services, {cve_count} CVE)", "INFO")
                 self._update_ui_from_results(sync=True)
-            except Exception:
-                pass
+            except Exception as e:
+                self.log(f"Error processing host result for {host}: {e}", "ERROR")
 
         if sync:
             _do()
@@ -889,12 +906,16 @@ class GUIController:
     
         self._scan_start = time.time()
         self.log("🖥️ Bắt đầu quá trình quét", "SYSTEM")
+        self.stop_event.clear()
         
+        # Reload config from disk to catch any updates (e.g., scan_policy change in Settings)
+        self.config = ConfigManager.load()
     
         manager = ScanManager(
             self.config,
             logger=self.log,
-            progress_cb=self.on_progress
+            progress_cb=self.on_progress,
+            stop_event=self.stop_event
         )
 
         # Resolve hostnames to IPv4 for scanners that expect numeric IPs
@@ -940,7 +961,7 @@ class GUIController:
         # CHỌN MODE
         # ==========================
         scan_mode = self.scan_mode_var.get()
-        authenticated = scan_mode == "Authenticated Scan"
+        authenticated = scan_mode == "Quét có xác thực"
     
         auth_data = None
     
@@ -1074,7 +1095,8 @@ class GUIController:
                     sev = r[5] if len(r) > 5 and r[5] else "NONE"
                     self.hosts_tree.insert("", "end", values=display, tags=(sev,))
 
-                self.kpi_cards["hosts_alive"].config(text=str(kpi_counts["hosts"]))
+                alive_display = self._alive_count if self._alive_count else kpi_counts["hosts"]
+                self.kpi_cards["hosts_alive"].config(text=str(alive_display))
                 self.kpi_cards["hosts_scanned"].config(text=str(kpi_counts["scanned"]))
                 self.kpi_cards["open_services"].config(text=str(kpi_counts["open_services"]))
                 self.kpi_cards["cves_found"].config(text=str(kpi_counts["cves_found"]))
@@ -1248,7 +1270,7 @@ class GUIController:
         try:
             win = tk.Toplevel(self.root)
             win.title("Cài đặt")
-            win.geometry("520x260")
+            win.geometry("600x450")
         except Exception as e:
             raise RuntimeError(f"Cannot open settings window: {e}")
 
@@ -1291,6 +1313,24 @@ class GUIController:
 
         tk.Button(db_frame, text="Browse", command=_browse_db).pack(side="left", padx=6)
 
+        # Max concurrent scans setting
+        tk.Label(win, text="Max concurrent scans:", font=("Arial", 10)).pack(pady=(6, 2))
+        mcs_entry = tk.Entry(win, width=10)
+        mcs_entry.insert(0, str(self.config.get("max_concurrent_scans", 4)))
+        mcs_entry.pack()
+
+        # Ping workers setting
+        tk.Label(win, text="Ping workers (threads):", font=("Arial", 10)).pack(pady=(6, 2))
+        ping_workers_entry = tk.Entry(win, width=10)
+        ping_workers_entry.insert(0, str(self.config.get("ping_workers", 100)))
+        ping_workers_entry.pack()
+
+        # CVE cap per service
+        tk.Label(win, text="CVE cap per service:", font=("Arial", 10)).pack(pady=(6, 2))
+        cve_cap_entry = tk.Entry(win, width=10)
+        cve_cap_entry.insert(0, str(self.config.get("cve_max_per_service", 50)))
+        cve_cap_entry.pack()
+
         def _rebuild():
             import threading
 
@@ -1327,6 +1367,18 @@ class GUIController:
             self.config["use_local_db"] = bool(use_local_var.get())
             self.config["local_db_path"] = db_entry.get().strip()
             self.config["log_verbosity"] = verbosity_var.get()
+            try:
+                self.config["max_concurrent_scans"] = int(mcs_entry.get().strip() or 4)
+            except Exception:
+                self.config["max_concurrent_scans"] = 4
+            try:
+                self.config["ping_workers"] = int(ping_workers_entry.get().strip() or 100)
+            except Exception:
+                self.config["ping_workers"] = 100
+            try:
+                self.config["cve_max_per_service"] = int(cve_cap_entry.get().strip() or 50)
+            except Exception:
+                self.config["cve_max_per_service"] = 50
 
             ConfigManager.save(self.config)
 
@@ -1494,7 +1546,10 @@ def _filtered_results(results):
 
 
 def results_to_rows(results):
-    """Convert `results` dict to rows for the TreeView and KPI counts."""
+    """Convert `results` dict to rows for the TreeView and KPI counts.
+    Host keys are already formatted as 'hostname (ip)' or just 'ip' from pipeline.
+    Display them user-friendly in the table.
+    """
     filtered = _filtered_results(results)
 
     rows = []
@@ -1505,6 +1560,10 @@ def results_to_rows(results):
     sev_counts = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0}
 
     for host, host_result in filtered.items():
+        # host key is already formatted as "hostname (ip)" or "ip" from pipeline
+        # Ensure it's displayed as-is for user-friendliness
+        display_host = host
+        
         ports = host_result.get("gui", {}).get("ports", [])
         open_services += len(ports)
         for p in ports:
@@ -1529,7 +1588,7 @@ def results_to_rows(results):
             if not version and cves:
                 version = _version_from_cpe((cves[0] or {}).get("cpe"))
 
-            rows.append((host, port_proto, p.get("service") or "", p.get("product") or "", version, highest_sev, p_cve_count))
+            rows.append((display_host, port_proto, p.get("service") or "", p.get("product") or "", version, highest_sev, p_cve_count))
 
     kpi_counts = {"hosts": hosts, "scanned": scanned, "open_services": open_services, "cves_found": cves_found}
     return rows, kpi_counts, sev_counts

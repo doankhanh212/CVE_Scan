@@ -31,6 +31,8 @@ Chuẩn output (enterprise-ready):
 
 from typing import List, Dict, Optional
 import logging
+import datetime
+import re
 
 try:
     from modules.cve.nvd_fetcher import NVDFetcherPRO
@@ -54,8 +56,9 @@ class CVEMatcher:
     - KHÔNG được làm crash pipeline
     """
 
-    def __init__(self, api_key: Optional[str] = None, local_db_path: Optional[str] = None):
+    def __init__(self, api_key: Optional[str] = None, local_db_path: Optional[str] = None, year_window: Optional[int] = None):
         self.fetcher = None
+        self.year_window = year_window
 
         # Prefer local DB fetcher when provided
         if local_db_path:
@@ -81,7 +84,7 @@ class CVEMatcher:
     # ==================================================
     # PUBLIC
     # ==================================================
-    def match_by_cpe(self, cpe: str, max_results: int = 50) -> List[Dict]:
+    def match_by_cpe(self, cpe: str, max_results: int = 50, year_window: Optional[int] = None) -> List[Dict]:
         if not cpe or cpe == "N/A":
             return []
 
@@ -89,11 +92,34 @@ class CVEMatcher:
             # 🔥 CHỐT: KHÔNG ĐƯỢC CRASH
             return []
 
+        # Determine min_year based on window (prefer explicit arg, else instance default)
+        window = year_window if year_window is not None else self.year_window
+        min_year = None
         try:
-            raw_cves = self.fetcher.get_cve_by_cpe(
-                cpe,
-                max_results=max_results
-            )
+            if window and window > 0:
+                current_year = datetime.datetime.utcnow().year
+                min_year = current_year - window + 1
+        except Exception:
+            min_year = None
+
+        try:
+            if min_year is not None:
+                try:
+                    raw_cves = self.fetcher.get_cve_by_cpe(
+                        cpe,
+                        max_results=max_results,
+                        min_year=min_year
+                    )
+                except TypeError:
+                    raw_cves = self.fetcher.get_cve_by_cpe(
+                        cpe,
+                        max_results=max_results
+                    )
+            else:
+                raw_cves = self.fetcher.get_cve_by_cpe(
+                    cpe,
+                    max_results=max_results
+                )
         except Exception as e:
             logger.error("Fetch CVE failed for %s: %s", cpe, e)
             raw_cves = []
@@ -102,24 +128,53 @@ class CVEMatcher:
         # attempt fuzzy matching to increase recall.
         if not raw_cves:
             try:
-                # LocalDBFetcher exposes fuzzy_match_cpe_to_cve or the matcher may do fuzzy itself
+                # LocalDBFetcher exposes fuzzy_match_cpe_to_cve; pass through max_results when supported
                 if hasattr(self.fetcher, 'fuzzy_match_cpe_to_cve'):
                     logger.info("No exact CVEs for %s — trying fuzzy DB lookup", cpe)
-                    raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe)
+                    try:
+                        if min_year is not None:
+                            raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results, min_year=min_year)
+                        else:
+                            raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results)
+                    except TypeError:
+                        # Backward compatibility with older signature
+                        raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe)
                 else:
                     # As a fallback, import matcher and run fuzzy against a cursor if possible
                     try:
                         from modules.cve.local_db_fetcher import LocalDBFetcher
                         if isinstance(self.fetcher, LocalDBFetcher):
                             logger.info("Using LocalDBFetcher fuzzy matcher for %s", cpe)
-                            raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe)
+                            try:
+                                if min_year is not None:
+                                    raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results, min_year=min_year)
+                                else:
+                                    raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results)
+                            except TypeError:
+                                raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe)
                     except Exception:
                         raw_cves = []
             except Exception as e:
                 logger.debug("Fuzzy lookup failed for %s: %s", cpe, e)
                 raw_cves = []
 
-        return self._normalize(raw_cves)
+        normalized = self._normalize(raw_cves)
+
+        # Sort newest-first by CVE year, then by CVSS score to prefer fresh/high-impact CVEs
+        def _sort_key(c):
+            year = self._cve_year(c.get("id")) or 0
+            sev = c.get("severity") or {}
+            score = sev.get("score") if isinstance(sev, dict) else None
+            score_val = score if isinstance(score, (int, float)) else 0
+            return (year, score_val)
+
+        try:
+            normalized.sort(key=_sort_key, reverse=True)
+        except Exception:
+            pass
+
+        # Enforce max_results after sorting to keep newest slice
+        return normalized[:max_results]
 
     # ==================================================
     # INTERNAL
@@ -250,6 +305,17 @@ class CVEMatcher:
         if s > 0:
             return "LOW"
         return "INFO"
+
+    def _cve_year(self, cve_id: Optional[str]) -> Optional[int]:
+        if not cve_id:
+            return None
+        try:
+            m = re.search(r"CVE-(\d{4})-", cve_id)
+            if m:
+                return int(m.group(1))
+        except Exception:
+            return None
+        return None
 
 
 # ==================================================

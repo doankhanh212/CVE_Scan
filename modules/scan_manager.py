@@ -1,20 +1,18 @@
 # modules/scan_manager.py
 
 from typing import Dict, Any
-from threading import Thread
-from queue import Empty
 
 from modules.pipelines.basic_pipeline import BasicPipeline
 from modules.pipelines.authenticated_pipeline import AuthenticatedPipeline
-from modules.discovery.host_discovery import HostDiscovery
 
 
 class ScanManager:
 
-    def __init__(self, config: dict, logger=None, progress_cb=None):
+    def __init__(self, config: dict, logger=None, progress_cb=None, stop_event=None):
         self.config = config
         self.logger = logger or (lambda msg, lvl="INFO": None)
         self.progress_cb = progress_cb
+        self.stop_event = stop_event
         self.logger("ScanManager initialized", "SYSTEM")
 
     # ==================================================
@@ -58,75 +56,56 @@ class ScanManager:
             return results
 
         # =========================
-        # HOST DISCOVERY (BASIC SCAN ONLY)
+        # BASIC SCAN: SKIP PING HERE
+        # Pipeline will handle DNS → Asset Discovery → Ping → Scan
         # =========================
-        discovery = HostDiscovery(
-            timeout=1,
-            retries=3,
-            workers=20,
-            logger=self.logger,
-            progress_cb=self.progress_cb
-        )
-
-        ping_thread = Thread(
-            target=discovery.discover,
-            args=(targets,),
-            daemon=True
-        )
-        ping_thread.start()
-
         results = []
-        alive_scanned = 0
-        # initialize estimated total to the number of targets to avoid
-        # percent jumping to 100 on the first scanned alive host
-        self.alive_total = max(1, len(targets))
+        scanned_count = 0
+        self.alive_total = len(targets)
 
-        # =========================
-        # CONSUMER LOOP (BASIC SCAN ONLY)
-        # =========================
-        while True:
-            try:
-                host = discovery.alive_queue.get(timeout=2)
-            except Empty:
-                if discovery.finished.is_set():
-                    # discovery finished — use the actual number of alive hosts discovered
-                    # (HostDiscovery sets `alive_total` when it finishes)
-                    discovered_alive = getattr(discovery, 'alive_total', discovery.alive_queue.qsize())
-                    self.alive_total = max(1, discovered_alive)
-                    break
-                continue
+        for target in targets:
+            # Check if stop requested before starting new target
+            if self.stop_event and self.stop_event.is_set():
+                self.logger("Scan stop requested — aborting remaining targets", "WARN")
+                break
+            # ---- RUN BASIC PIPELINE ----
+            result = self._run_basic(target, host_result_cb)
 
-            # ---- RUN PIPELINE (BASIC SCAN) ----
-            if authenticated:
-                result = self._run_authenticated(host, auth_data)
+            # Fan-out multi-host results if provided by pipeline
+            if isinstance(result, dict) and result.get("multi_host"):
+                # Fan-out the per-host results only; BasicPipeline already invoked
+                # host_result_cb for each IP, so we avoid sending the aggregate here
+                for ip, rep in result.get("per_host_results", []):
+                    results.append({"host": ip, "result": rep})
             else:
-                result = self._run_basic(host)
-
-            results.append({"host": host, "result": result})
+                results.append({"host": target, "result": result})
 
             # Call host-level callback (if provided) so UI can update incrementally
-            if host_result_cb:
+            # For multi-host basic scans, per-IP callbacks have already been emitted
+            if host_result_cb and not (isinstance(result, dict) and result.get("multi_host")):
                 try:
-                    host_result_cb(host, result)
+                    host_result_cb(target, result)
                 except Exception:
                     pass
 
             # ---- UPDATE SCAN PROGRESS ----
-            alive_scanned += 1
+            scanned_count += 1
             if self.progress_cb:
-                percent = int(alive_scanned * 100 / self.alive_total)
-                self.progress_cb("scan", percent, f"Scanning {host}")
+                percent = int(scanned_count * 100 / self.alive_total)
+                self.progress_cb("scan", percent, f"Scanning {target}")
 
         return results
 
     # ==================================================
     # INTERNAL
     # ==================================================
-    def _run_basic(self, target):
+    def _run_basic(self, target, host_result_cb=None):
         pipeline = BasicPipeline(
             self.config,
             logger=self.logger,
-            progress_cb=self.progress_cb
+            progress_cb=self.progress_cb,
+            host_result_cb=host_result_cb,
+            stop_event=self.stop_event
         )
         return pipeline.execute(target)
 

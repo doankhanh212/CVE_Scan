@@ -57,18 +57,41 @@ class LocalDBFetcher:
 
         return {"cve": cve}
 
-    def get_cve_by_cpe(self, cpe: str, max_results: int = 50) -> List[Dict]:
+    def get_cve_by_cpe(self, cpe: str, max_results: int = 50, min_year: Optional[int] = None) -> List[Dict]:
         if not cpe:
             return []
 
         conn = self._connect()
         cur = conn.cursor()
 
-        # Search for rows where cpe json array contains the exact cpe string
         like = f"%\"{cpe}\"%"
-        sql = "SELECT id, description, cvss_base_score, cvss_severity, raw_json FROM cve WHERE cve_cpe LIKE ? LIMIT ?"
-        cur.execute(sql, (like, max_results))
 
+        # Determine available columns for ordering and year filter
+        try:
+            cur.execute("PRAGMA table_info(cve)")
+            cols = [r[1] for r in cur.fetchall()]
+        except Exception:
+            cols = []
+
+        has_published = "published" in cols
+        has_last_mod = "last_modified" in cols
+
+        year_clause = ""
+        params = [like]
+        if min_year and (has_published or has_last_mod):
+            col = "published" if has_published else "last_modified"
+            year_clause = f" AND CAST(strftime('%Y', {col}) AS INTEGER) >= ?"
+            params.append(min_year)
+
+        order_col = "published" if has_published else ("last_modified" if has_last_mod else None)
+
+        sql = "SELECT id, description, cvss_base_score, cvss_severity, raw_json FROM cve WHERE cve_cpe LIKE ?" + year_clause
+        if order_col:
+            sql += f" ORDER BY {order_col} DESC"
+        sql += " LIMIT ?"
+        params.append(int(max_results))
+
+        cur.execute(sql, params)
         rows = cur.fetchall()
         conn.close()
 
@@ -92,8 +115,11 @@ class LocalDBFetcher:
     # ==================================================
     # FUZZY / REBUILD HELPERS
     # ==================================================
-    def fuzzy_match_cpe_to_cve(self, cpe: str) -> List[Dict]:
-        """Use fuzzy matcher to find related cpes and return CVE items (same shape as get_cve_by_cpe)."""
+    def fuzzy_match_cpe_to_cve(self, cpe: str, max_results: int = 50, min_year: Optional[int] = None) -> List[Dict]:
+        """Use fuzzy matcher to find related CPEs and return CVE items.
+
+        Respects `max_results` and optional `min_year` to avoid oversized, stale result sets.
+        """
         if not cpe:
             return []
 
@@ -102,6 +128,7 @@ class LocalDBFetcher:
         try:
             from modules.cve.fuzzy_matcher import fuzzy_find_related_cpe
         except Exception:
+            conn.close()
             return []
 
         related = fuzzy_find_related_cpe(cur, cpe)
@@ -109,11 +136,38 @@ class LocalDBFetcher:
             conn.close()
             return []
 
+        # Determine available columns for year filtering and ordering
+        try:
+            cur.execute("PRAGMA table_info(cve)")
+            cols = [r[1] for r in cur.fetchall()]
+        except Exception:
+            cols = []
+
+        has_published = "published" in cols
+        has_last_mod = "last_modified" in cols
+
+        year_clause = ""
+        year_param = []
+        if min_year and (has_published or has_last_mod):
+            col = "published" if has_published else "last_modified"
+            year_clause = f" AND CAST(strftime('%Y', {col}) AS INTEGER) >= ?"
+            year_param = [min_year]
+
         # cve_cpe is stored as a JSON array string; perform LIKE on each related CPE
-        # to match rows containing that CPE within the JSON array
         conditions = " OR ".join(["cve_cpe LIKE ?"] * len(related))
         params = [f'%"{r}"%' for r in related]
-        sql = f"SELECT id, description, cvss_base_score, cvss_severity, raw_json FROM cve WHERE {conditions}"
+        params.extend(year_param)
+
+        order_col = "published" if has_published else ("last_modified" if has_last_mod else None)
+
+        sql = f"SELECT id, description, cvss_base_score, cvss_severity, raw_json FROM cve WHERE {conditions}{year_clause}"
+        if order_col:
+            sql += f" ORDER BY {order_col} DESC"
+            if "cvss_base_score" in cols:
+                sql += ", cvss_base_score DESC"
+        sql += " LIMIT ?"
+        params.append(int(max_results))
+
         cur.execute(sql, params)
         rows = cur.fetchall()
         conn.close()

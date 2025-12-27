@@ -1,3 +1,17 @@
 {
-    "nvd_api_key": "C93D71B9-38D6-F011-8364-129478FCB64D"
+    "nvd_api_key": "",
+    "max_cidr_ips": 1024,
+    "max_concurrent_scans": 2,
+    "ping_timeout": 1,
+    "ping_retries": 3,
+    "ping_workers": 20,
+    "rustscan_timeout": 1500,
+    "nmap_timeout": 60,
+    "cve_max_per_service": 20,
+    "cve_year_window": 5,
+    "scan_cidr_expansion": false,
+    "max_scan_ips": 64,
+    "scan_policy": "cidr_full",
+    "adaptive_full_scan_prefixlen": 24,
+    "reverse_dns_pre_scan": false
 }

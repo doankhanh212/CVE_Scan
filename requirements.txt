@@ -7,6 +7,7 @@ python-nmap
 rapidfuzz
 reportlab
 requests
+ipwhois
 
 # Dev/testing
 pytest
