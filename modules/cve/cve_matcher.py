@@ -257,9 +257,21 @@ class CVEMatcher:
             try:
                 if key in metrics and isinstance(metrics[key], list) and metrics[key]:
                     data = metrics[key][0].get("cvssData", {}) or {}
+                    score = data.get("baseScore")
+                    vector = data.get("vectorString")
+                    # Optionally inject CVSS 4.0 Exploit Maturity (E) based on CISA KEV
+                    try:
+                        from modules.cve.cisa_kev_adapter import is_kev
+                        if vector:
+                            # Append E:A if CVE is in KEV, else E:U
+                            if "/E:" in vector:
+                                vector = vector.split("/E:")[0]
+                            vector = f"{vector}/E:{'A' if is_kev(self._extract_id(cve)) else 'U'}"
+                    except Exception:
+                        pass
                     return {
-                        "score": data.get("baseScore"),
-                        "vector": data.get("vectorString")
+                        "score": score,
+                        "vector": vector
                     }
             except Exception:
                 continue

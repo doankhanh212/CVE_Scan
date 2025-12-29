@@ -5,6 +5,9 @@ GUI Controller (fixed hosts parsing + use NVDFetcherPRO.search_cve_keyword)
 
 
 import os
+import sys
+import shutil
+import subprocess
 import threading
 import re
 import csv
@@ -32,8 +35,9 @@ from modules.report import pdf_report
 # =============================================================
 # Filtering constants for UI/CSV noise reduction
 # =============================================================
-DEFAULT_MIN_SEVERITY = "HIGH"
+DEFAULT_MIN_SEVERITY = "LOW"
 DEFAULT_MIN_YEAR = 2018
+HIDE_SCROLLBARS = True
 
 # Skip platform/framework packages that tend to explode CVE volume
 SKIP_KEYWORDS = [
@@ -56,13 +60,26 @@ SEVERITY_RANK = {"NONE": 0, "LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
 # VALIDATION HOST/IP
 # =====================================================================
 def is_valid_host(host):
-    """Check if host is valid IP or hostname"""
+    """Check if host is valid IP, CIDR, or hostname"""
+    # Check for CIDR notation
+    if "/" in host:
+        try:
+            ipaddress.ip_network(host, strict=False)
+            return True
+        except Exception:
+            return False
+    
+    # Check for plain IP
     ip_regex = r"^(?:\d{1,3}\.){3}\d{1,3}$"
+    if re.match(ip_regex, host):
+        return True
+    
+    # Check for hostname
     hostname_regex = (
         r"^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)"
         r"(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*$"
     )
-    return bool(re.match(ip_regex, host) or re.match(hostname_regex, host))
+    return bool(re.match(hostname_regex, host))
 
 
 def _version_from_cpe(cpe: str | None) -> str:
@@ -135,6 +152,7 @@ class GUIController:
         self.last_results = {}
         self.scanning = False
         self.stop_event = threading.Event()
+        self.stopping = False
 
         # =======================
         # BUILD GUI (LUÔN PHẢI CHẠY)
@@ -265,7 +283,8 @@ class GUIController:
         self.canvas.pack(side="left", fill="both", expand=True)
 
         scrollbar = ttk.Scrollbar(container, orient="vertical", command=self.canvas.yview)
-        scrollbar.pack(side="right", fill="y")
+        if not HIDE_SCROLLBARS:
+            scrollbar.pack(side="right", fill="y")
 
         self.canvas.configure(yscrollcommand=scrollbar.set)
 
@@ -294,6 +313,7 @@ class GUIController:
         def _on_mousewheel(event):
             self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
+        # Bind globally to allow scrolling anywhere
         self.canvas.bind_all("<MouseWheel>", _on_mousewheel)
 
         # =======================
@@ -381,13 +401,27 @@ class GUIController:
         host_scrollbar = tk.Scrollbar(self.host_box_frame, command=self.host_box.yview)
         self.host_box.configure(yscrollcommand=host_scrollbar.set)
         self.host_box.pack(side="left", fill="both", expand=True, padx=4, pady=4)
-        host_scrollbar.pack(side="right", fill="y")
+        if not HIDE_SCROLLBARS:
+            host_scrollbar.pack(side="right", fill="y")
 
-        # Scan mode
+        # Scan mode and Input mode
         mode_frame = tk.Frame(self.main_frame, bg=self.theme["bg"])
         mode_frame.pack(padx=10, pady=6, anchor="w")
 
-        tk.Label(mode_frame, text="Scan Mode:", font=("Arial", 10), bg=self.theme["bg"], fg=self.theme["text"]).grid(row=0, column=0, sticky="w")
+        # Input mode (IP/CIDR vs Hostname)
+        tk.Label(mode_frame, text="Input Mode:", font=("Arial", 10), bg=self.theme["bg"], fg=self.theme["text"]).grid(row=0, column=0, sticky="w", padx=(0,6))
+        self.input_mode_var = tk.StringVar(self.root, value="IP/CIDR")
+        self.input_mode_cb = ttk.Combobox(
+            mode_frame,
+            textvariable=self.input_mode_var,
+            state="readonly",
+            width=20
+        )
+        self.input_mode_cb["values"] = ("IP/CIDR", "Hostname (Domain)")
+        self.input_mode_cb.grid(row=0, column=1, padx=6)
+
+        # Scan mode (Authenticated vs Unauthenticated)
+        tk.Label(mode_frame, text="Scan Mode:", font=("Arial", 10), bg=self.theme["bg"], fg=self.theme["text"]).grid(row=0, column=2, sticky="w", padx=(12,6))
         self.scan_mode_var = tk.StringVar(self.root, value="Quét không xác thực")
         self.scan_mode_cb = ttk.Combobox(
             mode_frame,
@@ -396,7 +430,7 @@ class GUIController:
             width=24
         )
         self.scan_mode_cb["values"] = ("Quét không xác thực", "Quét có xác thực")
-        self.scan_mode_cb.grid(row=0, column=1, padx=6)
+        self.scan_mode_cb.grid(row=0, column=3, padx=6)
         self.scan_mode_cb.bind("<<ComboboxSelected>>", lambda e: self._on_mode_change())
 
         # =======================
@@ -462,6 +496,31 @@ class GUIController:
         # Use a safe handler so missing attributes won't raise during button creation
         tk.Button(btn_frame, text="⚙ Cài đặt", command=self._handle_open_settings,
               width=9, bg=self.theme["button"], fg=self.theme["button_fg"], activebackground=self.theme["muted"], relief="flat").grid(row=0, column=3, padx=6)
+
+        # One-click setup (auto install required tools)
+        tk.Button(
+            btn_frame,
+            text="🛠 Tự động cài đặt",
+            command=self.start_auto_setup_thread,
+            width=16,
+            bg=self.theme["button"],
+            fg=self.theme["button_fg"],
+            activebackground=self.theme["muted"],
+            relief="flat"
+        ).grid(row=0, column=4, padx=6)
+
+        # Help / guide button
+        tk.Button(
+            btn_frame,
+            text="❔ Hướng dẫn",
+            command=self.open_help_dialog,
+            width=11,
+            bg=self.theme["button"],
+            fg=self.theme["button_fg"],
+            activebackground=self.theme["muted"],
+            relief="flat"
+        ).grid(row=0, column=5, padx=6)
+
         
         # =======================
         # KPI SUMMARY & HOSTS / SERVICES VIEW
@@ -509,9 +568,9 @@ class GUIController:
         self.hosts_tree = ttk.Treeview(table_container, columns=columns, show="headings", height=10)
         yscroll = ttk.Scrollbar(table_container, orient="vertical", command=self.hosts_tree.yview)
         self.hosts_tree.configure(yscrollcommand=yscroll.set)
-        
         self.hosts_tree.pack(side="left", fill="both", expand=True)
-        yscroll.pack(side="right", fill="y")
+        if not HIDE_SCROLLBARS:
+            yscroll.pack(side="right", fill="y")
         # Headers: Host now displays as 'hostname (ip)' or 'ip' for user-friendly view
         self.hosts_tree.heading("host", text="Host (IP)", anchor="w")
         self.hosts_tree.heading("port_proto", text="Port", anchor="center")
@@ -553,7 +612,17 @@ class GUIController:
         # Stop scan button (Cancel & Save Progress)
         def _stop_scan():
             self.stop_event.set()
+            self.stopping = True
             self.log("Dừng scan — sẽ hoàn thành IP hiện tại rồi dừng...", "WARN")
+            # Jump progress bar to 100% immediately
+            try:
+                self.overall_var.set(100)
+                self.overall_label.config(text="100%")
+                # Enable export when stopping
+                if hasattr(self, "export_menu_btn"):
+                    self.export_menu_btn.config(state=tk.NORMAL)
+            except Exception:
+                pass
 
         tk.Button(overall_frame, text="Dừng", command=_stop_scan, bg="#ef4444", fg="white").pack(side="left", padx=6)
 
@@ -655,6 +724,11 @@ class GUIController:
             for pattern in skip_patterns:
                 if pattern.lower() in msg_lower:
                     return  # Skip this log entry
+
+        # If stop was requested, suppress all further logs except stop notice and SUMMARY
+        if getattr(self, "stopping", False):
+            if "Dừng scan" not in message and level != "SYSTEM":
+                return
         
         icons = {
             "INFO": "ℹ️ ",
@@ -766,6 +840,161 @@ class GUIController:
                 self._safe_after(lambda _e=e: messagebox.showerror("Error", f"Cannot open settings: {_e}"))
             except Exception:
                 pass
+
+    # =================================================================
+    # HELP DIALOG
+    # =================================================================
+    def open_help_dialog(self):
+        """Open a simple help viewer showing installation & usage guide.
+
+        Prioritize Vietnamese docs; fallback to English if missing.
+        """
+        try:
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            candidates = [
+                os.path.join(base_dir, "QUICK_REFERENCE_vi.md"),
+                os.path.join(base_dir, "QUICK_REFERENCE.md"),
+                os.path.join(base_dir, "START_HERE_vi.txt"),
+                os.path.join(base_dir, "START_HERE.txt"),
+            ]
+
+            file_path = None
+            for p in candidates:
+                if os.path.exists(p):
+                    file_path = p
+                    break
+
+            content = "Hướng dẫn chưa sẵn sàng. Vui lòng xem tài liệu đi kèm." if not file_path else open(file_path, "r", encoding="utf-8", errors="ignore").read()
+
+            win = tk.Toplevel(self.root)
+            win.title("Hướng dẫn cài đặt & sử dụng")
+            win.configure(bg=self.theme["bg"])
+            win.geometry("720x540")
+
+            txt = scrolledtext.ScrolledText(win, wrap="word", bg=self.theme["panel"], fg=self.theme["text"], insertbackground=self.theme["accent"], borderwidth=1, relief="solid")
+            try:
+                txt.configure(font=("Segoe UI", 10))
+            except Exception:
+                pass
+            txt.pack(fill="both", expand=True, padx=10, pady=10)
+            txt.insert("1.0", content)
+            txt.configure(state="disabled")
+
+            # Ensure scrolling the help does NOT scroll the main GUI
+            def _help_mousewheel(event, widget=txt):
+                try:
+                    widget.yview_scroll(int(-1 * (event.delta / 120)), "units")
+                except Exception:
+                    pass
+                return "break"  # stop propagation to global <MouseWheel> binding
+
+            try:
+                txt.bind("<MouseWheel>", _help_mousewheel)
+            except Exception:
+                pass
+        except Exception as e:
+            self.log(f"Không mở được hướng dẫn: {e}", "ERROR")
+            try:
+                messagebox.showerror("Lỗi", f"Không mở được hướng dẫn: {e}")
+            except Exception:
+                pass
+
+    # =================================================================
+    # ONE-CLICK AUTO SETUP
+    # =================================================================
+    def start_auto_setup_thread(self):
+        """Start auto setup in background to keep UI responsive."""
+        t = threading.Thread(target=self._run_auto_setup_wrapper, daemon=True)
+        t.start()
+
+    def _run_auto_setup_wrapper(self):
+        try:
+            self.auto_setup()
+        except Exception as e:
+            self.log(f"Lỗi cài đặt tự động: {e}", "ERROR")
+            try:
+                self._safe_after(lambda m=str(e): messagebox.showerror("Lỗi", f"Cài đặt thất bại: {m}"))
+            except Exception:
+                pass
+
+    def _exec_cmd(self, cmd, shell=False):
+        """Execute a command and stream output to log."""
+        self.log(f"Chạy lệnh: {' '.join(cmd) if isinstance(cmd, (list, tuple)) else cmd}", "SYSTEM")
+        try:
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, shell=shell)
+            for line in proc.stdout or []:
+                self.log(line.strip(), "SYSTEM")
+            rc = proc.wait()
+            if rc != 0:
+                raise RuntimeError(f"Lệnh trả về mã lỗi {rc}")
+        except Exception as e:
+            raise
+
+    def auto_setup(self):
+        """Automate common setup steps: dependencies, Nmap check, verification."""
+        self.log("Bắt đầu cài đặt tự động…", "SYSTEM")
+
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        req_path = os.path.join(base_dir, "requirements.txt")
+        verify_path = os.path.join(base_dir, "verify_installation.py")
+
+        # 1) Install Python dependencies
+        if os.path.exists(req_path):
+            self.log("Cài đặt phụ thuộc Python từ requirements.txt", "INFO")
+            # Use the current Python executable to ensure correct environment
+            py = sys.executable or "python"
+            self._exec_cmd([py, "-m", "pip", "install", "-r", req_path])
+        else:
+            self.log("Không tìm thấy requirements.txt", "WARN")
+
+        # 2) Check Nmap presence; attempt install on Windows via winget if missing
+        self.log("Kiểm tra Nmap…", "INFO")
+        nmap_path = shutil.which("nmap")
+        if nmap_path:
+            self.log(f"Đã tìm thấy Nmap: {nmap_path}", "SUCCESS")
+        else:
+            self.log("Không tìm thấy Nmap trong PATH", "WARN")
+            if os.name == "nt":
+                # Try winget
+                winget = shutil.which("winget")
+                if winget:
+                    self.log("Thử cài đặt Nmap qua winget", "INFO")
+                    try:
+                        self._exec_cmd([winget, "install", "-e", "--id", "Nmap.Nmap"])
+                    except Exception as e:
+                        self.log(f"Winget cài đặt Nmap thất bại: {e}", "ERROR")
+                else:
+                    self.log("Winget không khả dụng. Vui lòng tải Nmap tại https://nmap.org/download.", "WARN")
+            else:
+                self.log("Vui lòng cài Nmap (apt/brew/yum hoặc https://nmap.org/download)", "WARN")
+
+        # 3) Verify installation script
+        if os.path.exists(verify_path):
+            self.log("Chạy xác minh cài đặt", "INFO")
+            py = sys.executable or "python"
+            try:
+                self._exec_cmd([py, verify_path])
+                self.log("Xác minh cài đặt hoàn tất", "SUCCESS")
+            except Exception as e:
+                self.log(f"Xác minh cài đặt báo lỗi: {e}", "ERROR")
+        else:
+            self.log("Không tìm thấy verify_installation.py", "WARN")
+
+        # 4) Optional: rebuild local CVE DB if configured
+        cfg = ConfigManager.load()
+        if cfg.get("use_local_db"):
+            rebuild_script = os.path.join(base_dir, "scripts", "rebuild_local_db.py")
+            if os.path.exists(rebuild_script):
+                self.log("Tái xây dựng CSDL CVE cục bộ (tuỳ chọn)", "INFO")
+                py = sys.executable or "python"
+                try:
+                    self._exec_cmd([py, rebuild_script])
+                except Exception as e:
+                    self.log(f"Không thể xây dựng DB cục bộ: {e}", "WARN")
+
+        self.log("Cài đặt tự động đã hoàn tất.", "SUCCESS")
+
+    # (Removed easy wizard: guidance moved to Help and docs)
     
 
     # =================================================================
@@ -883,15 +1112,6 @@ class GUIController:
             line = line.strip()
             if not line:
                 continue
-            
-            if "/" in line:
-                try:
-                    net = ipaddress.ip_network(line, strict=False)
-                    hosts.extend([str(ip) for ip in net.hosts()])
-                    continue
-                except Exception:
-                    self.log(f"CIDR không hợp lệ: {line}", "WARN")
-                    continue
                 
             if not is_valid_host(line):
                 self.log(f"Host/IP không hợp lệ: {line}", "WARN")
@@ -907,6 +1127,7 @@ class GUIController:
         self._scan_start = time.time()
         self.log("🖥️ Bắt đầu quá trình quét", "SYSTEM")
         self.stop_event.clear()
+        self.stopping = False
         
         # Reload config from disk to catch any updates (e.g., scan_policy change in Settings)
         self.config = ConfigManager.load()
@@ -921,20 +1142,61 @@ class GUIController:
         # Resolve hostnames to IPv4 for scanners that expect numeric IPs
         resolved_targets = []
         alias_map = {}
+        input_mode = self.input_mode_var.get()  # "IP/CIDR" or "Hostname (Domain)"
+
         for h in hosts:
             resolved_ip = None
             display = h
-            try:
-                ipaddress.ip_address(h)
-                resolved_ip = h
-            except Exception:
+            
+            if input_mode == "IP/CIDR":
+                # ===== IP/CIDR MODE =====
+                # Pass through IP and CIDR without DNS resolution
+                if "/" in h:
+                    # Check if it's valid CIDR
+                    try:
+                        ipaddress.ip_network(h, strict=False)
+                        resolved_targets.append(h)
+                        alias_map[h] = display
+                        self.log(f"CIDR detected: {h} (will be expanded by pipeline)", "INFO")
+                        continue
+                    except Exception:
+                        self.log(f"Input Mode is IP/CIDR but '{h}' is not valid CIDR", "WARN")
+                        continue
+                
+                # Check if it's a plain IP address
                 try:
-                    resolved_ip = socket.gethostbyname(h)
-                    display = f"{h} ({resolved_ip})"
-                    self.log(f"Resolved hostname {h} -> {resolved_ip}", "INFO")
-                except Exception as e:
-                    self.log(f"Không resolve được hostname: {h} ({e})", "WARN")
+                    ipaddress.ip_address(h)
+                    resolved_ip = h
+                    self.log(f"IP detected: {h}", "INFO")
+                except Exception:
+                    self.log(f"Input Mode is IP/CIDR but '{h}' is not valid IP/CIDR", "WARN")
                     continue
+            else:
+                # ===== HOSTNAME MODE =====
+                # Check if it's CIDR notation - pass through directly
+                if "/" in h:
+                    try:
+                        ipaddress.ip_network(h, strict=False)
+                        resolved_targets.append(h)
+                        alias_map[h] = display
+                        self.log(f"CIDR detected: {h} (will be expanded by pipeline)", "INFO")
+                        continue
+                    except Exception:
+                        pass
+                
+                # Check if it's a plain IP address
+                try:
+                    ipaddress.ip_address(h)
+                    resolved_ip = h
+                except Exception:
+                    # It's a hostname - try to resolve
+                    try:
+                        resolved_ip = socket.gethostbyname(h)
+                        display = f"{h} ({resolved_ip})"
+                        self.log(f"Resolved hostname {h} -> {resolved_ip}", "INFO")
+                    except Exception as e:
+                        self.log(f"Không resolve được hostname: {h} ({e})", "WARN")
+                        continue
 
             if resolved_ip:
                 if resolved_ip not in alias_map:
@@ -997,7 +1259,8 @@ class GUIController:
             targets=resolved_targets,
             authenticated=authenticated,
             auth_data=auth_data,
-            host_result_cb=host_cb
+            host_result_cb=host_cb,
+            input_mode=input_mode  # Pass mode to pipeline
         )
     
         # ==========================
@@ -1080,6 +1343,10 @@ class GUIController:
         """
         def _do():
             try:
+                # Skip updating tree if we're stopping (to prevent flickering)
+                if self.stopping:
+                    return
+
                 # clear hosts table
                 for i in self.hosts_tree.get_children():
                     self.hosts_tree.delete(i)
@@ -1319,12 +1586,6 @@ class GUIController:
         mcs_entry.insert(0, str(self.config.get("max_concurrent_scans", 4)))
         mcs_entry.pack()
 
-        # Ping workers setting
-        tk.Label(win, text="Ping workers (threads):", font=("Arial", 10)).pack(pady=(6, 2))
-        ping_workers_entry = tk.Entry(win, width=10)
-        ping_workers_entry.insert(0, str(self.config.get("ping_workers", 100)))
-        ping_workers_entry.pack()
-
         # CVE cap per service
         tk.Label(win, text="CVE cap per service:", font=("Arial", 10)).pack(pady=(6, 2))
         cve_cap_entry = tk.Entry(win, width=10)
@@ -1371,10 +1632,6 @@ class GUIController:
                 self.config["max_concurrent_scans"] = int(mcs_entry.get().strip() or 4)
             except Exception:
                 self.config["max_concurrent_scans"] = 4
-            try:
-                self.config["ping_workers"] = int(ping_workers_entry.get().strip() or 100)
-            except Exception:
-                self.config["ping_workers"] = 100
             try:
                 self.config["cve_max_per_service"] = int(cve_cap_entry.get().strip() or 50)
             except Exception:

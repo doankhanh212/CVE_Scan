@@ -34,15 +34,31 @@ class NmapScanner:
         if not extrainfo:
             return None, None
 
-        # common pattern: ProductName <sep> Version (e.g. "OpenSSH 7.4p1", "Apache httpd 2.4.49")
-        m = re.search(r"([A-Za-z0-9\-_.]+)[/ ]+([0-9][0-9A-Za-z\.-]*)", extrainfo)
+        # Pattern 1: Version in parentheses (e.g., "Microsoft Windows RPC (Windows 10.0)")
+        m = re.search(r"\(.*?([0-9]+\.[0-9]+(?:\.[0-9]+)*).*?\)", extrainfo)
+        if m:
+            ver = m.group(1)
+            # Extract product before parentheses
+            prod = re.sub(r"\(.*?\)", "", extrainfo).strip().split()[0]
+            return prod, ver
+
+        # Pattern 2: ProductName <sep> Version (e.g. "OpenSSH 7.4p1", "Apache httpd 2.4.49")
+        m = re.search(r"([A-Za-z0-9\-_.]+)[/ ]+([0-9]+[0-9A-Za-z\.\-]*)", extrainfo)
         if m:
             prod = m.group(1)
             ver = m.group(2)
             # special-case: "Apache httpd 2.4.49" -> prefer 'Apache' over 'httpd'
             if prod.lower() in ("httpd", "server"):
                 first = extrainfo.strip().split()[0]
-                prod = first
+                if first and first.lower() not in ("httpd", "server"):
+                    prod = first
+            return prod, ver
+
+        # Pattern 3: CPE-style version (e.g., "protocol 2.0")
+        m = re.search(r"(?:protocol|version)\s+([0-9]+\.[0-9]+(?:\.[0-9]+)*)", extrainfo, re.IGNORECASE)
+        if m:
+            ver = m.group(1)
+            prod = extrainfo.strip().split()[0]
             return prod, ver
 
         # fallback: take first token
@@ -74,12 +90,22 @@ class NmapScanner:
         product = svc.get("product") or ""
         version = svc.get("version") or ""
 
+        # Try to extract version from product name if version is missing
+        if product and not version:
+            # Pattern: "ProductName 1.2.3" or "ProductName/1.2.3"
+            m = re.search(r"^(.+?)[\s/]+([0-9]+[0-9A-Za-z\.\-]+)$", product)
+            if m:
+                product = m.group(1).strip()
+                version = m.group(2)
+
         # if there's extra banner info, try to parse it
         extrainfo = svc.get("extrainfo") or svc.get("reason") or ""
-        if (not product or product.strip() == "") and extrainfo:
+        if extrainfo:
             p, v = self._parse_extrainfo(extrainfo)
-            if p:
+            # Use parsed product if original is empty or too generic
+            if p and (not product or product.strip() == "" or product.lower() in {"unknown", "tcpwrapped"}):
                 product = p
+            # Use parsed version if original is missing
             if v and not version:
                 version = v
 

@@ -10,7 +10,7 @@ from modules.pipelines.basic_pipeline import BasicPipeline
 def test_logger(msg, level="INFO"):
     try:
         print(f"[{level}] {msg}")
-    except:
+    except Exception:
         print(f"[{level}] (unicode error)")
 
 config = {}

@@ -3,37 +3,30 @@ Module CPEBuilder: Xây dựng CPE (Common Platform Enumeration) string từ tê
 
 CPE là định dạng chuẩn để mô tả phần mềm/hệ điều hành trong các database CVE/NVD.
 Ví dụ: "cpe:2.3:a:apache:http_server:2.4.49:*:*:*:*:*:*:*"
-  - a = application
-  - apache = vendor
-  - http_server = product
-  - 2.4.49 = version
+    - a = application
+    - apache = vendor
+    - http_server = product
+    - 2.4.49 = version
 
 Module này cung cấp:
 1. Hàm normalize tên sản phẩm (xóa ký tự đặc biệt, lowercase)
-2. Lớp CPEBuilder để tìm CPE từ NVD API
-3. Heuristic CPE generation nếu NVD API không có kết quả
+2. Lớp CPEBuilder dùng heuristic để tạo CPE khi không có CPE Dictionary
+
+Lưu ý: Đã loại bỏ việc phụ thuộc vào CPE DB và NVD CPE API theo yêu cầu.
 """
 
 import logging        # Thư viện logging (ghi log debug/warning/error)
 import re             # Thư viện regex (biểu thức chính quy)
+import os             # Path operations
 from typing import List, Optional  # Type hints cho type checking
-
-# Cố gắng import nvdlib (library Python để query NVD API)
-try:
-    import nvdlib
-    # Config: delay để không quá tải server NVD
-    try:
-        nvdlib.config.delay = 1.5  # Delay 1.5s giữa các request (nếu không dùng API key)
-    except Exception:
-        pass
-except Exception:
-    # Nếu nvdlib không cài đặt, set thành None (sẽ dùng heuristic fallback)
-    nvdlib = None
 
 # Thiết lập logger (để ghi log debug/info/warning)
 logger = logging.getLogger(__name__)
 # NullHandler: không in ra console (lên client quản lý)
 logger.addHandler(logging.NullHandler())
+
+
+
 
 
 # =============================================================================
@@ -147,9 +140,7 @@ class CPEBuilder:
     """
     Lớp xây dựng CPE (Common Platform Enumeration) string từ tên/version sản phẩm.
     
-    Phương pháp:
-    1. Nếu nvdlib có sẵn + use_remote=True: query NVD API để tìm CPE chính xác
-    2. Nếu NVD API không có kết quả: dùng heuristic để generate CPE
+    Phương pháp: Heuristic generation dựa trên tên và version sản phẩm.
     
     CPE format: "cpe:2.3:{type}:{vendor}:{product}:{version}:{update}:..."
     - type: a (application), o (operating system), h (hardware)
@@ -158,30 +149,18 @@ class CPEBuilder:
     - version: phiên bản sản phẩm (hoặc '*' nếu any version)
     """
     
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: Optional[str] = None, cpe_db_path: Optional[str] = None):
         """
         Khởi tạo CPEBuilder instance.
         
-        Tham số:
-        - api_key (str|None): NVD API key để tăng rate limit
-                              (mặc định None: free tier 1 request/6s)
-        
-        Hành động:
-        - Lưu api_key
-        - Nếu nvdlib có sẵn + api_key được cung cấp: config nvdlib
-          - Set API key
-          - Set delay=0.8s (free tier không cần delay dài nếu có API key)
+        Lưu ý: Tham số api_key và cpe_db_path được giữ để tương thích ngược,
+        nhưng không được sử dụng. Builder chỉ dùng heuristic generation.
         """
-        self.api_key = api_key
-        # Nếu nvdlib cài đặt và có API key, config với API key
-        if nvdlib and api_key:
-            try:
-                nvdlib.config.apikey = api_key
-                # Delay ngắn hơn khi dùng API key (high rate limit)
-                nvdlib.config.delay = 0.8
-            except Exception:
-                # Nếu config fail, pass silently (nvdlib có thể không support)
-                pass
+        # Không sử dụng; giữ để tương thích API
+        self.api_key = None
+        self.cpe_db_path = None
+    
+
 
     def find_cpe_candidates(
         self,
@@ -203,25 +182,15 @@ class CPEBuilder:
         
         Quy trình:
         
-        === Phase 1: Query NVD API (nếu use_remote=True và nvdlib có sẵn) ===
         1. Normalize tên sản phẩm
-        2. Query NVD API bằng nvdlib.searchCPE()
-        3. Với mỗi kết quả:
-           - Nếu normalized tên nằm trong CPE -> thêm vào candidates
-           - Nếu version match trong CPE -> insert vào đầu (ưu tiên)
-        4. Loại bỏ duplicate, return top max_results
-        
-        === Phase 2: Heuristic fallback (nếu NVD trả rỗng hoặc error) ===
-        1. Extract vendor (từ đầu tiên) và product (2 từ đầu) từ name
-        2. Generate 3 CPE template:
+        2. Extract vendor và product từ tên (dùng VENDOR_MAPPING và PRODUCT_MAPPING)
+        3. Generate CPE templates:
            - cpe:2.3:a:{vendor}:{product}:{version}:*:*:*:*:*:*:*  (app, exact version)
            - cpe:2.3:a:{vendor}:{product}:*:*:*:*:*:*:*:*         (app, any version)
            - cpe:2.3:o:{vendor}:{product}:{version}:*:*:*:*:*:*:*  (OS, exact version)
-        3. Return top max_results
-        
-        Ví dụ:
+        4. Return top max_results
         - product_name="Apache", version="2.4.49"
-          -> NVD return: ["cpe:2.3:a:apache:http_server:2.4.49:..."]
+          -> DB/NVD return: ["cpe:2.3:a:apache:http_server:2.4.49:..."]
         - product_name="unknown_app", version=None
           -> Heuristic return: ["cpe:2.3:a:unknown:unknown_app:*:...", ...]
         """
@@ -229,43 +198,7 @@ class CPEBuilder:
         name_norm = _normalize_name(product_name)
         candidates = []
 
-        # === Phase 1: Query NVD API ===
-        if use_remote and nvdlib is not None:
-            try:
-                # Log: tìm CPE từ NVD
-                logger.info(f"Querying NVD for CPE: '{name_norm}'")
-                # Query NVD API: searchCPE(keywordSearch=...)
-                # Trả về list CPE objects
-                results = nvdlib.searchCPE(keywordSearch=name_norm)
-                # Duyệt từng kết quả
-                for item in results:
-                    # Lấy cpeName attribute từ item (CPE string)
-                    cpe = getattr(item, "cpeName", None)
-                    if not cpe:
-                        # Skip nếu không có cpeName
-                        continue
-                    # Nếu normalized tên nằm trong CPE (case-insensitive)
-                    if name_norm in cpe.lower():
-                        candidates.append(cpe)
-                    # Nếu version được cung cấp và version nằm trong CPE
-                    if version and _version_in_cpe(cpe.lower(), version):
-                        # Insert vào đầu (ưu tiên version chính xác)
-                        candidates.insert(0, cpe)
-                
-                # Loại bỏ duplicate (giữ thứ tự)
-                output = []
-                for x in candidates:
-                    if x not in output:
-                        output.append(x)
-                
-                # Nếu có kết quả, return top max_results
-                if output:
-                    return output[:max_results]
-            except Exception as e:
-                # Log warning nếu NVD query fail
-                logger.warning(f"NVD searchCPE error: {e}")
-
-        # === Phase 2: Heuristic Fallback ===
+        # === Heuristic Fallback ===
         # Split normalized name thành từng từ và loại bỏ token giống version
         parts = name_norm.split()
         core_parts = [p for p in parts if not _looks_like_version(p, version)] or parts or [name_norm]
@@ -314,14 +247,14 @@ class CPEBuilder:
         return final[:max_results]
 
 
-def build_cpe(product_name: str, version: Optional[str] = None, use_remote: bool = True) -> str:
+def build_cpe(product_name: str, version: Optional[str] = None, use_remote: bool = False) -> str:
     """
     Tiện ích: xây dựng 1 CPE string từ tên và version (quick interface).
 
     Tham số:
     - product_name (str): tên sản phẩm (ví dụ: "Apache HTTP Server")
     - version (str|None): phiên bản (ví dụ: "2.4.49")
-    - use_remote (bool): whether to query NVD for CPE candidates (default True)
+    - use_remote (bool): (deprecated) không còn được sử dụng
 
     Trả về: str - CPE string (hoặc "N/A" nếu lỗi)
 
@@ -332,10 +265,10 @@ def build_cpe(product_name: str, version: Optional[str] = None, use_remote: bool
     4. Nếu không có kết quả hoặc exception, return "N/A"
     """
     try:
-        # Tạo CPEBuilder instance (mặc định: use NVD API nếu có)
+        # Tạo CPEBuilder instance (heuristic-only)
         cb = CPEBuilder()
-        # Tìm CPE candidates
-        r = cb.find_cpe_candidates(product_name, version, use_remote=use_remote)
+        # Tìm CPE candidates (heuristic)
+        r = cb.find_cpe_candidates(product_name, version, use_remote=False)
         # Return CPE đầu tiên (best match), hoặc "N/A" nếu danh sách rỗng
         return r[0] if r else "N/A"
     except Exception:

@@ -18,6 +18,7 @@ Fallback: WHOIS timeout → continue with IP only (lower confidence)
 
 import socket
 import logging
+import ipaddress
 import time
 from typing import Dict, List, Optional, Tuple, Set
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -419,35 +420,100 @@ class AssetDiscovery:
 
     def discover(self, hostnames: List[str]) -> Dict[str, Asset]:
         """
-        Discover assets from list of hostnames
+        Discover assets from list of hostnames, IPs, or CIDR ranges
         Returns: {ip: Asset} mapping
         """
         assets = {}
 
         self.logger(f"[AssetDiscovery] Starting with {len(hostnames)} targets", "SYSTEM")
 
-        # Step 1: DNS Resolution
-        self.logger("[AssetDiscovery] Step 1/4: DNS Resolution...", "INFO")
-        dns_results = self.dns_resolver.resolve_many(hostnames)
+        # Pre-process targets: separate CIDR, IPs, and hostnames
+        cidr_targets = []
+        ip_targets = []
+        hostname_targets = []
+        
+        for target in hostnames:
+            target = target.strip()
+            if not target:
+                continue
+            
+            # Check if CIDR notation
+            if "/" in target:
+                try:
+                    network = ipaddress.ip_network(target, strict=False)
+                    cidr_targets.append(network)
+                    continue
+                except Exception:
+                    pass
+            
+            # Check if plain IP
+            try:
+                ipaddress.ip_address(target)
+                ip_targets.append(target)
+                continue
+            except Exception:
+                pass
+            
+            # Must be hostname
+            hostname_targets.append(target)
+        
+        # Process CIDR ranges: expand to individual IPs and add to assets
+        if cidr_targets:
+            self.logger(f"[AssetDiscovery] Expanding {len(cidr_targets)} CIDR range(s)...", "INFO")
+            for network in cidr_targets:
+                cidr_str = str(network)
+                hosts_in_cidr = list(network.hosts())
+                
+                # Cap CIDR expansion to prevent memory issues
+                if len(hosts_in_cidr) > self.max_cidr_ips:
+                    self.logger(f"  ⚠️ {cidr_str} has {len(hosts_in_cidr)} IPs, capping at {self.max_cidr_ips}", "WARN")
+                    hosts_in_cidr = hosts_in_cidr[:self.max_cidr_ips]
+                
+                self.logger(f"  ✓ {cidr_str} → {len(hosts_in_cidr)} IPs", "SUCCESS")
+                
+                for ip in hosts_in_cidr:
+                    ip_str = str(ip)
+                    if ip_str not in assets:
+                        assets[ip_str] = Asset(ip_str)
+                    assets[ip_str].cidr = cidr_str
+                    assets[ip_str].add_source("cidr_expansion")
+                    assets[ip_str].update_confidence(CONFIDENCE_SCORES["cidr_asset"])
+        
+        # Process plain IPs: add directly to assets
+        if ip_targets:
+            self.logger(f"[AssetDiscovery] Processing {len(ip_targets)} direct IP(s)...", "INFO")
+            for ip in ip_targets:
+                if ip not in assets:
+                    assets[ip] = Asset(ip)
+                assets[ip].add_source("direct_ip")
+                assets[ip].update_confidence(CONFIDENCE_SCORES["dns_resolved"])
+        
+        # Step 1: DNS Resolution for hostnames only
+        if hostname_targets:
+            self.logger(f"[AssetDiscovery] Step 1/4: DNS Resolution for {len(hostname_targets)} hostname(s)...", "INFO")
+            dns_results = self.dns_resolver.resolve_many(hostname_targets)
 
-        ips = []
-        for hostname, resolved_ips in dns_results.items():
-            if resolved_ips:
-                self.logger(
-                    f"  ✓ {hostname} → {', '.join(resolved_ips)}", "SUCCESS"
-                )
-                for ip in resolved_ips:
-                    if ip not in assets:
-                        assets[ip] = Asset(ip)
-                    assets[ip].add_hostname(hostname)
-                    assets[ip].add_source("dns")
-                    assets[ip].update_confidence(CONFIDENCE_SCORES["dns_resolved"])
-                    ips.append(ip)
-            else:
-                self.logger(f"  ✗ {hostname} → no resolution", "WARN")
+            for hostname, resolved_ips in dns_results.items():
+                if resolved_ips:
+                    self.logger(
+                        f"  ✓ {hostname} → {', '.join(resolved_ips)}", "SUCCESS"
+                    )
+                    for ip in resolved_ips:
+                        if ip not in assets:
+                            assets[ip] = Asset(ip)
+                        assets[ip].add_hostname(hostname)
+                        assets[ip].add_source("dns")
+                        assets[ip].update_confidence(CONFIDENCE_SCORES["dns_resolved"])
+                else:
+                    self.logger(f"  ✗ {hostname} → no resolution", "WARN")
+        else:
+            self.logger("[AssetDiscovery] Step 1/4: DNS Resolution... (skipped, no hostnames)", "INFO")
 
+        # Collect all IPs for subsequent steps
+        ips = list(assets.keys())
+        
         if not ips:
-            self.logger("[AssetDiscovery] No IPs resolved, stopping", "WARN")
+            self.logger("[AssetDiscovery] No IPs after processing, stopping", "WARN")
             return assets
 
         # Step 2: WHOIS → ASN → CIDR

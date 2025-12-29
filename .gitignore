@@ -36,3 +36,22 @@ config.json
 
 # Logs
 *.log
+
+# Editors
+.vscode/
+.idea/
+
+# Local databases and caches
+modules/cve/nvd_cve.db
+modules/cve/nvd_data/
+nvd_cache.json
+CVSS_threat_metric/**/__pycache__/
+CVSS_threat_metric/**/kev.db
+
+# Build/Dist
+build/
+dist/
+
+# OS
+Thumbs.db
+.DS_Store
