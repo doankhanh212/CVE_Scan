@@ -251,15 +251,29 @@ class CVEMatcher:
         """Extract CVSS v4 score/vector if present in raw NVD metrics.
 
         Handles keys: cvssMetricV40 / cvssMetricV4 / cvssMetricV41
+        Optionally enriches vector with E (Exploit Maturity) metric from KEV.
         """
         metrics = cve.get("metrics", {}) or {}
         for key in ("cvssMetricV40", "cvssMetricV4", "cvssMetricV41"):
             try:
                 if key in metrics and isinstance(metrics[key], list) and metrics[key]:
                     data = metrics[key][0].get("cvssData", {}) or {}
+                    score = data.get("baseScore")
+                    vector = data.get("vectorString")
+                    
+                    # Optionally enrich with E metric (Exploit Maturity) from threat_metric
+                    if vector:
+                        try:
+                            from modules.threat_metric import enrich_cvss4_vector
+                            cve_id = self._extract_id(cve)
+                            if cve_id and cve_id != "N/A":
+                                vector = enrich_cvss4_vector(vector, cve_id) or vector
+                        except Exception:
+                            pass
+                    
                     return {
-                        "score": data.get("baseScore"),
-                        "vector": data.get("vectorString")
+                        "score": score,
+                        "vector": vector
                     }
             except Exception:
                 continue
