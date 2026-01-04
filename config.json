@@ -1,7 +1,9 @@
 {
     "nvd_api_key": "",
+    "use_local_db": true,
+    "local_db_path": "modules/cve/nvd_cve.db",
     "max_cidr_ips": 1024,
-    "max_concurrent_scans": 2,
+    "max_concurrent_scans": 1,
     "ping_timeout": 1,
     "ping_retries": 3,
     "rustscan_timeout": 1500,

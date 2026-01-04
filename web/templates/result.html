@@ -1,0 +1,677 @@
+{% extends "base.html" %}
+
+{% block title %}Scan Result - CVE Scan Platform{% endblock %}
+{% block page_title %}Scan Result{% endblock %}
+
+{% block content %}
+<!-- Scan Info -->
+<div class="panel">
+    <div class="scan-info-header">
+        <div>
+            <h2 class="panel-title">Scan ID: <span id="scan-id">{{ scan_id }}</span></h2>
+            <p class="scan-meta">Started: <span id="start-time">Loading...</span></p>
+        </div>
+        <div>
+            <span id="scan-status" class="status-badge status-running">
+                <i class="fas fa-spinner fa-spin"></i> Running
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Progress Panel -->
+<div class="panel">
+    <h2 class="panel-title">Scan Progress</h2>
+    
+    <div class="progress-section">
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0%</div>
+        </div>
+        
+        <div class="progress-stats">
+            <div class="stat-item">
+                <span class="stat-label">Hosts Scanned</span>
+                <span class="stat-value" id="hosts-scanned">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Ports Found</span>
+                <span class="stat-value" id="ports-found">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">CVEs Found</span>
+                <span class="stat-value" id="cves-found">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Critical</span>
+                <span class="stat-value critical" id="critical-found">0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Live Logs -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">
+            <i class="fas fa-terminal"></i> Live Logs
+        </h2>
+        <div class="log-controls">
+            <div class="log-filter">
+                <label for="log-filter-level">Filter:</label>
+                <select id="log-filter-level" class="log-filter-select">
+                    <option value="all">All Levels</option>
+                    <option value="debug">Debug</option>
+                    <option value="info" selected>Info+</option>
+                    <option value="warning">Warning+</option>
+                    <option value="error">Error Only</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="auto-scroll-btn" data-enabled="true">
+                <i class="fas fa-arrow-down"></i> Auto-scroll
+            </button>
+            <button class="btn btn-secondary btn-sm" id="clear-logs-btn">
+                <i class="fas fa-eraser"></i> Clear
+            </button>
+        </div>
+    </div>
+    
+    <div class="logs-container" id="log-box">
+        <div class="log-entry">
+            <span class="log-time">00:00:00</span>
+            <span class="log-level info">INFO</span>
+            <span class="log-message">🚀 Initializing scan...</span>
+        </div>
+    </div>
+    
+    <div class="log-footer">
+        <span class="log-count">Total: <strong id="log-count">1</strong> entries</span>
+        <span class="log-status" id="log-status">
+            <i class="fas fa-circle" style="color: var(--success);"></i> Live
+        </span>
+    </div>
+</div>
+
+<!-- Results Panel (Hidden until complete) -->
+<div class="panel" id="results-panel" style="display: none;">
+    <div class="panel-header">
+        <h2 class="panel-title">Scan Results</h2>
+        <div class="panel-actions">
+            <button class="btn btn-primary btn-sm" id="export-results-btn">
+                <i class="fas fa-download"></i> Export CSV
+            </button>
+            <a href="/dashboard" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <div class="table-wrapper">
+        <table class="vuln-table">
+            <thead>
+                <tr>
+                    <th>HOST</th>
+                    <th>PORT</th>
+                    <th>SERVICE</th>
+                    <th>VERSION</th>
+                    <th>CVE ID</th>
+                    <th>CVSS</th>
+                    <th>SEVERITY</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody id="results-tbody">
+                <tr>
+                    <td colspan="8" style="text-align: center;">No results yet</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.scan-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scan-meta {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-running {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+}
+
+.status-completed {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+
+.status-failed {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.progress-section {
+    padding: 20px 0;
+}
+
+.progress-bar-wrapper {
+    margin-bottom: 24px;
+}
+
+.progress-bar {
+    height: 12px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.progress-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-value.critical {
+    color: var(--critical);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.panel-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.logs-container {
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+.log-entry {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.log-time {
+    color: var(--text-secondary);
+    min-width: 70px;
+}
+
+.log-level {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 50px;
+    text-align: center;
+}
+
+.log-level.debug,
+.log-level.system {
+    background: rgba(148, 163, 184, 0.2);
+    color: #94a3b8;
+}
+
+.log-level.info {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--primary);
+}
+
+.log-level.success {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success);
+}
+
+.log-level.warning,
+.log-level.warn {
+    background: rgba(234, 179, 8, 0.2);
+    color: var(--warning);
+}
+
+.log-level.error {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+.log-message {
+    color: var(--text-primary);
+    flex: 1;
+    word-break: break-word;
+}
+
+/* Log Controls */
+.log-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.log-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.log-filter-select {
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.log-filter-select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.log-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    border-radius: 0 0 8px 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.log-count strong {
+    color: var(--text-primary);
+}
+
+.log-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Hidden log entry for filtering */
+.log-entry.hidden {
+    display: none !important;
+}
+
+.host-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+.cve-link {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.cve-link:hover {
+    text-decoration: underline;
+}
+
+.description-cell {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const SCAN_ID = "{{ scan_id }}";
+let progressInterval = null;
+let scanData = null;
+
+// Global vars for log filtering
+let lastLogCount = 0;
+let autoScrollEnabled = true;
+let currentFilter = 'info';
+
+// Log level priority for filtering
+const LOG_PRIORITIES = {
+    'debug': 0,
+    'system': 0,
+    'info': 1,
+    'success': 1,
+    'warning': 2,
+    'warn': 2,
+    'error': 3
+};
+
+async function updateScanStatus() {
+    try {
+        const response = await fetch(`/api/scan/${SCAN_ID}`);
+        const data = await response.json();
+        scanData = data;
+        
+        // Update status badge
+        const statusBadge = document.getElementById('scan-status');
+        statusBadge.className = 'status-badge status-' + data.status;
+        
+        if (data.status === 'running') {
+            statusBadge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running';
+        } else if (data.status === 'completed') {
+            statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> Completed';
+            clearInterval(progressInterval);
+            loadResults();
+        } else if (data.status === 'failed') {
+            statusBadge.innerHTML = '<i class="fas fa-times-circle"></i> Failed';
+            clearInterval(progressInterval);
+        }
+        
+        // Update progress
+        const progress = data.progress || 0;
+        document.getElementById('progress-bar').style.width = progress + '%';
+        document.getElementById('progress-text').textContent = progress + '%';
+        
+        // Update stats
+        document.getElementById('hosts-scanned').textContent = data.hosts_scanned || 0;
+        document.getElementById('ports-found').textContent = data.ports_found || 0;
+        document.getElementById('cves-found').textContent = data.cves_found || 0;
+        document.getElementById('critical-found').textContent = data.critical_cves || 0;
+        
+        // Update start time
+        if (data.start_time) {
+            document.getElementById('start-time').textContent = new Date(data.start_time).toLocaleString();
+        }
+        
+        // Update logs
+        if (data.logs && data.logs.length > 0) {
+            updateLogs(data.logs);
+        }
+        
+    } catch (error) {
+        console.error('Error fetching scan status:', error);
+    }
+}
+
+function updateLogs(logs) {
+    const logBox = document.getElementById('log-box');
+    
+    // Only append NEW logs since last update
+    if (logs.length > lastLogCount) {
+        const newLogs = logs.slice(lastLogCount);
+        lastLogCount = logs.length;
+        
+        // Batch append new logs efficiently
+        const fragment = document.createDocumentFragment();
+        newLogs.forEach(log => {
+            const entry = createLogEntry(log);
+            fragment.appendChild(entry);
+        });
+        
+        // Add all new logs at once
+        logBox.appendChild(fragment);
+        
+        // Update log count
+        updateLogCount();
+    }
+    
+    // Keep only last 200 logs in DOM to prevent memory leak
+    const allEntries = logBox.querySelectorAll('.log-entry');
+    if (allEntries.length > 200) {
+        for (let i = 0; i < allEntries.length - 200; i++) {
+            allEntries[i].remove();
+        }
+    }
+    
+    // Auto scroll to bottom if enabled
+    if (autoScrollEnabled) {
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+}
+
+function createLogEntry(log) {
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    
+    const time = new Date(log.timestamp || Date.now()).toLocaleTimeString();
+    const level = (log.level || 'INFO').toUpperCase();
+    const levelKey = level.toLowerCase();
+    
+    // Add icon based on level
+    const icons = {
+        'debug': '🔍',
+        'system': '⚙️',
+        'info': 'ℹ️',
+        'success': '✅',
+        'warning': '⚠️',
+        'warn': '⚠️',
+        'error': '❌'
+    };
+    const icon = icons[levelKey] || 'ℹ️';
+    
+    // Store level priority for filtering
+    entry.dataset.level = levelKey;
+    entry.dataset.priority = LOG_PRIORITIES[levelKey] || 1;
+    
+    entry.innerHTML = `
+        <span class="log-time">${time}</span>
+        <span class="log-level ${levelKey}">${level}</span>
+        <span class="log-message">${icon} ${escapeHtml(log.message || '')}</span>
+    `;
+    
+    // Apply current filter
+    applyFilterToEntry(entry);
+    
+    return entry;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function applyFilterToEntry(entry) {
+    const entryPriority = parseInt(entry.dataset.priority);
+    const filterPriority = getFilterPriority(currentFilter);
+    
+    if (currentFilter === 'all' || entryPriority >= filterPriority) {
+        entry.classList.remove('hidden');
+    } else {
+        entry.classList.add('hidden');
+    }
+}
+
+function getFilterPriority(filter) {
+    const priorities = {
+        'all': -1,
+        'debug': 0,
+        'info': 1,
+        'warning': 2,
+        'error': 3
+    };
+    return priorities[filter] || 1;
+}
+
+function updateLogCount() {
+    const visibleLogs = document.querySelectorAll('.log-entry:not(.hidden)').length;
+    document.getElementById('log-count').textContent = visibleLogs;
+}
+
+async function loadResults() {
+    document.getElementById('results-panel').style.display = 'block';
+    
+    try {
+        const response = await fetch(`/api/scan/${SCAN_ID}/results`);
+        const data = await response.json();
+        
+        const tbody = document.getElementById('results-tbody');
+        tbody.innerHTML = '';
+        
+        if (data.results && data.results.length > 0) {
+            data.results.forEach(result => {
+                const row = document.createElement('tr');
+                const sevClass = (result.severity || '').toLowerCase();
+                
+                row.innerHTML = `
+                    <td><span class="host-tag">${result.host || 'N/A'}</span></td>
+                    <td>${result.port || 'N/A'}</td>
+                    <td>${result.service || 'N/A'}</td>
+                    <td>${result.version || 'N/A'}</td>
+                    <td><a href="https://nvd.nist.gov/vuln/detail/${result.cve_id}" target="_blank" rel="noopener noreferrer" class="cve-link">${result.cve_id || 'N/A'}</a></td>
+                    <td><span class="cvss-badge">${result.cvss || 'N/A'}</span></td>
+                    <td><span class="severity-badge ${sevClass}">${result.severity || 'UNKNOWN'}</span></td>
+                    <td class="description-cell">${result.summary || 'No description'}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No vulnerabilities found</td></tr>';
+        }
+    } catch (error) {
+        console.error('Error loading results:', error);
+    }
+}
+
+// Event Listeners
+// Log filter change
+document.getElementById('log-filter-level').addEventListener('change', function() {
+    currentFilter = this.value;
+    const allLogs = document.querySelectorAll('.log-entry');
+    allLogs.forEach(entry => applyFilterToEntry(entry));
+    updateLogCount();
+});
+
+// Auto-scroll toggle
+document.getElementById('auto-scroll-btn').addEventListener('click', function() {
+    autoScrollEnabled = !autoScrollEnabled;
+    this.dataset.enabled = autoScrollEnabled;
+    
+    if (autoScrollEnabled) {
+        this.innerHTML = '<i class="fas fa-arrow-down"></i> Auto-scroll';
+        document.getElementById('log-box').scrollTop = document.getElementById('log-box').scrollHeight;
+    } else {
+        this.innerHTML = '<i class="fas fa-pause"></i> Paused';
+    }
+});
+
+// Clear logs
+document.getElementById('clear-logs-btn').addEventListener('click', () => {
+    if (confirm('Clear all logs from display? (Logs are still saved)')) {
+        document.getElementById('log-box').innerHTML = '';
+        lastLogCount = 0;
+        updateLogCount();
+    }
+});
+
+// Export results
+document.getElementById('export-results-btn').addEventListener('click', async () => {
+    try {
+        const response = await fetch(`/api/scan/${SCAN_ID}/results`);
+        const data = await response.json();
+        
+        if (!data.results || data.results.length === 0) {
+            alert('No results to export');
+            return;
+        }
+        
+        const headers = ['Host', 'Port', 'Service', 'Version', 'CVE ID', 'CVSS', 'Severity', 'Description'];
+        const csv = [
+            headers.join(','),
+            ...data.results.map(r => [
+                r.host, r.port, r.service, r.version, r.cve_id, r.cvss, r.severity,
+                `"${(r.summary || '').replace(/"/g, '""')}"`
+            ].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `scan_${SCAN_ID}_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+    } catch (error) {
+        alert('Error exporting results: ' + error.message);
+    }
+});
+
+// Start polling on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateScanStatus();
+    progressInterval = setInterval(updateScanStatus, 3000);
+});
+</script>
+{% endblock %}

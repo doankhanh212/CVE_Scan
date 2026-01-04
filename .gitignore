@@ -18,6 +18,10 @@ env/
 # IDE/editor
 .vscode/
 .idea/
+
+# Scan data (JSON persistence)
+data/
+*.lock
 *.iml
 
 # OS files

@@ -1,0 +1,454 @@
+{% extends "base.html" %}
+
+{% block title %}Scan Results - CVE Scan Platform{% endblock %}
+{% block page_title %}Scan Results{% endblock %}
+
+{% block content %}
+<!-- Scans Summary -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon total">
+            <i class="fas fa-tasks"></i>
+        </div>
+        <div class="stat-details">
+            <div class="stat-value" id="total-scans">0</div>
+            <div class="stat-label">Total Scans</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon running">
+            <i class="fas fa-play-circle running-pulse"></i>
+        </div>
+        <div class="stat-details">
+            <div class="stat-value" id="running-scans">0</div>
+            <div class="stat-label">Running</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon success">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-details">
+            <div class="stat-value" id="completed-scans">0</div>
+            <div class="stat-label">Completed</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon error">
+            <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-details">
+            <div class="stat-value" id="failed-scans">0</div>
+            <div class="stat-label">Failed</div>
+        </div>
+    </div>
+</div>
+
+<!-- Scans Table -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">All Scans</h2>
+        <div class="panel-actions">
+            <button class="btn btn-secondary btn-sm" id="refresh-btn">
+                <i class="fas fa-sync"></i>
+                Refresh
+            </button>
+            <a href="/scan" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i>
+                New Scan
+            </a>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="vuln-table">
+            <thead>
+                <tr>
+                    <th>SCAN ID</th>
+                    <th>TARGETS</th>
+                    <th>START TIME</th>
+                    <th>DURATION</th>
+                    <th>STATUS</th>
+                    <th>HOSTS</th>
+                    <th>CVES</th>
+                    <th>CRITICAL</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody id="scans-tbody">
+                <tr class="loading-row">
+                    <td colspan="9">
+                        <div class="loading-spinner"></div>
+                        Loading scans...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.stat-icon.total {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+}
+
+.stat-icon.running {
+    background: rgba(234, 179, 8, 0.1);
+    color: var(--warning);
+}
+
+.stat-icon.success {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+
+.stat-icon.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.stat-details {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.panel-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.loading-row {
+    text-align: center;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+.running-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.scan-id-tag {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--primary);
+}
+
+.targets-list {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.duration-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-running {
+    background: rgba(234, 179, 8, 0.1);
+    color: var(--warning);
+}
+
+.status-completed {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+}
+
+.status-failed {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.status-pending {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text-secondary);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.icon-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.icon-btn.danger:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let scans = [];
+
+async function loadScans() {
+    try {
+        const response = await fetch('/api/scans');
+        const data = await response.json();
+        
+        scans = data.scans || [];
+        
+        // Update stats
+        updateStats();
+        
+        // Render table
+        renderTable();
+    } catch (error) {
+        console.error('Error loading scans:', error);
+        document.getElementById('scans-tbody').innerHTML = 
+            '<tr><td colspan="9" style="text-align:center;">Error loading data</td></tr>';
+    }
+}
+
+function updateStats() {
+    const total = scans.length;
+    const running = scans.filter(s => s.status === 'running').length;
+    const completed = scans.filter(s => s.status === 'completed').length;
+    const failed = scans.filter(s => s.status === 'failed').length;
+    
+    document.getElementById('total-scans').textContent = total;
+    document.getElementById('running-scans').textContent = running;
+    document.getElementById('completed-scans').textContent = completed;
+    document.getElementById('failed-scans').textContent = failed;
+}
+
+function renderTable() {
+    const tbody = document.getElementById('scans-tbody');
+    tbody.innerHTML = '';
+    
+    if (scans.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;">No scans found</td></tr>';
+        return;
+    }
+    
+    scans.forEach(scan => {
+        const row = document.createElement('tr');
+        
+        const startTime = new Date(scan.start_time || Date.now());
+        const duration = scan.end_time ? 
+            Math.round((new Date(scan.end_time) - startTime) / 1000) + 's' : 
+            '-';
+        
+        const targets = Array.isArray(scan.hosts) ? scan.hosts.slice(0, 2).join(', ') : scan.hosts || 'N/A';
+        const moreTargets = Array.isArray(scan.hosts) && scan.hosts.length > 2 ? 
+            ` +${scan.hosts.length - 2} more` : '';
+        
+        row.innerHTML = `
+            <td><span class="scan-id-tag">${scan.scan_id || 'N/A'}</span></td>
+            <td><div class="targets-list">${targets}${moreTargets}</div></td>
+            <td>${startTime.toLocaleString()}</td>
+            <td><span class="duration-text">${duration}</span></td>
+            <td><span class="status-badge status-${scan.status || 'pending'}">${scan.status || 'PENDING'}</span></td>
+            <td>${scan.hosts_scanned || 0}</td>
+            <td>${scan.cves_found || 0}</td>
+            <td><span class="severity-badge critical">${scan.critical_cves || 0}</span></td>
+            <td>
+                <div class="action-buttons">
+                    <button class="icon-btn" onclick="viewScan('${scan.scan_id}')" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="icon-btn" onclick="exportScan('${scan.scan_id}')" title="Export CSV">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    ${scan.status === 'running' ? `
+                        <button class="icon-btn danger" onclick="stopScan('${scan.scan_id}')" title="Stop Scan">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    ` : ''}
+                    <button class="icon-btn danger" onclick="deleteScan('${scan.scan_id}')" title="Delete Scan">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+        
+        tbody.appendChild(row);
+    });
+}
+
+function viewScan(scanId) {
+    window.location.href = `/result/${scanId}`;
+}
+
+async function exportScan(scanId) {
+    try {
+        const response = await fetch(`/api/scan/${scanId}/results`);
+        const data = await response.json();
+        
+        if (!data.results || data.results.length === 0) {
+            alert('No results to export');
+            return;
+        }
+        
+        const headers = ['Host', 'Port', 'Service', 'Version', 'CVE ID', 'CVSS', 'Severity', 'Description'];
+        const csv = [
+            headers.join(','),
+            ...data.results.map(r => [
+                r.host, r.port, r.service, r.version, r.cve_id, r.cvss, r.severity,
+                `"${(r.summary || '').replace(/"/g, '""')}"`
+            ].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `scan_${scanId}_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+    } catch (error) {
+        alert('Error exporting scan: ' + error.message);
+    }
+}
+
+async function stopScan(scanId) {
+    if (!confirm('Are you sure you want to stop this scan?')) return;
+    
+    try {
+        await fetch(`/api/scan/${scanId}`, { method: 'DELETE' });
+        alert('Scan stopped');
+        loadScans();
+    } catch (error) {
+        alert('Error stopping scan: ' + error.message);
+    }
+}
+
+async function deleteScan(scanId) {
+    if (!confirm('Are you sure you want to DELETE this scan? This cannot be undone.')) return;
+    
+    try {
+        const response = await fetch(`/api/scan/${scanId}/purge`, { method: 'DELETE' });
+        const data = await response.json();
+        
+        if (!response.ok) {
+            alert('Error: ' + (data.error || 'Failed to delete scan'));
+            return;
+        }
+        
+        alert('Scan deleted successfully');
+        loadScans();
+    } catch (error) {
+        alert('Error deleting scan: ' + error.message);
+    }
+}
+
+document.getElementById('refresh-btn').addEventListener('click', loadScans);
+
+// Auto-refresh every 10 seconds (optimized for server load)
+// Reduce to 5s if actively monitoring, increase to 30s for background
+let refreshInterval = 10000;
+let autoRefresh = setInterval(loadScans, refreshInterval);
+
+// Pause auto-refresh when tab is hidden (save resources)
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        clearInterval(autoRefresh);
+    } else {
+        loadScans();
+        autoRefresh = setInterval(loadScans, refreshInterval);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', loadScans);
+</script>
+{% endblock %}

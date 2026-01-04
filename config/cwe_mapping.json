@@ -1,0 +1,6914 @@
+{
+  "version": "1.0",
+  "source": "CWE \u00e2\u2020\u2019 OWASP/MITRE Mappings (Official Sources)",
+  "mappings": [
+    {
+      "cwe_id": 5,
+      "cwe_name": "J2EE Misconfiguration: Data Transmission Without Encryption",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 6,
+      "cwe_name": "J2EE Misconfiguration: Insufficient Session-ID Length",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 7,
+      "cwe_name": "J2EE Misconfiguration: Missing Custom Error Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 8,
+      "cwe_name": "J2EE Misconfiguration: Entity Bean Declared Remote",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 9,
+      "cwe_name": "J2EE Misconfiguration: Weak Access Permissions for EJB Methods",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 11,
+      "cwe_name": "ASP.NET Misconfiguration: Creating Debug Binary",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 12,
+      "cwe_name": "ASP.NET Misconfiguration: Missing Custom Error Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 13,
+      "cwe_name": "ASP.NET Misconfiguration: Password in Configuration File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 14,
+      "cwe_name": "Compiler Removal of Code to Clear Buffers",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 15,
+      "cwe_name": "External Control of System or Configuration Setting",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 20,
+      "cwe_name": "Improper Input Validation",
+      "owasp_codes": [
+        "A03:2021"
+      ],
+      "mitre_techniques": [
+        "T1190",
+        "T1566",
+        "T1189"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 22,
+      "cwe_name": "Improper Limitation of a Pathname to a Restricted Directory",
+      "owasp_codes": [
+        "A03:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 23,
+      "cwe_name": "Relative Path Traversal",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 24,
+      "cwe_name": "Path Traversal: '../filedir'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 25,
+      "cwe_name": "Path Traversal: '/../filedir'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 26,
+      "cwe_name": "Path Traversal: '/dir/../filename'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 27,
+      "cwe_name": "Path Traversal: 'dir/../../filename'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 28,
+      "cwe_name": "Path Traversal: '..\\filedir'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 29,
+      "cwe_name": "Path Traversal: '\\..\\filename'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 30,
+      "cwe_name": "Path Traversal: '\\dir\\..\\filename'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 31,
+      "cwe_name": "Path Traversal: 'dir\\..\\..\\filename'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 32,
+      "cwe_name": "Path Traversal: '...' (Triple Dot)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 33,
+      "cwe_name": "Path Traversal: '....' (Multiple Dot)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 34,
+      "cwe_name": "Path Traversal: '....//'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 35,
+      "cwe_name": "Path Traversal: '.../...//'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 36,
+      "cwe_name": "Absolute Path Traversal",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 37,
+      "cwe_name": "Path Traversal: '/absolute/pathname/here'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 38,
+      "cwe_name": "Path Traversal: '\\absolute\\pathname\\here'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 39,
+      "cwe_name": "Path Traversal: 'C:dirname'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 40,
+      "cwe_name": "Path Traversal: '\\\\UNC\\share\\name\\' (Windows UNC Share)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 41,
+      "cwe_name": "Improper Resolution of Path Equivalence",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 42,
+      "cwe_name": "Path Equivalence: 'filename.' (Trailing Dot)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 43,
+      "cwe_name": "Path Equivalence: 'filename....' (Multiple Trailing Dot)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 44,
+      "cwe_name": "Path Equivalence: 'file.name' (Internal Dot)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 45,
+      "cwe_name": "Path Equivalence: 'file...name' (Multiple Internal Dot)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 46,
+      "cwe_name": "Path Equivalence: 'filename ' (Trailing Space)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 47,
+      "cwe_name": "Path Equivalence: ' filename' (Leading Space)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 48,
+      "cwe_name": "Path Equivalence: 'file name' (Internal Whitespace)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 49,
+      "cwe_name": "Path Equivalence: 'filename/' (Trailing Slash)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 50,
+      "cwe_name": "Path Equivalence: '//multiple/leading/slash'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 51,
+      "cwe_name": "Path Equivalence: '/multiple//internal/slash'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 52,
+      "cwe_name": "Path Equivalence: '/multiple/trailing/slash//'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 53,
+      "cwe_name": "Path Equivalence: '\\multiple\\\\internal\\backslash'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 54,
+      "cwe_name": "Path Equivalence: 'filedir\\' (Trailing Backslash)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 55,
+      "cwe_name": "Path Equivalence: '/./' (Single Dot Directory)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 56,
+      "cwe_name": "Path Equivalence: 'filedir*' (Wildcard)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 57,
+      "cwe_name": "Path Equivalence: 'fakedir/../realdir/filename'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 58,
+      "cwe_name": "Path Equivalence: Windows 8.3 Filename",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 59,
+      "cwe_name": "Improper Link Resolution Before File Access ('Link Following')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 61,
+      "cwe_name": "UNIX Symbolic Link (Symlink) Following",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 62,
+      "cwe_name": "UNIX Hard Link",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 64,
+      "cwe_name": "Windows Shortcut Following (.LNK)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 65,
+      "cwe_name": "Windows Hard Link",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 66,
+      "cwe_name": "Improper Handling of File Names that Identify Virtual Resources",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 67,
+      "cwe_name": "Improper Handling of Windows Device Names",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 69,
+      "cwe_name": "Improper Handling of Windows ::DATA Alternate Data Stream",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 71,
+      "cwe_name": "DEPRECATED: Apple '.DS_Store'",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 72,
+      "cwe_name": "Improper Handling of Apple HFS+ Alternate Data Stream Path",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 73,
+      "cwe_name": "External Control of File Name or Path",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 74,
+      "cwe_name": "Improper Neutralization of Special Elements in Output Used by a Downstream Component ('Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 75,
+      "cwe_name": "Failure to Sanitize Special Elements into a Different Plane (Special Element Injection)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 76,
+      "cwe_name": "Improper Neutralization of Equivalent Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 77,
+      "cwe_name": "Improper Neutralization of Special Elements used in a Command",
+      "owasp_codes": [
+        "A03:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 78,
+      "cwe_name": "Improper Neutralization of Special Elements used in an OS Command",
+      "owasp_codes": [
+        "A03:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 79,
+      "cwe_name": "Improper Neutralization of Input During Web Page Generation (XSS)",
+      "owasp_codes": [
+        "A03:2021"
+      ],
+      "mitre_techniques": [
+        "T1190",
+        "T1189"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 80,
+      "cwe_name": "Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 81,
+      "cwe_name": "Improper Neutralization of Script in an Error Message Web Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 82,
+      "cwe_name": "Improper Neutralization of Script in Attributes of IMG Tags in a Web Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 83,
+      "cwe_name": "Improper Neutralization of Script in Attributes in a Web Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 84,
+      "cwe_name": "Improper Neutralization of Encoded URI Schemes in a Web Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 85,
+      "cwe_name": "Doubled Character XSS Manipulations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 86,
+      "cwe_name": "Improper Neutralization of Invalid Characters in Identifiers in Web Pages",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 87,
+      "cwe_name": "Improper Neutralization of Alternate XSS Syntax",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 88,
+      "cwe_name": "Improper Neutralization of Argument Delimiters in a Command ('Argument Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 89,
+      "cwe_name": "SQL Injection",
+      "owasp_codes": [
+        "A03:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 90,
+      "cwe_name": "Improper Neutralization of Special Elements used in an LDAP Query",
+      "owasp_codes": [
+        "A03:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 91,
+      "cwe_name": "XML Injection (aka Blind XPath Injection)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 92,
+      "cwe_name": "DEPRECATED: Improper Sanitization of Custom Special Characters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 93,
+      "cwe_name": "Improper Neutralization of CRLF Sequences ('CRLF Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 94,
+      "cwe_name": "Improper Control of Generation of Code ('Code Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 95,
+      "cwe_name": "Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 96,
+      "cwe_name": "Improper Neutralization of Directives in Statically Saved Code ('Static Code Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 97,
+      "cwe_name": "Improper Neutralization of Server-Side Includes (SSI) Within a Web Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 98,
+      "cwe_name": "Improper Control of Filename for Include/Require Statement in PHP Program ('PHP Remote File Inclusion')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 99,
+      "cwe_name": "Improper Control of Resource Identifiers ('Resource Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 102,
+      "cwe_name": "Struts: Duplicate Validation Forms",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 103,
+      "cwe_name": "Struts: Incomplete validate() Method Definition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 104,
+      "cwe_name": "Struts: Form Bean Does Not Extend Validation Class",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 105,
+      "cwe_name": "Struts: Form Field Without Validator",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 106,
+      "cwe_name": "Struts: Plug-in Framework not in Use",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 107,
+      "cwe_name": "Struts: Unused Validation Form",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 108,
+      "cwe_name": "Struts: Unvalidated Action Form",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 109,
+      "cwe_name": "Struts: Validator Turned Off",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 110,
+      "cwe_name": "Struts: Validator Without Form Field",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 111,
+      "cwe_name": "Direct Use of Unsafe JNI",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 112,
+      "cwe_name": "Missing XML Validation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 113,
+      "cwe_name": "Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Request/Response Splitting')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 114,
+      "cwe_name": "Process Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 115,
+      "cwe_name": "Misinterpretation of Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 116,
+      "cwe_name": "Improper Encoding or Escaping of Output",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 117,
+      "cwe_name": "Improper Output Neutralization for Logs",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 118,
+      "cwe_name": "Incorrect Access of Indexable Resource ('Range Error')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 119,
+      "cwe_name": "Improper Restriction of Operations within the Bounds of a Memory Buffer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 120,
+      "cwe_name": "Buffer Copy without Checking Size of Input",
+      "owasp_codes": [
+        "A06:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 121,
+      "cwe_name": "Stack-based Buffer Overflow",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 122,
+      "cwe_name": "Heap-based Buffer Overflow",
+      "owasp_codes": [
+        "A06:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 123,
+      "cwe_name": "Write-what-where Condition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 124,
+      "cwe_name": "Buffer Underwrite ('Buffer Underflow')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 125,
+      "cwe_name": "Out-of-bounds Read",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 126,
+      "cwe_name": "Buffer Over-read",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 127,
+      "cwe_name": "Buffer Under-read",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 128,
+      "cwe_name": "Wrap-around Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 129,
+      "cwe_name": "Improper Validation of Array Index",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 130,
+      "cwe_name": "Improper Handling of Length Parameter Inconsistency",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 131,
+      "cwe_name": "Incorrect Calculation of Buffer Size",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 132,
+      "cwe_name": "DEPRECATED: Miscalculated Null Termination",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 134,
+      "cwe_name": "Use of Externally-Controlled Format String",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 135,
+      "cwe_name": "Incorrect Calculation of Multi-Byte String Length",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 138,
+      "cwe_name": "Improper Neutralization of Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 140,
+      "cwe_name": "Improper Neutralization of Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 141,
+      "cwe_name": "Improper Neutralization of Parameter/Argument Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 142,
+      "cwe_name": "Improper Neutralization of Value Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 143,
+      "cwe_name": "Improper Neutralization of Record Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 144,
+      "cwe_name": "Improper Neutralization of Line Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 145,
+      "cwe_name": "Improper Neutralization of Section Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 146,
+      "cwe_name": "Improper Neutralization of Expression/Command Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 147,
+      "cwe_name": "Improper Neutralization of Input Terminators",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 148,
+      "cwe_name": "Improper Neutralization of Input Leaders",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 149,
+      "cwe_name": "Improper Neutralization of Quoting Syntax",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 150,
+      "cwe_name": "Improper Neutralization of Escape, Meta, or Control Sequences",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 151,
+      "cwe_name": "Improper Neutralization of Comment Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 152,
+      "cwe_name": "Improper Neutralization of Macro Symbols",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 153,
+      "cwe_name": "Improper Neutralization of Substitution Characters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 154,
+      "cwe_name": "Improper Neutralization of Variable Name Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 155,
+      "cwe_name": "Improper Neutralization of Wildcards or Matching Symbols",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 156,
+      "cwe_name": "Improper Neutralization of Whitespace",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 157,
+      "cwe_name": "Failure to Sanitize Paired Delimiters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 158,
+      "cwe_name": "Improper Neutralization of Null Byte or NUL Character",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 159,
+      "cwe_name": "Improper Handling of Invalid Use of Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 160,
+      "cwe_name": "Improper Neutralization of Leading Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 161,
+      "cwe_name": "Improper Neutralization of Multiple Leading Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 162,
+      "cwe_name": "Improper Neutralization of Trailing Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 163,
+      "cwe_name": "Improper Neutralization of Multiple Trailing Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 164,
+      "cwe_name": "Improper Neutralization of Internal Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 165,
+      "cwe_name": "Improper Neutralization of Multiple Internal Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 166,
+      "cwe_name": "Improper Handling of Missing Special Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 167,
+      "cwe_name": "Improper Handling of Additional Special Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 168,
+      "cwe_name": "Improper Handling of Inconsistent Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 170,
+      "cwe_name": "Improper Null Termination",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 172,
+      "cwe_name": "Encoding Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 173,
+      "cwe_name": "Improper Handling of Alternate Encoding",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 174,
+      "cwe_name": "Double Decoding of the Same Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 175,
+      "cwe_name": "Improper Handling of Mixed Encoding",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 176,
+      "cwe_name": "Improper Handling of Unicode Encoding",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 177,
+      "cwe_name": "Improper Handling of URL Encoding (Hex Encoding)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 178,
+      "cwe_name": "Improper Handling of Case Sensitivity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 179,
+      "cwe_name": "Incorrect Behavior Order: Early Validation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 180,
+      "cwe_name": "Incorrect Behavior Order: Validate Before Canonicalize",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 181,
+      "cwe_name": "Incorrect Behavior Order: Validate Before Filter",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 182,
+      "cwe_name": "Collapse of Data into Unsafe Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 183,
+      "cwe_name": "Permissive List of Allowed Inputs",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 184,
+      "cwe_name": "Incomplete List of Disallowed Inputs",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 185,
+      "cwe_name": "Incorrect Regular Expression",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 186,
+      "cwe_name": "Overly Restrictive Regular Expression",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 187,
+      "cwe_name": "Partial String Comparison",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 188,
+      "cwe_name": "Reliance on Data/Memory Layout",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 190,
+      "cwe_name": "Integer Overflow or Wraparound",
+      "owasp_codes": [
+        "A06:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 191,
+      "cwe_name": "Integer Underflow (Wrap or Wraparound)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 192,
+      "cwe_name": "Integer Coercion Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 193,
+      "cwe_name": "Off-by-one Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 194,
+      "cwe_name": "Unexpected Sign Extension",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 195,
+      "cwe_name": "Signed to Unsigned Conversion Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 196,
+      "cwe_name": "Unsigned to Signed Conversion Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 197,
+      "cwe_name": "Numeric Truncation Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 198,
+      "cwe_name": "Use of Incorrect Byte Ordering",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 200,
+      "cwe_name": "Exposure of Sensitive Information to an Unauthorized Actor",
+      "owasp_codes": [
+        "A01:2021"
+      ],
+      "mitre_techniques": [
+        "T1592",
+        "T1589",
+        "T1590",
+        "T1598"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 201,
+      "cwe_name": "Insertion of Sensitive Information Into Sent Data",
+      "owasp_codes": [
+        "A01:2021"
+      ],
+      "mitre_techniques": [
+        "T1592"
+      ],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 202,
+      "cwe_name": "Exposure of Sensitive Information Through Data Queries",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 203,
+      "cwe_name": "Observable Discrepancy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 204,
+      "cwe_name": "Observable Response Discrepancy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 205,
+      "cwe_name": "Observable Behavioral Discrepancy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 206,
+      "cwe_name": "Observable Internal Behavioral Discrepancy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 207,
+      "cwe_name": "Observable Behavioral Discrepancy With Equivalent Products",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 208,
+      "cwe_name": "Observable Timing Discrepancy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 209,
+      "cwe_name": "Information Exposure Through an Error Message",
+      "owasp_codes": [
+        "A04:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 210,
+      "cwe_name": "Self-generated Error Message Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 211,
+      "cwe_name": "Externally-Generated Error Message Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 212,
+      "cwe_name": "Improper Removal of Sensitive Information Before Storage or Transfer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 213,
+      "cwe_name": "Exposure of Sensitive Information Due to Incompatible Policies",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 214,
+      "cwe_name": "Invocation of Process Using Visible Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 215,
+      "cwe_name": "Insertion of Sensitive Information Into Debugging Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 216,
+      "cwe_name": "DEPRECATED: Containment Errors (Container Errors)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 217,
+      "cwe_name": "DEPRECATED: Failure to Protect Stored Data from Modification",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 218,
+      "cwe_name": "DEPRECATED: Failure to provide confidentiality for stored data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 219,
+      "cwe_name": "Storage of File with Sensitive Data Under Web Root",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 220,
+      "cwe_name": "Storage of File With Sensitive Data Under FTP Root",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 221,
+      "cwe_name": "Information Loss or Omission",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 222,
+      "cwe_name": "Truncation of Security-relevant Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 223,
+      "cwe_name": "Omission of Security-relevant Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 224,
+      "cwe_name": "Obscured Security-relevant Information by Alternate Name",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 225,
+      "cwe_name": "DEPRECATED: General Information Management Problems",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 226,
+      "cwe_name": "Sensitive Information in Resource Not Removed Before Reuse",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 228,
+      "cwe_name": "Improper Handling of Syntactically Invalid Structure",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 229,
+      "cwe_name": "Improper Handling of Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 230,
+      "cwe_name": "Improper Handling of Missing Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 231,
+      "cwe_name": "Improper Handling of Extra Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 232,
+      "cwe_name": "Improper Handling of Undefined Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 233,
+      "cwe_name": "Improper Handling of Parameters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 234,
+      "cwe_name": "Failure to Handle Missing Parameter",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 235,
+      "cwe_name": "Improper Handling of Extra Parameters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 236,
+      "cwe_name": "Improper Handling of Undefined Parameters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 237,
+      "cwe_name": "Improper Handling of Structural Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 238,
+      "cwe_name": "Improper Handling of Incomplete Structural Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 239,
+      "cwe_name": "Failure to Handle Incomplete Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 240,
+      "cwe_name": "Improper Handling of Inconsistent Structural Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 241,
+      "cwe_name": "Improper Handling of Unexpected Data Type",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 242,
+      "cwe_name": "Use of Inherently Dangerous Function",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 243,
+      "cwe_name": "Creation of chroot Jail Without Changing Working Directory",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 244,
+      "cwe_name": "Improper Clearing of Heap Memory Before Release ('Heap Inspection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 245,
+      "cwe_name": "J2EE Bad Practices: Direct Management of Connections",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 246,
+      "cwe_name": "J2EE Bad Practices: Direct Use of Sockets",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 247,
+      "cwe_name": "DEPRECATED: Reliance on DNS Lookups in a Security Decision",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 248,
+      "cwe_name": "Uncaught Exception",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 249,
+      "cwe_name": "DEPRECATED: Often Misused: Path Manipulation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 250,
+      "cwe_name": "Execution with Unnecessary Privileges",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 252,
+      "cwe_name": "Unchecked Return Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 253,
+      "cwe_name": "Incorrect Check of Function Return Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 255,
+      "cwe_name": "Improper Authentication",
+      "owasp_codes": [
+        "A07:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 256,
+      "cwe_name": "Plaintext Storage of a Password",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 257,
+      "cwe_name": "Storing Passwords in a Recoverable Format",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 258,
+      "cwe_name": "Empty Password in Configuration File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 259,
+      "cwe_name": "Use of Hard-coded Password",
+      "owasp_codes": [
+        "A02:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 260,
+      "cwe_name": "Password in Configuration File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 261,
+      "cwe_name": "Weak Encoding for Password",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 262,
+      "cwe_name": "Not Using Password Aging",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 263,
+      "cwe_name": "Password Aging with Long Expiration",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 266,
+      "cwe_name": "Incorrect Privilege Assignment",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 267,
+      "cwe_name": "Privilege Defined With Unsafe Actions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 268,
+      "cwe_name": "Privilege Chaining",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 269,
+      "cwe_name": "Improper Access Control",
+      "owasp_codes": [
+        "A01:2021"
+      ],
+      "mitre_techniques": [
+        "T1548"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 270,
+      "cwe_name": "Privilege Context Switching Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 271,
+      "cwe_name": "Privilege Dropping / Lowering Errors",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 272,
+      "cwe_name": "Least Privilege Violation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 273,
+      "cwe_name": "Improper Check for Dropped Privileges",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 274,
+      "cwe_name": "Improper Handling of Insufficient Privileges",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 276,
+      "cwe_name": "Incorrect Default Permissions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 277,
+      "cwe_name": "Insecure Inherited Permissions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 278,
+      "cwe_name": "Insecure Preserved Inherited Permissions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 279,
+      "cwe_name": "Incorrect Execution-Assigned Permissions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 280,
+      "cwe_name": "Improper Handling of Insufficient Permissions or Privileges",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 281,
+      "cwe_name": "Improper Preservation of Permissions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 282,
+      "cwe_name": "Improper Ownership Management",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 283,
+      "cwe_name": "Unverified Ownership",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 284,
+      "cwe_name": "Improper Access Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 285,
+      "cwe_name": "Improper Authorization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 286,
+      "cwe_name": "Incorrect User Management",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 287,
+      "cwe_name": "Improper Authentication",
+      "owasp_codes": [
+        "A07:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 288,
+      "cwe_name": "Authentication Bypass Using an Alternate Path or Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 289,
+      "cwe_name": "Authentication Bypass by Alternate Name",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 290,
+      "cwe_name": "Authentication Bypass by Spoofing",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 291,
+      "cwe_name": "Reliance on IP Address for Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 292,
+      "cwe_name": "DEPRECATED: Trusting Self-reported DNS Name",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 293,
+      "cwe_name": "Using Referer Field for Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 294,
+      "cwe_name": "Authentication Bypass by Capture-replay",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 295,
+      "cwe_name": "Improper Certificate Validation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 296,
+      "cwe_name": "Improper Following of a Certificate's Chain of Trust",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 297,
+      "cwe_name": "Improper Validation of Certificate with Host Mismatch",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 298,
+      "cwe_name": "Improper Validation of Certificate Expiration",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 299,
+      "cwe_name": "Improper Check for Certificate Revocation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 300,
+      "cwe_name": "Channel Accessible by Non-Endpoint",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 301,
+      "cwe_name": "Reflection Attack in an Authentication Protocol",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 302,
+      "cwe_name": "Authentication Bypass by Assumed-Immutable Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 303,
+      "cwe_name": "Incorrect Implementation of Authentication Algorithm",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 304,
+      "cwe_name": "Missing Critical Step in Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 305,
+      "cwe_name": "Authentication Bypass by Primary Weakness",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 306,
+      "cwe_name": "Missing Authentication for Critical Function",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 307,
+      "cwe_name": "Improper Restriction of Excessive Authentication Attempts",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 308,
+      "cwe_name": "Use of Single-factor Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 309,
+      "cwe_name": "Use of Password System for Primary Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 311,
+      "cwe_name": "Missing Encryption of Sensitive Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 312,
+      "cwe_name": "Cleartext Storage of Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 313,
+      "cwe_name": "Cleartext Storage in a File or on Disk",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 314,
+      "cwe_name": "Cleartext Storage in the Registry",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 315,
+      "cwe_name": "Cleartext Storage of Sensitive Information in a Cookie",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 316,
+      "cwe_name": "Cleartext Storage of Sensitive Information in Memory",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 317,
+      "cwe_name": "Cleartext Storage of Sensitive Information in GUI",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 318,
+      "cwe_name": "Cleartext Storage of Sensitive Information in Executable",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 319,
+      "cwe_name": "Cleartext Transmission of Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 321,
+      "cwe_name": "Use of Hard-coded Cryptographic Key",
+      "owasp_codes": [
+        "A02:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 322,
+      "cwe_name": "Key Exchange without Entity Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 323,
+      "cwe_name": "Reusing a Nonce, Key Pair in Encryption",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 324,
+      "cwe_name": "Use of a Key Past its Expiration Date",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 325,
+      "cwe_name": "Missing Cryptographic Step",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 326,
+      "cwe_name": "Inadequate Encryption Strength",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 327,
+      "cwe_name": "Use of Broken or Risky Cryptographic Algorithm",
+      "owasp_codes": [
+        "A02:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 328,
+      "cwe_name": "Use of Weak Hash",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 329,
+      "cwe_name": "Generation of Predictable IV with CBC Mode",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 330,
+      "cwe_name": "Use of Insufficiently Random Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 331,
+      "cwe_name": "Insufficient Entropy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 332,
+      "cwe_name": "Insufficient Entropy in PRNG",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 333,
+      "cwe_name": "Improper Handling of Insufficient Entropy in TRNG",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 334,
+      "cwe_name": "Small Space of Random Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 335,
+      "cwe_name": "Incorrect Usage of Seeds in Pseudo-Random Number Generator (PRNG)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 336,
+      "cwe_name": "Same Seed in Pseudo-Random Number Generator (PRNG)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 337,
+      "cwe_name": "Predictable Seed in Pseudo-Random Number Generator (PRNG)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 338,
+      "cwe_name": "Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 339,
+      "cwe_name": "Small Seed Space in PRNG",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 340,
+      "cwe_name": "Generation of Predictable Numbers or Identifiers",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 341,
+      "cwe_name": "Predictable from Observable State",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 342,
+      "cwe_name": "Predictable Exact Value from Previous Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 343,
+      "cwe_name": "Predictable Value Range from Previous Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 344,
+      "cwe_name": "Use of Invariant Value in Dynamically Changing Context",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 345,
+      "cwe_name": "Insufficient Verification of Data Authenticity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 346,
+      "cwe_name": "Origin Validation Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 347,
+      "cwe_name": "Improper Verification of Cryptographic Signature",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 348,
+      "cwe_name": "Use of Less Trusted Source",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 349,
+      "cwe_name": "Acceptance of Extraneous Untrusted Data With Trusted Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 350,
+      "cwe_name": "Reliance on Reverse DNS Resolution for a Security-Critical Action",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 351,
+      "cwe_name": "Insufficient Type Distinction",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 352,
+      "cwe_name": "Cross-Site Request Forgery (CSRF)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 353,
+      "cwe_name": "Missing Support for Integrity Check",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 354,
+      "cwe_name": "Improper Validation of Integrity Check Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 356,
+      "cwe_name": "Product UI does not Warn User of Unsafe Actions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 357,
+      "cwe_name": "Insufficient UI Warning of Dangerous Operations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 358,
+      "cwe_name": "Improperly Implemented Security Check for Standard",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 359,
+      "cwe_name": "Exposure of Private Personal Information to an Unauthorized Actor",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 360,
+      "cwe_name": "Trust of System Event Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 362,
+      "cwe_name": "Concurrent Execution using Shared Resource with Improper Synchronization",
+      "owasp_codes": [
+        "A06:2021"
+      ],
+      "mitre_techniques": [
+        "T1530"
+      ],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 363,
+      "cwe_name": "Race Condition Enabling Link Following",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 364,
+      "cwe_name": "Signal Handler Race Condition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 365,
+      "cwe_name": "DEPRECATED: Race Condition in Switch",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 366,
+      "cwe_name": "Race Condition within a Thread",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 367,
+      "cwe_name": "Time-of-check Time-of-use (TOCTOU) Race Condition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 368,
+      "cwe_name": "Context Switching Race Condition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 369,
+      "cwe_name": "Divide By Zero",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 370,
+      "cwe_name": "Missing Check for Certificate Revocation after Initial Check",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 372,
+      "cwe_name": "Incomplete Internal State Distinction",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 373,
+      "cwe_name": "DEPRECATED: State Synchronization Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 374,
+      "cwe_name": "Passing Mutable Objects to an Untrusted Method",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 375,
+      "cwe_name": "Returning a Mutable Object to an Untrusted Caller",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 377,
+      "cwe_name": "Insecure Temporary File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 378,
+      "cwe_name": "Creation of Temporary File With Insecure Permissions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 379,
+      "cwe_name": "Creation of Temporary File in Directory with Insecure Permissions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 382,
+      "cwe_name": "J2EE Bad Practices: Use of System.exit()",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 383,
+      "cwe_name": "J2EE Bad Practices: Direct Use of Threads",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 384,
+      "cwe_name": "Session Fixation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 385,
+      "cwe_name": "Covert Timing Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 386,
+      "cwe_name": "Symbolic Name not Mapping to Correct Object",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 390,
+      "cwe_name": "Detection of Error Condition Without Action",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 391,
+      "cwe_name": "Unchecked Error Condition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 392,
+      "cwe_name": "Missing Report of Error Condition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 393,
+      "cwe_name": "Return of Wrong Status Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 394,
+      "cwe_name": "Unexpected Status Code or Return Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 395,
+      "cwe_name": "Use of NullPointerException Catch to Detect NULL Pointer Dereference",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 396,
+      "cwe_name": "Declaration of Catch for Generic Exception",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 397,
+      "cwe_name": "Declaration of Throws for Generic Exception",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 400,
+      "cwe_name": "Uncontrolled Resource Consumption",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 401,
+      "cwe_name": "Missing Release of Memory after Effective Lifetime",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 402,
+      "cwe_name": "Transmission of Private Resources into a New Sphere ('Resource Leak')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 403,
+      "cwe_name": "Exposure of File Descriptor to Unintended Control Sphere ('File Descriptor Leak')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 404,
+      "cwe_name": "Improper Resource Shutdown or Release",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 405,
+      "cwe_name": "Asymmetric Resource Consumption (Amplification)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 406,
+      "cwe_name": "Insufficient Control of Network Message Volume (Network Amplification)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 407,
+      "cwe_name": "Inefficient Algorithmic Complexity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 408,
+      "cwe_name": "Incorrect Behavior Order: Early Amplification",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 409,
+      "cwe_name": "Improper Handling of Highly Compressed Data (Data Amplification)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 410,
+      "cwe_name": "Insufficient Resource Pool",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 412,
+      "cwe_name": "Unrestricted Externally Accessible Lock",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 413,
+      "cwe_name": "Improper Resource Locking",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 414,
+      "cwe_name": "Missing Lock Check",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 415,
+      "cwe_name": "Double Free",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 416,
+      "cwe_name": "Use After Free",
+      "owasp_codes": [
+        "A06:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 419,
+      "cwe_name": "Unprotected Primary Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 420,
+      "cwe_name": "Unprotected Alternate Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 421,
+      "cwe_name": "Race Condition During Access to Alternate Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 422,
+      "cwe_name": "Unprotected Windows Messaging Channel ('Shatter')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 423,
+      "cwe_name": "DEPRECATED: Proxied Trusted Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 424,
+      "cwe_name": "Improper Protection of Alternate Path",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 425,
+      "cwe_name": "Direct Request ('Forced Browsing')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 426,
+      "cwe_name": "Untrusted Search Path",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 427,
+      "cwe_name": "Uncontrolled Search Path Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 428,
+      "cwe_name": "Unquoted Search Path or Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 430,
+      "cwe_name": "Deployment of Wrong Handler",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 431,
+      "cwe_name": "Missing Handler",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 432,
+      "cwe_name": "Dangerous Signal Handler not Disabled During Sensitive Operations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 433,
+      "cwe_name": "Unparsed Raw Web Content Delivery",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 434,
+      "cwe_name": "Unrestricted Upload of File with Dangerous Type",
+      "owasp_codes": [
+        "A04:2021"
+      ],
+      "mitre_techniques": [
+        "T1190",
+        "T1189",
+        "T1091",
+        "T1195",
+        "T1547",
+        "T1197"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 435,
+      "cwe_name": "Improper Interaction Between Multiple Correctly-Behaving Entities",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 436,
+      "cwe_name": "Interpretation Conflict",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 437,
+      "cwe_name": "Incomplete Model of Endpoint Features",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 439,
+      "cwe_name": "Behavioral Change in New Version or Environment",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 440,
+      "cwe_name": "Expected Behavior Violation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 441,
+      "cwe_name": "Unintended Proxy or Intermediary ('Confused Deputy')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 443,
+      "cwe_name": "DEPRECATED: HTTP response splitting",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 444,
+      "cwe_name": "Inconsistent Interpretation of HTTP Requests ('HTTP Request/Response Smuggling')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 446,
+      "cwe_name": "UI Discrepancy for Security Feature",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 447,
+      "cwe_name": "Unimplemented or Unsupported Feature in UI",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 448,
+      "cwe_name": "Obsolete Feature in UI",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 449,
+      "cwe_name": "The UI Performs the Wrong Action",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 450,
+      "cwe_name": "Multiple Interpretations of UI Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 451,
+      "cwe_name": "User Interface (UI) Misrepresentation of Critical Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 453,
+      "cwe_name": "Insecure Default Variable Initialization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 454,
+      "cwe_name": "External Initialization of Trusted Variables or Data Stores",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 455,
+      "cwe_name": "Non-exit on Failed Initialization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 456,
+      "cwe_name": "Missing Initialization of a Variable",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 457,
+      "cwe_name": "Use of Uninitialized Variable",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 458,
+      "cwe_name": "DEPRECATED: Incorrect Initialization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 459,
+      "cwe_name": "Incomplete Cleanup",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 460,
+      "cwe_name": "Improper Cleanup on Thrown Exception",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 462,
+      "cwe_name": "Duplicate Key in Associative List (Alist)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 463,
+      "cwe_name": "Deletion of Data Structure Sentinel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 464,
+      "cwe_name": "Addition of Data Structure Sentinel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 466,
+      "cwe_name": "Return of Pointer Value Outside of Expected Range",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 467,
+      "cwe_name": "Use of sizeof() on a Pointer Type",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 468,
+      "cwe_name": "Incorrect Pointer Scaling",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 469,
+      "cwe_name": "Use of Pointer Subtraction to Determine Size",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 470,
+      "cwe_name": "Use of Externally-Controlled Input to Select Classes or Code ('Unsafe Reflection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 471,
+      "cwe_name": "Modification of Assumed-Immutable Data (MAID)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 472,
+      "cwe_name": "External Control of Assumed-Immutable Web Parameter",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 473,
+      "cwe_name": "PHP External Variable Modification",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 474,
+      "cwe_name": "Use of Function with Inconsistent Implementations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 475,
+      "cwe_name": "Undefined Behavior for Input to API",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 476,
+      "cwe_name": "Null Pointer Dereference",
+      "owasp_codes": [
+        "A06:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 477,
+      "cwe_name": "Use of Obsolete Function",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 478,
+      "cwe_name": "Missing Default Case in Multiple Condition Expression",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 479,
+      "cwe_name": "Signal Handler Use of a Non-reentrant Function",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 480,
+      "cwe_name": "Use of Incorrect Operator",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 481,
+      "cwe_name": "Assigning instead of Comparing",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 482,
+      "cwe_name": "Comparing instead of Assigning",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 483,
+      "cwe_name": "Incorrect Block Delimitation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 484,
+      "cwe_name": "Omitted Break Statement in Switch",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 486,
+      "cwe_name": "Comparison of Classes by Name",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 487,
+      "cwe_name": "Reliance on Package-level Scope",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 488,
+      "cwe_name": "Exposure of Data Element to Wrong Session",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 489,
+      "cwe_name": "Active Debug Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 491,
+      "cwe_name": "Public cloneable() Method Without Final ('Object Hijack')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 492,
+      "cwe_name": "Use of Inner Class Containing Sensitive Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 493,
+      "cwe_name": "Critical Public Variable Without Final Modifier",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 494,
+      "cwe_name": "Download of Code Without Integrity Check",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 495,
+      "cwe_name": "Private Data Structure Returned From A Public Method",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 496,
+      "cwe_name": "Public Data Assigned to Private Array-Typed Field",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 497,
+      "cwe_name": "Exposure of Sensitive System Information to an Unauthorized Control Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 498,
+      "cwe_name": "Cloneable Class Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 499,
+      "cwe_name": "Serializable Class Containing Sensitive Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 500,
+      "cwe_name": "Public Static Field Not Marked Final",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 501,
+      "cwe_name": "Trust Boundary Violation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 502,
+      "cwe_name": "Deserialization of Untrusted Data",
+      "owasp_codes": [
+        "A08:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 506,
+      "cwe_name": "Embedded Malicious Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 507,
+      "cwe_name": "Trojan Horse",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 508,
+      "cwe_name": "Non-Replicating Malicious Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 509,
+      "cwe_name": "Replicating Malicious Code (Virus or Worm)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 510,
+      "cwe_name": "Trapdoor",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 511,
+      "cwe_name": "Logic/Time Bomb",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 512,
+      "cwe_name": "Spyware",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 514,
+      "cwe_name": "Covert Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 515,
+      "cwe_name": "Covert Storage Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 516,
+      "cwe_name": "DEPRECATED: Covert Timing Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 520,
+      "cwe_name": ".NET Misconfiguration: Use of Impersonation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 521,
+      "cwe_name": "Weak Password Requirements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 522,
+      "cwe_name": "Insufficiently Protected Credentials",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 523,
+      "cwe_name": "Unprotected Transport of Credentials",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 524,
+      "cwe_name": "Use of Cache Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 525,
+      "cwe_name": "Use of Web Browser Cache Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 526,
+      "cwe_name": "Cleartext Storage of Sensitive Information in an Environment Variable",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 527,
+      "cwe_name": "Exposure of Version-Control Repository to an Unauthorized Control Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 528,
+      "cwe_name": "Exposure of Core Dump File to an Unauthorized Control Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 529,
+      "cwe_name": "Exposure of Access Control List Files to an Unauthorized Control Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 530,
+      "cwe_name": "Exposure of Backup File to an Unauthorized Control Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 531,
+      "cwe_name": "Inclusion of Sensitive Information in Test Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 532,
+      "cwe_name": "Insertion of Sensitive Information into Log File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 533,
+      "cwe_name": "DEPRECATED: Information Exposure Through Server Log Files",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 534,
+      "cwe_name": "DEPRECATED: Information Exposure Through Debug Log Files",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 535,
+      "cwe_name": "Exposure of Information Through Shell Error Message",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 536,
+      "cwe_name": "Servlet Runtime Error Message Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 537,
+      "cwe_name": "Java Runtime Error Message Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 538,
+      "cwe_name": "Insertion of Sensitive Information into Externally-Accessible File or Directory",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 539,
+      "cwe_name": "Use of Persistent Cookies Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 540,
+      "cwe_name": "Inclusion of Sensitive Information in Source Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 541,
+      "cwe_name": "Inclusion of Sensitive Information in an HTTP Request Body",
+      "owasp_codes": [
+        "A01:2021"
+      ],
+      "mitre_techniques": [
+        "T1589",
+        "T1590"
+      ],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 542,
+      "cwe_name": "DEPRECATED: Information Exposure Through Cleanup Log Files",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 543,
+      "cwe_name": "Use of Singleton Pattern Without Synchronization in a Multithreaded Context",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 544,
+      "cwe_name": "Missing Standardized Error Handling Mechanism",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 545,
+      "cwe_name": "DEPRECATED: Use of Dynamic Class Loading",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 546,
+      "cwe_name": "Suspicious Comment",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 547,
+      "cwe_name": "Use of Hard-coded, Security-relevant Constants",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 548,
+      "cwe_name": "Exposure of Information Through Directory Listing",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 549,
+      "cwe_name": "Missing Password Field Masking",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 550,
+      "cwe_name": "Server-generated Error Message Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 551,
+      "cwe_name": "Incorrect Behavior Order: Authorization Before Parsing and Canonicalization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 552,
+      "cwe_name": "Files or Directories Accessible to External Parties",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 553,
+      "cwe_name": "Command Shell in Externally Accessible Directory",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 554,
+      "cwe_name": "ASP.NET Misconfiguration: Not Using Input Validation Framework",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 555,
+      "cwe_name": "J2EE Misconfiguration: Plaintext Password in Configuration File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 556,
+      "cwe_name": "ASP.NET Misconfiguration: Use of Identity Impersonation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 558,
+      "cwe_name": "Use of getlogin() in Multithreaded Application",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 560,
+      "cwe_name": "Use of umask() with chmod-style Argument",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 561,
+      "cwe_name": "Dead Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 562,
+      "cwe_name": "Return of Stack Variable Address",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 563,
+      "cwe_name": "Assignment to Variable without Use",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 564,
+      "cwe_name": "SQL Injection: Hibernate",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 565,
+      "cwe_name": "Reliance on Cookies without Validation and Integrity Checking",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 566,
+      "cwe_name": "Authorization Bypass Through User-Controlled SQL Primary Key",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 567,
+      "cwe_name": "Unsynchronized Access to Shared Data in a Multithreaded Context",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 568,
+      "cwe_name": "finalize() Method Without super.finalize()",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 570,
+      "cwe_name": "Expression is Always False",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 571,
+      "cwe_name": "Expression is Always True",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 572,
+      "cwe_name": "Call to Thread run() instead of start()",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 573,
+      "cwe_name": "Improper Following of Specification by Caller",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 574,
+      "cwe_name": "EJB Bad Practices: Use of Synchronization Primitives",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 575,
+      "cwe_name": "EJB Bad Practices: Use of AWT Swing",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 576,
+      "cwe_name": "EJB Bad Practices: Use of Java I/O",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 577,
+      "cwe_name": "EJB Bad Practices: Use of Sockets",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 578,
+      "cwe_name": "EJB Bad Practices: Use of Class Loader",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 579,
+      "cwe_name": "J2EE Bad Practices: Non-serializable Object Stored in Session",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 580,
+      "cwe_name": "clone() Method Without super.clone()",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 581,
+      "cwe_name": "Object Model Violation: Just One of Equals and Hashcode Defined",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 582,
+      "cwe_name": "Array Declared Public, Final, and Static",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 583,
+      "cwe_name": "finalize() Method Declared Public",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 584,
+      "cwe_name": "Return Inside Finally Block",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 585,
+      "cwe_name": "Empty Synchronized Block",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 586,
+      "cwe_name": "Explicit Call to Finalize()",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 587,
+      "cwe_name": "Assignment of a Fixed Address to a Pointer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 588,
+      "cwe_name": "Attempt to Access Child of a Non-structure Pointer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 589,
+      "cwe_name": "Call to Non-ubiquitous API",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 590,
+      "cwe_name": "Free of Memory not on the Heap",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 591,
+      "cwe_name": "Sensitive Data Storage in Improperly Locked Memory",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 592,
+      "cwe_name": "DEPRECATED: Authentication Bypass Issues",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 593,
+      "cwe_name": "Authentication Bypass: OpenSSL CTX Object Modified after SSL Objects are Created",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 594,
+      "cwe_name": "J2EE Framework: Saving Unserializable Objects to Disk",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 595,
+      "cwe_name": "Comparison of Object References Instead of Object Contents",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 596,
+      "cwe_name": "DEPRECATED: Incorrect Semantic Object Comparison",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 597,
+      "cwe_name": "Use of Wrong Operator in String Comparison",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 598,
+      "cwe_name": "Use of GET Request Method With Sensitive Query Strings",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 599,
+      "cwe_name": "Missing Validation of OpenSSL Certificate",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 600,
+      "cwe_name": "Uncaught Exception in Servlet",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 601,
+      "cwe_name": "URL Redirection to Untrusted Site ('Open Redirect')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 602,
+      "cwe_name": "Client-Side Enforcement of Server-Side Security",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 603,
+      "cwe_name": "Use of Client-Side Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 605,
+      "cwe_name": "Multiple Binds to the Same Port",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 606,
+      "cwe_name": "Unchecked Input for Loop Condition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 607,
+      "cwe_name": "Public Static Final Field References Mutable Object",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 608,
+      "cwe_name": "Struts: Non-private Field in ActionForm Class",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 609,
+      "cwe_name": "Double-Checked Locking",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 610,
+      "cwe_name": "Externally Controlled Reference to a Resource in Another Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 611,
+      "cwe_name": "Improper Restriction of XML External Entity Reference",
+      "owasp_codes": [
+        "A05:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 612,
+      "cwe_name": "Improper Authorization of Index Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 613,
+      "cwe_name": "Insufficient Session Expiration",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 614,
+      "cwe_name": "Sensitive Cookie in HTTPS Session Without 'Secure' Attribute",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 615,
+      "cwe_name": "Inclusion of Sensitive Information in Source Code Comments",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 616,
+      "cwe_name": "Incomplete Identification of Uploaded File Variables (PHP)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 617,
+      "cwe_name": "Reachable Assertion",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 618,
+      "cwe_name": "Exposed Unsafe ActiveX Method",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 619,
+      "cwe_name": "Dangling Database Cursor ('Cursor Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 620,
+      "cwe_name": "Unverified Password Change",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 621,
+      "cwe_name": "Variable Extraction Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 622,
+      "cwe_name": "Improper Validation of Function Hook Arguments",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 623,
+      "cwe_name": "Unsafe ActiveX Control Marked Safe For Scripting",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 624,
+      "cwe_name": "Executable Regular Expression Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 625,
+      "cwe_name": "Permissive Regular Expression",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 626,
+      "cwe_name": "Null Byte Interaction Error (Poison Null Byte)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 627,
+      "cwe_name": "Dynamic Variable Evaluation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 628,
+      "cwe_name": "Function Call with Incorrectly Specified Arguments",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 636,
+      "cwe_name": "Not Failing Securely ('Failing Open')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 637,
+      "cwe_name": "Unnecessary Complexity in Protection Mechanism (Not Using 'Economy of Mechanism')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 638,
+      "cwe_name": "Not Using Complete Mediation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 639,
+      "cwe_name": "Authorization Bypass Through User-Controlled Key",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 640,
+      "cwe_name": "Weak Password Recovery Mechanism for Forgotten Password",
+      "owasp_codes": [
+        "A07:2021"
+      ],
+      "mitre_techniques": [
+        "T1566"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 641,
+      "cwe_name": "Improper Restriction of Names for Files and Other Resources",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 642,
+      "cwe_name": "External Control of Critical State Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 643,
+      "cwe_name": "Improper Neutralization of Data within XPath Expressions ('XPath Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 644,
+      "cwe_name": "Improper Neutralization of HTTP Headers for Scripting Syntax",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 645,
+      "cwe_name": "Overly Restrictive Account Lockout Mechanism",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 646,
+      "cwe_name": "Reliance on File Name or Extension of Externally-Supplied File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 647,
+      "cwe_name": "Use of Non-Canonical URL Paths for Authorization Decisions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 648,
+      "cwe_name": "Incorrect Use of Privileged APIs",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 649,
+      "cwe_name": "Reliance on Obfuscation or Encryption of Security-Relevant Inputs without Integrity Checking",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 650,
+      "cwe_name": "Trusting HTTP Permission Methods on the Server Side",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 651,
+      "cwe_name": "Exposure of WSDL File Containing Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 652,
+      "cwe_name": "Improper Neutralization of Data within XQuery Expressions ('XQuery Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 653,
+      "cwe_name": "Improper Isolation or Compartmentalization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 654,
+      "cwe_name": "Reliance on a Single Factor in a Security Decision",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 655,
+      "cwe_name": "Insufficient Psychological Acceptability",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 656,
+      "cwe_name": "Reliance on Security Through Obscurity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 657,
+      "cwe_name": "Violation of Secure Design Principles",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 662,
+      "cwe_name": "Improper Synchronization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 663,
+      "cwe_name": "Use of a Non-reentrant Function in a Concurrent Context",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 664,
+      "cwe_name": "Improper Control of a Resource Through its Lifetime",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 665,
+      "cwe_name": "Improper Initialization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 666,
+      "cwe_name": "Operation on Resource in Wrong Phase of Lifetime",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 667,
+      "cwe_name": "Improper Locking",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 668,
+      "cwe_name": "Exposure of Resource to Wrong Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 669,
+      "cwe_name": "Incorrect Resource Transfer Between Spheres",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 670,
+      "cwe_name": "Always-Incorrect Control Flow Implementation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 671,
+      "cwe_name": "Lack of Administrator Control over Security",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 672,
+      "cwe_name": "Operation on a Resource after Expiration or Release",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 673,
+      "cwe_name": "External Influence of Sphere Definition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 674,
+      "cwe_name": "Uncontrolled Recursion",
+      "owasp_codes": [
+        "A06:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 675,
+      "cwe_name": "Multiple Operations on Resource in Single-Operation Context",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 676,
+      "cwe_name": "Use of Potentially Dangerous Function",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 680,
+      "cwe_name": "Integer Overflow to Buffer Overflow",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 681,
+      "cwe_name": "Incorrect Conversion between Numeric Types",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 682,
+      "cwe_name": "Incorrect Calculation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 683,
+      "cwe_name": "Function Call With Incorrect Order of Arguments",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 684,
+      "cwe_name": "Incorrect Provision of Specified Functionality",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 685,
+      "cwe_name": "Function Call With Incorrect Number of Arguments",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 686,
+      "cwe_name": "Function Call With Incorrect Argument Type",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 687,
+      "cwe_name": "Function Call With Incorrectly Specified Argument Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 688,
+      "cwe_name": "Function Call With Incorrect Variable or Reference as Argument",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 689,
+      "cwe_name": "Permission Race Condition During Resource Copy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 690,
+      "cwe_name": "Unchecked Return Value to NULL Pointer Dereference",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 691,
+      "cwe_name": "Insufficient Control Flow Management",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 692,
+      "cwe_name": "Incomplete Denylist to Cross-Site Scripting",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 693,
+      "cwe_name": "Protection Mechanism Failure",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 694,
+      "cwe_name": "Use of Multiple Resources with Duplicate Identifier",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 695,
+      "cwe_name": "Use of Low-Level Functionality",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 696,
+      "cwe_name": "Incorrect Behavior Order",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 697,
+      "cwe_name": "Incorrect Comparison",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 698,
+      "cwe_name": "Execution After Redirect (EAR)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 703,
+      "cwe_name": "Improper Check or Handling of Exceptional Conditions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 704,
+      "cwe_name": "Incorrect Type Conversion or Cast",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 705,
+      "cwe_name": "Incorrect Control Flow Scoping",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 706,
+      "cwe_name": "Use of Incorrectly-Resolved Name or Reference",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 707,
+      "cwe_name": "Improper Neutralization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 708,
+      "cwe_name": "Incorrect Ownership Assignment",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 710,
+      "cwe_name": "Improper Adherence to Coding Standards",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 732,
+      "cwe_name": "Incorrect Permission Assignment for Critical Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 733,
+      "cwe_name": "Compiler Optimization Removal or Modification of Security-critical Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 749,
+      "cwe_name": "Exposed Dangerous Method or Function",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 754,
+      "cwe_name": "Improper Check for Unusual or Exceptional Conditions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 755,
+      "cwe_name": "Improper Handling of Exceptional Conditions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 756,
+      "cwe_name": "Missing Custom Error Page",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 757,
+      "cwe_name": "Selection of Less-Secure Algorithm During Negotiation ('Algorithm Downgrade')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 758,
+      "cwe_name": "Reliance on Undefined, Unspecified, or Implementation-Defined Behavior",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 759,
+      "cwe_name": "Use of a One-Way Hash without a Salt",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 760,
+      "cwe_name": "Use of a One-Way Hash with a Predictable Salt",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 761,
+      "cwe_name": "Free of Pointer not at Start of Buffer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 762,
+      "cwe_name": "Mismatched Memory Management Routines",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 763,
+      "cwe_name": "Release of Invalid Pointer or Reference",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 764,
+      "cwe_name": "Multiple Locks of a Critical Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 765,
+      "cwe_name": "Multiple Unlocks of a Critical Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 766,
+      "cwe_name": "Critical Data Element Declared Public",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 767,
+      "cwe_name": "Access to Critical Private Variable via Public Method",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 768,
+      "cwe_name": "Incorrect Short Circuit Evaluation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 769,
+      "cwe_name": "DEPRECATED: Uncontrolled File Descriptor Consumption",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 770,
+      "cwe_name": "Allocation of Resources Without Limits or Throttling",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 771,
+      "cwe_name": "Missing Reference to Active Allocated Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 772,
+      "cwe_name": "Missing Release of Resource after Effective Lifetime",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 773,
+      "cwe_name": "Missing Reference to Active File Descriptor or Handle",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 774,
+      "cwe_name": "Allocation of File Descriptors or Handles Without Limits or Throttling",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 775,
+      "cwe_name": "Missing Release of File Descriptor or Handle after Effective Lifetime",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 776,
+      "cwe_name": "Improper Restriction of Recursive Entity References in DTDs ('XML Entity Expansion')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 777,
+      "cwe_name": "Regular Expression without Anchors",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 778,
+      "cwe_name": "Insufficient Logging",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 779,
+      "cwe_name": "Logging of Excessive Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 780,
+      "cwe_name": "Use of RSA Algorithm without OAEP",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 781,
+      "cwe_name": "Improper Address Validation in IOCTL with METHOD_NEITHER I/O Control Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 782,
+      "cwe_name": "Exposed IOCTL with Insufficient Access Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 783,
+      "cwe_name": "Operator Precedence Logic Error",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 784,
+      "cwe_name": "Reliance on Cookies without Validation and Integrity Checking in a Security Decision",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 785,
+      "cwe_name": "Use of Path Manipulation Function without Maximum-sized Buffer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 786,
+      "cwe_name": "Access of Memory Location Before Start of Buffer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 787,
+      "cwe_name": "Out-of-bounds Write",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 788,
+      "cwe_name": "Access of Memory Location After End of Buffer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 789,
+      "cwe_name": "Memory Allocation with Excessive Size Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 790,
+      "cwe_name": "Improper Filtering of Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 791,
+      "cwe_name": "Incomplete Filtering of Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 792,
+      "cwe_name": "Incomplete Filtering of One or More Instances of Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 793,
+      "cwe_name": "Only Filtering One Instance of a Special Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 794,
+      "cwe_name": "Incomplete Filtering of Multiple Instances of Special Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 795,
+      "cwe_name": "Only Filtering Special Elements at a Specified Location",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 796,
+      "cwe_name": "Only Filtering Special Elements Relative to a Marker",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 797,
+      "cwe_name": "Only Filtering Special Elements at an Absolute Position",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 798,
+      "cwe_name": "Use of Hard-coded Credentials",
+      "owasp_codes": [
+        "A05:2021"
+      ],
+      "mitre_techniques": [],
+      "severity": "CRITICAL"
+    },
+    {
+      "cwe_id": 799,
+      "cwe_name": "Improper Control of Interaction Frequency",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 804,
+      "cwe_name": "Guessable CAPTCHA",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 805,
+      "cwe_name": "Buffer Access with Incorrect Length Value",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 806,
+      "cwe_name": "Buffer Access Using Size of Source Buffer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 807,
+      "cwe_name": "Reliance on Untrusted Inputs in a Security Decision",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 820,
+      "cwe_name": "Missing Synchronization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 821,
+      "cwe_name": "Incorrect Synchronization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 822,
+      "cwe_name": "Untrusted Pointer Dereference",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 823,
+      "cwe_name": "Use of Out-of-range Pointer Offset",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 824,
+      "cwe_name": "Access of Uninitialized Pointer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 825,
+      "cwe_name": "Expired Pointer Dereference",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 826,
+      "cwe_name": "Premature Release of Resource During Expected Lifetime",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 827,
+      "cwe_name": "Improper Control of Document Type Definition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 828,
+      "cwe_name": "Signal Handler with Functionality that is not Asynchronous-Safe",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 829,
+      "cwe_name": "Inclusion of Functionality from Untrusted Control Sphere",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 830,
+      "cwe_name": "Inclusion of Web Functionality from an Untrusted Source",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 831,
+      "cwe_name": "Signal Handler Function Associated with Multiple Signals",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 832,
+      "cwe_name": "Unlock of a Resource that is not Locked",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 833,
+      "cwe_name": "Deadlock",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 834,
+      "cwe_name": "Excessive Iteration",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 835,
+      "cwe_name": "Loop with Unreachable Exit Condition ('Infinite Loop')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 836,
+      "cwe_name": "Use of Password Hash Instead of Password for Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 837,
+      "cwe_name": "Improper Enforcement of a Single, Unique Action",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 838,
+      "cwe_name": "Inappropriate Encoding for Output Context",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 839,
+      "cwe_name": "Numeric Range Comparison Without Minimum Check",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 841,
+      "cwe_name": "Improper Enforcement of Behavioral Workflow",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 842,
+      "cwe_name": "Placement of User into Incorrect Group",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 843,
+      "cwe_name": "Access of Resource Using Incompatible Type ('Type Confusion')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 862,
+      "cwe_name": "Missing Authorization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 863,
+      "cwe_name": "Incorrect Authorization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 908,
+      "cwe_name": "Use of Uninitialized Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 909,
+      "cwe_name": "Missing Initialization of Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 910,
+      "cwe_name": "Use of Expired File Descriptor",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 911,
+      "cwe_name": "Improper Update of Reference Count",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 912,
+      "cwe_name": "Hidden Functionality",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 913,
+      "cwe_name": "Improper Control of Dynamically-Managed Code Resources",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 914,
+      "cwe_name": "Improper Control of Dynamically-Identified Variables",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 915,
+      "cwe_name": "Improperly Controlled Modification of Dynamically-Determined Object Attributes",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 916,
+      "cwe_name": "Use of Password Hash With Insufficient Computational Effort",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 917,
+      "cwe_name": "Improper Neutralization of Special Elements used in an Expression Language Statement ('Expression Language Injection')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 918,
+      "cwe_name": "Server-Side Request Forgery (SSRF)",
+      "owasp_codes": [
+        "A10:2021"
+      ],
+      "mitre_techniques": [
+        "T1190",
+        "T1189"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 920,
+      "cwe_name": "Improper Restriction of Power Consumption",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 921,
+      "cwe_name": "Storage of Sensitive Data in a Mechanism without Access Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 922,
+      "cwe_name": "Insecure Storage of Sensitive Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 923,
+      "cwe_name": "Improper Restriction of Communication Channel to Intended Endpoints",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 924,
+      "cwe_name": "Improper Enforcement of Message Integrity During Transmission in a Communication Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 925,
+      "cwe_name": "Improper Verification of Intent by Broadcast Receiver",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 926,
+      "cwe_name": "Improper Export of Android Application Components",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 927,
+      "cwe_name": "Use of Implicit Intent for Sensitive Communication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 939,
+      "cwe_name": "Improper Authorization in Handler for Custom URL Scheme",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 940,
+      "cwe_name": "Improper Verification of Source of a Communication Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 941,
+      "cwe_name": "Incorrectly Specified Destination in a Communication Channel",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 942,
+      "cwe_name": "Permissive Cross-domain Security Policy with Untrusted Domains",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 943,
+      "cwe_name": "Improper Neutralization of Special Elements in Data Query Logic",
+      "owasp_codes": [
+        "A03:2021",
+        "A10:2021"
+      ],
+      "mitre_techniques": [
+        "T1190"
+      ],
+      "severity": "HIGH"
+    },
+    {
+      "cwe_id": 1004,
+      "cwe_name": "Sensitive Cookie Without 'HttpOnly' Flag",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1007,
+      "cwe_name": "Insufficient Visual Distinction of Homoglyphs Presented to User",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1021,
+      "cwe_name": "Improper Restriction of Rendered UI Layers or Frames",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1022,
+      "cwe_name": "Use of Web Link to Untrusted Target with window.opener Access",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1023,
+      "cwe_name": "Incomplete Comparison with Missing Factors",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1024,
+      "cwe_name": "Comparison of Incompatible Types",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1025,
+      "cwe_name": "Comparison Using Wrong Factors",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1037,
+      "cwe_name": "Processor Optimization Removal or Modification of Security-critical Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1038,
+      "cwe_name": "Insecure Automated Optimizations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1039,
+      "cwe_name": "Inadequate Detection or Handling of Adversarial Input Perturbations in Automated Recognition Mechanism",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1041,
+      "cwe_name": "Use of Redundant Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1042,
+      "cwe_name": "Static Member Data Element outside of a Singleton Class Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1043,
+      "cwe_name": "Data Element Aggregating an Excessively Large Number of Non-Primitive Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1044,
+      "cwe_name": "Architecture with Number of Horizontal Layers Outside of Expected Range",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1045,
+      "cwe_name": "Parent Class with a Virtual Destructor and a Child Class without a Virtual Destructor",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1046,
+      "cwe_name": "Creation of Immutable Text Using String Concatenation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1047,
+      "cwe_name": "Modules with Circular Dependencies",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1048,
+      "cwe_name": "Invokable Control Element with Large Number of Outward Calls",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1049,
+      "cwe_name": "Excessive Data Query Operations in a Large Data Table",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1050,
+      "cwe_name": "Excessive Platform Resource Consumption within a Loop",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1051,
+      "cwe_name": "Initialization with Hard-Coded Network Resource Configuration Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1052,
+      "cwe_name": "Excessive Use of Hard-Coded Literals in Initialization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1053,
+      "cwe_name": "Missing Documentation for Design",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1054,
+      "cwe_name": "Invocation of a Control Element at an Unnecessarily Deep Horizontal Layer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1055,
+      "cwe_name": "Multiple Inheritance from Concrete Classes",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1056,
+      "cwe_name": "Invokable Control Element with Variadic Parameters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1057,
+      "cwe_name": "Data Access Operations Outside of Expected Data Manager Component",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1058,
+      "cwe_name": "Invokable Control Element in Multi-Thread Context with non-Final Static Storable or Member Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1059,
+      "cwe_name": "Insufficient Technical Documentation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1060,
+      "cwe_name": "Excessive Number of Inefficient Server-Side Data Accesses",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1061,
+      "cwe_name": "Insufficient Encapsulation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1062,
+      "cwe_name": "Parent Class with References to Child Class",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1063,
+      "cwe_name": "Creation of Class Instance within a Static Code Block",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1064,
+      "cwe_name": "Invokable Control Element with Signature Containing an Excessive Number of Parameters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1065,
+      "cwe_name": "Runtime Resource Management Control Element in a Component Built to Run on Application Servers",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1066,
+      "cwe_name": "Missing Serialization Control Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1067,
+      "cwe_name": "Excessive Execution of Sequential Searches of Data Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1068,
+      "cwe_name": "Inconsistency Between Implementation and Documented Design",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1069,
+      "cwe_name": "Empty Exception Block",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1070,
+      "cwe_name": "Serializable Data Element Containing non-Serializable Item Elements",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1071,
+      "cwe_name": "Empty Code Block",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1072,
+      "cwe_name": "Data Resource Access without Use of Connection Pooling",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1073,
+      "cwe_name": "Non-SQL Invokable Control Element with Excessive Number of Data Resource Accesses",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1074,
+      "cwe_name": "Class with Excessively Deep Inheritance",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1075,
+      "cwe_name": "Unconditional Control Flow Transfer outside of Switch Block",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1076,
+      "cwe_name": "Insufficient Adherence to Expected Conventions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1077,
+      "cwe_name": "Floating Point Comparison with Incorrect Operator",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1078,
+      "cwe_name": "Inappropriate Source Code Style or Formatting",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1079,
+      "cwe_name": "Parent Class without Virtual Destructor Method",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1080,
+      "cwe_name": "Source Code File with Excessive Number of Lines of Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1082,
+      "cwe_name": "Class Instance Self Destruction Control Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1083,
+      "cwe_name": "Data Access from Outside Expected Data Manager Component",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1084,
+      "cwe_name": "Invokable Control Element with Excessive File or Data Access Operations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1085,
+      "cwe_name": "Invokable Control Element with Excessive Volume of Commented-out Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1086,
+      "cwe_name": "Class with Excessive Number of Child Classes",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1087,
+      "cwe_name": "Class with Virtual Method without a Virtual Destructor",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1088,
+      "cwe_name": "Synchronous Access of Remote Resource without Timeout",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1089,
+      "cwe_name": "Large Data Table with Excessive Number of Indices",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1090,
+      "cwe_name": "Method Containing Access of a Member Element from Another Class",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1091,
+      "cwe_name": "Use of Object without Invoking Destructor Method",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1092,
+      "cwe_name": "Use of Same Invokable Control Element in Multiple Architectural Layers",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1093,
+      "cwe_name": "Excessively Complex Data Representation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1094,
+      "cwe_name": "Excessive Index Range Scan for a Data Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1095,
+      "cwe_name": "Loop Condition Value Update within the Loop",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1096,
+      "cwe_name": "Singleton Class Instance Creation without Proper Locking or Synchronization",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1097,
+      "cwe_name": "Persistent Storable Data Element without Associated Comparison Control Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1098,
+      "cwe_name": "Data Element containing Pointer Item without Proper Copy Control Element",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1099,
+      "cwe_name": "Inconsistent Naming Conventions for Identifiers",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1100,
+      "cwe_name": "Insufficient Isolation of System-Dependent Functions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1101,
+      "cwe_name": "Reliance on Runtime Component in Generated Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1102,
+      "cwe_name": "Reliance on Machine-Dependent Data Representation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1103,
+      "cwe_name": "Use of Platform-Dependent Third Party Components",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1104,
+      "cwe_name": "Use of Unmaintained Third Party Components",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1105,
+      "cwe_name": "Insufficient Encapsulation of Machine-Dependent Functionality",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1106,
+      "cwe_name": "Insufficient Use of Symbolic Constants",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1107,
+      "cwe_name": "Insufficient Isolation of Symbolic Constant Definitions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1108,
+      "cwe_name": "Excessive Reliance on Global Variables",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1109,
+      "cwe_name": "Use of Same Variable for Multiple Purposes",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1110,
+      "cwe_name": "Incomplete Design Documentation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1111,
+      "cwe_name": "Incomplete I/O Documentation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1112,
+      "cwe_name": "Incomplete Documentation of Program Execution",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1113,
+      "cwe_name": "Inappropriate Comment Style",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1114,
+      "cwe_name": "Inappropriate Whitespace Style",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1115,
+      "cwe_name": "Source Code Element without Standard Prologue",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1116,
+      "cwe_name": "Inaccurate Source Code Comments",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1117,
+      "cwe_name": "Callable with Insufficient Behavioral Summary",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1118,
+      "cwe_name": "Insufficient Documentation of Error Handling Techniques",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1119,
+      "cwe_name": "Excessive Use of Unconditional Branching",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1120,
+      "cwe_name": "Excessive Code Complexity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1121,
+      "cwe_name": "Excessive McCabe Cyclomatic Complexity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1122,
+      "cwe_name": "Excessive Halstead Complexity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1123,
+      "cwe_name": "Excessive Use of Self-Modifying Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1124,
+      "cwe_name": "Excessively Deep Nesting",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1125,
+      "cwe_name": "Excessive Attack Surface",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1126,
+      "cwe_name": "Declaration of Variable with Unnecessarily Wide Scope",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1127,
+      "cwe_name": "Compilation with Insufficient Warnings or Errors",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1164,
+      "cwe_name": "Irrelevant Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1173,
+      "cwe_name": "Improper Use of Validation Framework",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1174,
+      "cwe_name": "ASP.NET Misconfiguration: Improper Model Validation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1176,
+      "cwe_name": "Inefficient CPU Computation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1177,
+      "cwe_name": "Use of Prohibited Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1187,
+      "cwe_name": "DEPRECATED: Use of Uninitialized Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1188,
+      "cwe_name": "Initialization of a Resource with an Insecure Default",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1189,
+      "cwe_name": "Improper Isolation of Shared Resources on System-on-a-Chip (SoC)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1190,
+      "cwe_name": "DMA Device Enabled Too Early in Boot Phase",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1191,
+      "cwe_name": "On-Chip Debug and Test Interface With Improper Access Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1192,
+      "cwe_name": "Improper Identifier for IP Block used in System-On-Chip (SOC)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1193,
+      "cwe_name": "Power-On of Untrusted Execution Core Before Enabling Fabric Access Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1204,
+      "cwe_name": "Generation of Weak Initialization Vector (IV)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1209,
+      "cwe_name": "Failure to Disable Reserved Bits",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1220,
+      "cwe_name": "Insufficient Granularity of Access Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1221,
+      "cwe_name": "Incorrect Register Defaults or Module Parameters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1222,
+      "cwe_name": "Insufficient Granularity of Address Regions Protected by Register Locks",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1223,
+      "cwe_name": "Race Condition for Write-Once Attributes",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1224,
+      "cwe_name": "Improper Restriction of Write-Once Bit Fields",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1229,
+      "cwe_name": "Creation of Emergent Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1230,
+      "cwe_name": "Exposure of Sensitive Information Through Metadata",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1231,
+      "cwe_name": "Improper Prevention of Lock Bit Modification",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1232,
+      "cwe_name": "Improper Lock Behavior After Power State Transition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1233,
+      "cwe_name": "Security-Sensitive Hardware Controls with Missing Lock Bit Protection",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1234,
+      "cwe_name": "Hardware Internal or Debug Modes Allow Override of Locks",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1235,
+      "cwe_name": "Incorrect Use of Autoboxing and Unboxing for Performance Critical Operations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1236,
+      "cwe_name": "Improper Neutralization of Formula Elements in a CSV File",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1239,
+      "cwe_name": "Improper Zeroization of Hardware Register",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1240,
+      "cwe_name": "Use of a Cryptographic Primitive with a Risky Implementation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1241,
+      "cwe_name": "Use of Predictable Algorithm in Random Number Generator",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1242,
+      "cwe_name": "Inclusion of Undocumented Features or Chicken Bits",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1243,
+      "cwe_name": "Sensitive Non-Volatile Information Not Protected During Debug",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1244,
+      "cwe_name": "Internal Asset Exposed to Unsafe Debug Access Level or State",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1245,
+      "cwe_name": "Improper Finite State Machines (FSMs) in Hardware Logic",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1246,
+      "cwe_name": "Improper Write Handling in Limited-write Non-Volatile Memories",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1247,
+      "cwe_name": "Improper Protection Against Voltage and Clock Glitches",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1248,
+      "cwe_name": "Semiconductor Defects in Hardware Logic with Security-Sensitive Implications",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1249,
+      "cwe_name": "Application-Level Admin Tool with Inconsistent View of Underlying Operating System",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1250,
+      "cwe_name": "Improper Preservation of Consistency Between Independent Representations of Shared State",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1251,
+      "cwe_name": "Mirrored Regions with Different Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1252,
+      "cwe_name": "CPU Hardware Not Configured to Support Exclusivity of Write and Execute Operations",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1253,
+      "cwe_name": "Incorrect Selection of Fuse Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1254,
+      "cwe_name": "Incorrect Comparison Logic Granularity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1255,
+      "cwe_name": "Comparison Logic is Vulnerable to Power Side-Channel Attacks",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1256,
+      "cwe_name": "Improper Restriction of Software Interfaces to Hardware Features",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1257,
+      "cwe_name": "Improper Access Control Applied to Mirrored or Aliased Memory Regions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1258,
+      "cwe_name": "Exposure of Sensitive System Information Due to Uncleared Debug Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1259,
+      "cwe_name": "Improper Restriction of Security Token Assignment",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1260,
+      "cwe_name": "Improper Handling of Overlap Between Protected Memory Ranges",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1261,
+      "cwe_name": "Improper Handling of Single Event Upsets",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1262,
+      "cwe_name": "Improper Access Control for Register Interface",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1263,
+      "cwe_name": "Improper Physical Access Control",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1264,
+      "cwe_name": "Hardware Logic with Insecure De-Synchronization between Control and Data Channels",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1265,
+      "cwe_name": "Unintended Reentrant Invocation of Non-reentrant Code Via Nested Calls",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1266,
+      "cwe_name": "Improper Scrubbing of Sensitive Data from Decommissioned Device",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1267,
+      "cwe_name": "Policy Uses Obsolete Encoding",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1268,
+      "cwe_name": "Policy Privileges are not Assigned Consistently Between Control and Data Agents",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1269,
+      "cwe_name": "Product Released in Non-Release Configuration",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1270,
+      "cwe_name": "Generation of Incorrect Security Tokens",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1271,
+      "cwe_name": "Uninitialized Value on Reset for Registers Holding Security Settings",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1272,
+      "cwe_name": "Sensitive Information Uncleared Before Debug/Power State Transition",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1273,
+      "cwe_name": "Device Unlock Credential Sharing",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1274,
+      "cwe_name": "Improper Access Control for Volatile Memory Containing Boot Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1275,
+      "cwe_name": "Sensitive Cookie with Improper SameSite Attribute",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1276,
+      "cwe_name": "Hardware Child Block Incorrectly Connected to Parent System",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1277,
+      "cwe_name": "Firmware Not Updateable",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1278,
+      "cwe_name": "Missing Protection Against Hardware Reverse Engineering Using Integrated Circuit (IC) Imaging Techniques",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1279,
+      "cwe_name": "Cryptographic Operations are run Before Supporting Units are Ready",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1280,
+      "cwe_name": "Access Control Check Implemented After Asset is Accessed",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1281,
+      "cwe_name": "Sequence of Processor Instructions Leads to Unexpected Behavior",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1282,
+      "cwe_name": "Assumed-Immutable Data is Stored in Writable Memory",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1283,
+      "cwe_name": "Mutable Attestation or Measurement Reporting Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1284,
+      "cwe_name": "Improper Validation of Specified Quantity in Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1285,
+      "cwe_name": "Improper Validation of Specified Index, Position, or Offset in Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1286,
+      "cwe_name": "Improper Validation of Syntactic Correctness of Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1287,
+      "cwe_name": "Improper Validation of Specified Type of Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1288,
+      "cwe_name": "Improper Validation of Consistency within Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1289,
+      "cwe_name": "Improper Validation of Unsafe Equivalence in Input",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1290,
+      "cwe_name": "Incorrect Decoding of Security Identifiers",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1291,
+      "cwe_name": "Public Key Re-Use for Signing both Debug and Production Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1292,
+      "cwe_name": "Incorrect Conversion of Security Identifiers",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1293,
+      "cwe_name": "Missing Source Correlation of Multiple Independent Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1294,
+      "cwe_name": "Insecure Security Identifier Mechanism",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1295,
+      "cwe_name": "Debug Messages Revealing Unnecessary Information",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1296,
+      "cwe_name": "Incorrect Chaining or Granularity of Debug Components",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1297,
+      "cwe_name": "Unprotected Confidential Information on Device is Accessible by OSAT Vendors",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1298,
+      "cwe_name": "Hardware Logic Contains Race Conditions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1299,
+      "cwe_name": "Missing Protection Mechanism for Alternate Hardware Interface",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1300,
+      "cwe_name": "Improper Protection of Physical Side Channels",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1301,
+      "cwe_name": "Insufficient or Incomplete Data Removal within Hardware Component",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1302,
+      "cwe_name": "Missing Source Identifier in Entity Transactions on a System-On-Chip (SOC)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1303,
+      "cwe_name": "Non-Transparent Sharing of Microarchitectural Resources",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1304,
+      "cwe_name": "Improperly Preserved Integrity of Hardware Configuration State During a Power Save/Restore Operation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1310,
+      "cwe_name": "Missing Ability to Patch ROM Code",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1311,
+      "cwe_name": "Improper Translation of Security Attributes by Fabric Bridge",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1312,
+      "cwe_name": "Missing Protection for Mirrored Regions in On-Chip Fabric Firewall",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1313,
+      "cwe_name": "Hardware Allows Activation of Test or Debug Logic at Runtime",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1314,
+      "cwe_name": "Missing Write Protection for Parametric Data Values",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1315,
+      "cwe_name": "Improper Setting of Bus Controlling Capability in Fabric End-point",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1316,
+      "cwe_name": "Fabric-Address Map Allows Programming of Unwarranted Overlaps of Protected and Unprotected Ranges",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1317,
+      "cwe_name": "Improper Access Control in Fabric Bridge",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1318,
+      "cwe_name": "Missing Support for Security Features in On-chip Fabrics or Buses",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1319,
+      "cwe_name": "Improper Protection against Electromagnetic Fault Injection (EM-FI)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1320,
+      "cwe_name": "Improper Protection for Outbound Error Messages and Alert Signals",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1321,
+      "cwe_name": "Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1322,
+      "cwe_name": "Use of Blocking Code in Single-threaded, Non-blocking Context",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1323,
+      "cwe_name": "Improper Management of Sensitive Trace Data",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1324,
+      "cwe_name": "DEPRECATED: Sensitive Information Accessible by Physical Probing of JTAG Interface",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1325,
+      "cwe_name": "Improperly Controlled Sequential Memory Allocation",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1326,
+      "cwe_name": "Missing Immutable Root of Trust in Hardware",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1327,
+      "cwe_name": "Binding to an Unrestricted IP Address",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1328,
+      "cwe_name": "Security Version Number Mutable to Older Versions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1329,
+      "cwe_name": "Reliance on Component That is Not Updateable",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1330,
+      "cwe_name": "Remanent Data Readable after Memory Erase",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1331,
+      "cwe_name": "Improper Isolation of Shared Resources in Network On Chip (NoC)",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1332,
+      "cwe_name": "Improper Handling of Faults that Lead to Instruction Skips",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1333,
+      "cwe_name": "Inefficient Regular Expression Complexity",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1334,
+      "cwe_name": "Unauthorized Error Injection Can Degrade Hardware Redundancy",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1335,
+      "cwe_name": "Incorrect Bitwise Shift of Integer",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1336,
+      "cwe_name": "Improper Neutralization of Special Elements Used in a Template Engine",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1338,
+      "cwe_name": "Improper Protections Against Hardware Overheating",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1339,
+      "cwe_name": "Insufficient Precision or Accuracy of a Real Number",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1341,
+      "cwe_name": "Multiple Releases of Same Resource or Handle",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1342,
+      "cwe_name": "Information Exposure through Microarchitectural State after Transient Execution",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1351,
+      "cwe_name": "Improper Handling of Hardware Behavior in Exceptionally Cold Environments",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1357,
+      "cwe_name": "Reliance on Insufficiently Trustworthy Component",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1384,
+      "cwe_name": "Improper Handling of Physical or Environmental Conditions",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1385,
+      "cwe_name": "Missing Origin Validation in WebSockets",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1386,
+      "cwe_name": "Insecure Operation on Windows Junction / Mount Point",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1389,
+      "cwe_name": "Incorrect Parsing of Numbers with Different Radices",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1390,
+      "cwe_name": "Weak Authentication",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1391,
+      "cwe_name": "Use of Weak Credentials",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1392,
+      "cwe_name": "Use of Default Credentials",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1393,
+      "cwe_name": "Use of Default Password",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1394,
+      "cwe_name": "Use of Default Cryptographic Key",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1395,
+      "cwe_name": "Dependency on Vulnerable Third-Party Component",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1419,
+      "cwe_name": "Incorrect Initialization of Resource",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1420,
+      "cwe_name": "Exposure of Sensitive Information during Transient Execution",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1421,
+      "cwe_name": "Exposure of Sensitive Information in Shared Microarchitectural Structures during Transient Execution",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1422,
+      "cwe_name": "Exposure of Sensitive Information caused by Incorrect Data Forwarding during Transient Execution",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1423,
+      "cwe_name": "Exposure of Sensitive Information caused by Shared Microarchitectural Predictor State that Influences Transient Execution",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1426,
+      "cwe_name": "Improper Validation of Generative AI Output",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1427,
+      "cwe_name": "Improper Neutralization of Input Used for LLM Prompting",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1428,
+      "cwe_name": "Reliance on HTTP instead of HTTPS",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1429,
+      "cwe_name": "Missing Security-Relevant Feedback for Unexecuted Operations in Hardware Interface",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1431,
+      "cwe_name": "Driving Intermediate Cryptographic State/Results to Hardware Module Outputs",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    },
+    {
+      "cwe_id": 1434,
+      "cwe_name": "Insecure Setting of Generative AI/ML Model Inference Parameters",
+      "owasp_codes": [],
+      "mitre_techniques": [],
+      "severity": "MEDIUM"
+    }
+  ]
+}

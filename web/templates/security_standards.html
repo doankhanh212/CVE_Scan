@@ -1,0 +1,508 @@
+{% extends "base.html" %}
+
+{% block title %}Security Standards - CVE Scan Platform{% endblock %}
+{% block page_title %}Security Standards Mapping{% endblock %}
+
+{% block content %}
+<style>
+    .standards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .standard-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .standard-card:hover {
+        border-color: var(--primary);
+        box-shadow: 0 4px 12px rgba(0, 212, 255, 0.15);
+    }
+
+    .standard-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .standard-title i {
+        font-size: 18px;
+    }
+
+    .standard-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .stat-label {
+        font-size: 11px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
+
+    .framework-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .framework-item {
+        background: rgba(0, 212, 255, 0.05);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .framework-item:hover {
+        background: rgba(0, 212, 255, 0.1);
+        border-color: var(--primary);
+    }
+
+    .framework-code {
+        font-family: monospace;
+        font-weight: 600;
+        color: var(--primary);
+    }
+
+    .framework-name {
+        color: var(--text-secondary);
+        font-size: 11px;
+        margin-top: 4px;
+    }
+
+    .analysis-section {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 12px;
+    }
+
+    .risk-meter {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .risk-bar {
+        flex: 1;
+        height: 8px;
+        background: var(--bg-tertiary);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .risk-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #00ff88, #ffd93d, #ff6b6b);
+        border-radius: 4px;
+    }
+
+    .risk-value {
+        font-weight: 600;
+        color: var(--primary);
+        min-width: 40px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        font-size: 13px;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: var(--bg-tertiary);
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--primary);
+        border-bottom: 2px solid var(--border);
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover {
+        background: rgba(0, 212, 255, 0.05);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .badge-critical {
+        background: rgba(255, 107, 107, 0.2);
+        color: #ff6b6b;
+    }
+
+    .badge-high {
+        background: rgba(255, 217, 61, 0.2);
+        color: #ffd93d;
+    }
+
+    .badge-medium {
+        background: rgba(100, 200, 255, 0.2);
+        color: #64c8ff;
+    }
+
+    .badge-low {
+        background: rgba(0, 255, 136, 0.2);
+        color: #00ff88;
+    }
+
+    .api-docs {
+        background: var(--bg-tertiary);
+        border-left: 4px solid var(--primary);
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 12px;
+    }
+
+    .api-endpoint {
+        color: var(--primary);
+        margin-bottom: 8px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .btn-analyze {
+        background: var(--primary);
+        color: var(--bg-primary);
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .btn-analyze:hover {
+        background: #00d4ff;
+        opacity: 0.9;
+    }
+</style>
+
+<!-- Security Standards Overview -->
+<div class="standards-container">
+    <!-- OWASP Top 10 Card -->
+    <div class="standard-card">
+        <div class="standard-title">
+            <i class="fas fa-shield-alt"></i>
+            OWASP Top 10 2021
+        </div>
+        <div class="standard-stats">
+            <div class="stat-item">
+                <div class="stat-value">10</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">155+</div>
+                <div class="stat-label">CWE IDs</div>
+            </div>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+            Web & API vulnerabilities mapped to OWASP Top 10 categories with risk weights
+        </p>
+        <button class="btn-analyze" onclick="loadOWASPFramework()">View Categories</button>
+    </div>
+
+    <!-- MITRE ATT&CK Card -->
+    <div class="standard-card">
+        <div class="standard-title">
+            <i class="fas fa-crosshairs"></i>
+            MITRE ATT&CK
+        </div>
+        <div class="standard-stats">
+            <div class="stat-item">
+                <div class="stat-value">5+</div>
+                <div class="stat-label">Tactics</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">10+</div>
+                <div class="stat-label">Techniques</div>
+            </div>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+            Map vulnerabilities to attack techniques & tactics
+        </p>
+        <button class="btn-analyze" onclick="loadMITREFramework()">View Tactics</button>
+    </div>
+
+    <!-- Secure Coding Practices Card -->
+    <div class="standard-card">
+        <div class="standard-title">
+            <i class="fas fa-code"></i>
+            Secure Coding
+        </div>
+        <div class="standard-stats">
+            <div class="stat-item">
+                <div class="stat-value">6</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">20+</div>
+                <div class="stat-label">Practices</div>
+            </div>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px;">
+            OWASP Secure Coding Practices mapped to vulnerabilities
+        </p>
+        <button class="btn-analyze" onclick="loadSCPFramework()">View Practices</button>
+    </div>
+</div>
+
+<!-- Analysis Section -->
+<div class="analysis-section" id="analysisSection" style="display: none;">
+    <div class="section-title">
+        <i class="fas fa-flask"></i>
+        CVE Analysis Results
+    </div>
+    
+    <div id="analysisContent"></div>
+</div>
+
+<!-- OWASP Framework -->
+<div class="analysis-section" id="owaspSection" style="display: none;">
+    <div class="section-title">
+        <i class="fas fa-shield-alt"></i>
+        OWASP Top 10 2021
+    </div>
+    <div class="table-container">
+        <table id="owaspTable">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Category</th>
+                    <th>Risk Weight</th>
+                    <th>CWE Count</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MITRE ATT&CK Framework -->
+<div class="analysis-section" id="mitreSection" style="display: none;">
+    <div class="section-title">
+        <i class="fas fa-crosshairs"></i>
+        MITRE ATT&CK - Reconnaissance & Initial Access
+    </div>
+    <div id="mitreContent"></div>
+</div>
+
+<!-- Secure Coding Practices -->
+<div class="analysis-section" id="scpSection" style="display: none;">
+    <div class="section-title">
+        <i class="fas fa-code"></i>
+        Secure Coding Best Practices
+    </div>
+    <div id="scpContent"></div>
+</div>
+
+<!-- API Documentation -->
+<div class="analysis-section">
+    <div class="section-title">
+        <i class="fas fa-book"></i>
+        API Documentation
+    </div>
+    
+    <h4 style="color: var(--primary); margin: 15px 0 10px 0;">Unified Analysis</h4>
+    <div class="api-docs">
+        <div class="api-endpoint">POST /api/security/analyze/cve</div>
+        <div style="color: var(--text-secondary); margin-bottom: 10px;">
+            Comprehensive analysis against OWASP, MITRE, and Secure Coding standards
+        </div>
+    </div>
+
+    <h4 style="color: var(--primary); margin: 15px 0 10px 0;">OWASP Top 10</h4>
+    <div class="api-docs">
+        <div class="api-endpoint">GET /api/security/owasp/categories</div>
+        <div class="api-endpoint">GET /api/security/owasp/by-cwe/&lt;cwe_id&gt;</div>
+        <div style="color: var(--text-secondary);">Get OWASP Top 10 mappings</div>
+    </div>
+
+    <h4 style="color: var(--primary); margin: 15px 0 10px 0;">MITRE ATT&CK</h4>
+    <div class="api-docs">
+        <div class="api-endpoint">GET /api/security/mitre/tactics</div>
+        <div class="api-endpoint">GET /api/security/mitre/reconnaissance</div>
+        <div class="api-endpoint">GET /api/security/mitre/initial-access</div>
+        <div style="color: var(--text-secondary);">Map vulnerabilities to attack techniques</div>
+    </div>
+
+    <h4 style="color: var(--primary); margin: 15px 0 10px 0;">Secure Coding</h4>
+    <div class="api-docs">
+        <div class="api-endpoint">GET /api/security/scp/categories</div>
+        <div class="api-endpoint">GET /api/security/scp/by-category/&lt;category&gt;</div>
+        <div style="color: var(--text-secondary);">Get coding best practices</div>
+    </div>
+</div>
+
+<script>
+async function loadOWASPFramework() {
+    const section = document.getElementById('owaspSection');
+    section.style.display = 'block';
+    
+    try {
+        const response = await fetch('/api/security/owasp/categories');
+        const data = await response.json();
+        
+        const tbody = document.querySelector('#owaspTable tbody');
+        tbody.innerHTML = '';
+        
+        for (const [code, cat] of Object.entries(data.categories)) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><span class="framework-code">${cat.code}</span></td>
+                <td><strong>${cat.name}</strong></td>
+                <td><span class="badge badge-${cat.risk_weight >= 8 ? 'critical' : cat.risk_weight >= 6 ? 'high' : 'medium'}">${cat.risk_weight}/10</span></td>
+                <td>${cat.cwe_count}</td>
+            `;
+            tbody.appendChild(row);
+        }
+    } catch (err) {
+        console.error('Error loading OWASP framework:', err);
+    }
+    
+    window.scrollTo(0, section.offsetTop);
+}
+
+async function loadMITREFramework() {
+    const section = document.getElementById('mitreSection');
+    section.style.display = 'block';
+    
+    try {
+        const [recon, initial] = await Promise.all([
+            fetch('/api/security/mitre/reconnaissance').then(r => r.json()),
+            fetch('/api/security/mitre/initial-access').then(r => r.json())
+        ]);
+        
+        let html = '<h4 style="color: var(--primary); margin: 15px 0 10px 0;">Reconnaissance Techniques</h4>';
+        html += '<div class="framework-grid">';
+        
+        recon.techniques.forEach(tech => {
+            html += `
+                <div class="framework-item">
+                    <div class="framework-code">${tech.id}</div>
+                    <div class="framework-name">${tech.name}</div>
+                </div>
+            `;
+        });
+        
+        html += '</div><h4 style="color: var(--primary); margin: 15px 0 10px 0;">Initial Access Techniques</h4>';
+        html += '<div class="framework-grid">';
+        
+        initial.techniques.forEach(tech => {
+            html += `
+                <div class="framework-item">
+                    <div class="framework-code">${tech.id}</div>
+                    <div class="framework-name">${tech.name}</div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        document.getElementById('mitreContent').innerHTML = html;
+    } catch (err) {
+        console.error('Error loading MITRE framework:', err);
+    }
+    
+    window.scrollTo(0, section.offsetTop);
+}
+
+async function loadSCPFramework() {
+    const section = document.getElementById('scpSection');
+    section.style.display = 'block';
+    
+    try {
+        const response = await fetch('/api/security/scp/categories');
+        const data = await response.json();
+        
+        let html = '';
+        
+        for (const [category, details] of Object.entries(data.categories)) {
+            html += `
+                <h4 style="color: var(--primary); margin: 15px 0 10px 0;">${category}</h4>
+                <div class="framework-grid">
+            `;
+            
+            details.practices.forEach(practice => {
+                html += `
+                    <div class="framework-item">
+                        <div class="framework-code">${practice.id}</div>
+                        <div class="framework-name">${practice.practice}</div>
+                        <div style="margin-top: 4px;">
+                            <span class="badge badge-${practice.severity === 'CRITICAL' ? 'critical' : 'high'}">
+                                ${practice.severity}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+        }
+        
+        document.getElementById('scpContent').innerHTML = html;
+    } catch (err) {
+        console.error('Error loading SCP framework:', err);
+    }
+    
+    window.scrollTo(0, section.offsetTop);
+}
+</script>
+{% endblock %}

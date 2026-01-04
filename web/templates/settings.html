@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - CVE Scan Platform{% endblock %}
+{% block page_title %}Settings{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <!-- Settings Header -->
+    <div class="settings-header">
+        <div class="header-info">
+            <h2><i class="fas fa-cogs"></i> Application Settings</h2>
+            <p class="subtitle">Manage CVE Scan Platform configuration</p>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="settings-tabs">
+        <button type="button" class="tab-btn active" data-tab="general">
+            <i class="fas fa-sliders-h"></i> General
+        </button>
+        <button type="button" class="tab-btn" data-tab="database">
+            <i class="fas fa-database"></i> Database
+        </button>
+        <button type="button" class="tab-btn" data-tab="scan">
+            <i class="fas fa-radar"></i> Scan
+        </button>
+        <button type="button" class="tab-btn" data-tab="advanced">
+            <i class="fas fa-tools"></i> Advanced
+        </button>
+    </div>
+
+    <!-- Settings Content -->
+    <form id="settingsForm" class="settings-form">
+        <!-- TAB 1: GENERAL -->
+        <div id="general" class="tab-content active">
+            <div class="settings-group">
+                <h3><i class="fas fa-key"></i> NVD API Configuration</h3>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>How it works:</strong>
+                    <ul style="margin: 8px 0 0 20px; font-size: 13px;">
+                        <li><strong>Local Database ON:</strong> Uses offline SQLite database (faster, no rate limits)</li>
+                        <li><strong>Local Database OFF:</strong> Uses NVD API with your API key (real-time, requires internet)</li>
+                    </ul>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nvdApiKey">
+                        NVD API Key
+                        <span class="badge-optional">Optional if using Local DB</span>
+                        <span class="help-tooltip" title="Only used when Local Database is disabled. Get from nvd.nist.gov">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <div class="input-group">
+                        <input type="password" id="nvdApiKey" name="nvd_api_key" placeholder="Enter your NVD API key" class="form-control">
+                        <button type="button" class="btn btn-secondary" id="toggleApiKey" aria-label="Toggle API key visibility">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small class="help-text">
+                        <span id="apiKeyHelp">Get your API key from <a href="https://nvd.nist.gov/developers/request-an-api-key" target="_blank" rel="noopener noreferrer">nvd.nist.gov</a></span>
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-secondary" id="testApiBtn">
+                        <i class="fas fa-plug"></i> Test API Connection
+                    </button>
+                    <span id="testStatus" class="status-indicator"></span>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="logVerbosity">
+                        Log Verbosity
+                        <span class="help-tooltip" title="Control how detailed the logs should be">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <select id="logVerbosity" name="log_verbosity" class="form-control">
+                        <option value="debug">🔍 Debug (Most Detailed)</option>
+                        <option value="info">ℹ️ Info (Recommended)</option>
+                        <option value="warning">⚠️ Warning (Less Verbose)</option>
+                        <option value="error">❌ Error (Least Detailed)</option>
+                    </select>
+                    <span class="form-help">
+                        Controls which log levels appear during scans. Lower levels show more detail but may slow down performance.
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: DATABASE -->
+        <div id="database" class="tab-content">
+            <div class="settings-group">
+                <h3><i class="fas fa-database"></i> CVE Database Configuration</h3>
+
+                <div class="mode-selector">
+                    <div class="mode-option" id="modeLocalDb">
+                        <div class="mode-header">
+                            <input type="checkbox" id="useLocalDb" name="use_local_db" class="form-checkbox">
+                            <label for="useLocalDb" class="mode-title">
+                                <i class="fas fa-database"></i> Use Local SQLite Database
+                                <span class="badge-recommended">Recommended</span>
+                            </label>
+                        </div>
+                        <div class="mode-description">
+                            <strong>✅ Pros:</strong> Fast, no rate limits, works offline<br>
+                            <strong>⚠️ Cons:</strong> Requires initial download (~1GB), manual updates
+                        </div>
+                    </div>
+
+                    <div class="mode-option" id="modeApiKey" style="opacity: 0.6;">
+                        <div class="mode-header">
+                            <i class="fas fa-cloud"></i>
+                            <label class="mode-title">Use NVD API (Real-time)</label>
+                        </div>
+                        <div class="mode-description">
+                            <strong>✅ Pros:</strong> Always up-to-date, no storage needed<br>
+                            <strong>⚠️ Cons:</strong> Rate limited (5 req/30s without key), requires internet
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="localDbPathGroup" style="display: none;">
+                    <label for="localDbPath">
+                        Local Database Path
+                        <span class="help-tooltip" title="Path to your local SQLite database file">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <div class="input-group">
+                        <input type="text" id="localDbPath" name="local_db_path" placeholder="modules/cve/nvd_cve.db" class="form-control" readonly>
+                        <button type="button" class="btn btn-secondary" id="browseDbBtn">
+                            <i class="fas fa-folder-open"></i> Browse
+                        </button>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Database Status Card -->
+                <div class="status-card">
+                    <div class="status-card-header">
+                        <h4><i class="fas fa-info-circle"></i> Database Status</h4>
+                    </div>
+                    <div class="status-card-body">
+                        <div class="status-row">
+                            <span class="status-label">Status:</span>
+                            <span class="status-value" id="dbStatus">Unknown</span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Last Updated:</span>
+                            <span class="status-value" id="dbLastUpdate">Never</span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Total CVEs:</span>
+                            <span class="status-value" id="dbCveCount">0</span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Database Size:</span>
+                            <span class="status-value" id="dbSize">0 MB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="cveCapPerService">
+                        Max CVEs per Service
+                        <span class="help-tooltip" title="Limit the number of CVEs displayed per discovered service (0 = unlimited)">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <input type="number" id="cveCapPerService" name="cve_cap_per_service" min="0" max="1000" value="100" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-warning" id="rebuildDbBtn">
+                        <i class="fas fa-sync-alt"></i> Rebuild Local Database from Feeds
+                    </button>
+                    <span id="rebuildStatus" class="status-indicator"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SCAN -->
+        <div id="scan" class="tab-content">
+            <div class="settings-group">
+                <h3><i class="fas fa-radar"></i> Scan Configuration</h3>
+
+                <div class="form-group">
+                    <label for="maxConcurrentScans">
+                        Max Concurrent Scans
+                        <span class="help-tooltip" title="How many scans can run at the same time (requires more resources)">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <input type="number" id="maxConcurrentScans" name="max_concurrent_scans" min="1" max="10" value="2" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="scanTimeout">
+                        Scan Timeout (minutes)
+                        <span class="help-tooltip" title="Maximum time a single scan can run before being automatically stopped">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <input type="number" id="scanTimeout" name="scan_timeout" min="5" max="480" value="60" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="nmapThreads">
+                        Nmap Threads per Host
+                        <span class="help-tooltip" title="Number of parallel threads for port scanning (higher = faster but uses more resources)">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <input type="number" id="nmapThreads" name="nmap_threads" min="1" max="50" value="10" class="form-control">
+                </div>
+
+                <hr>
+
+                <h4 style="margin-top: 25px;">CVE Matching</h4>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="fuzzy_match_cpe" class="form-checkbox" checked>
+                        Enable Fuzzy CPE Matching
+                    </label>
+                    <small class="help-text">Use fuzzy matching to find CVEs even if service/version doesn't exactly match</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="fuzzyMatchThreshold">
+                        Fuzzy Match Threshold
+                        <span class="help-tooltip" title="Minimum similarity score (0-100) for fuzzy matching">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <div class="range-group">
+                        <input type="range" id="fuzzyMatchThreshold" name="fuzzy_match_threshold" min="0" max="100" value="80" class="form-range">
+                        <span class="range-value" id="thresholdValue">80%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: ADVANCED -->
+        <div id="advanced" class="tab-content">
+            <div class="settings-group">
+                <h3><i class="fas fa-tools"></i> Advanced Settings</h3>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="enable_scheduling" class="form-checkbox">
+                        Enable Scan Scheduling
+                    </label>
+                    <small class="help-text">Schedule scans to run automatically at specific times</small>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="enable_email_alerts" class="form-checkbox">
+                        Enable Email Alerts
+                    </label>
+                    <small class="help-text">Send email notifications when critical vulnerabilities are discovered</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="emailSmtpServer">
+                        SMTP Server
+                        <span class="help-tooltip" title="Email server address (if email alerts enabled)">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <input type="text" id="emailSmtpServer" name="email_smtp_server" placeholder="smtp.gmail.com" class="form-control" disabled>
+                </div>
+
+                <hr>
+
+                <h4 style="margin-top: 25px;">Data Management</h4>
+
+                <div class="form-group">
+                    <label for="retentionDays">
+                        Scan Results Retention (days)
+                        <span class="help-tooltip" title="Automatically delete scan results older than this many days (0 = keep all)">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                    </label>
+                    <input type="number" id="retentionDays" name="retention_days" min="0" max="365" value="90" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-secondary" id="exportSettingsBtn">
+                        <i class="fas fa-download"></i> Export Settings
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="importSettingsBtn">
+                        <i class="fas fa-upload"></i> Import Settings
+                    </button>
+                </div>
+
+                <hr>
+
+                <h4 style="margin-top: 25px;">Danger Zone</h4>
+
+                <div class="form-group danger">
+                    <button type="button" class="btn btn-danger" id="resetSettingsBtn">
+                        <i class="fas fa-redo"></i> Reset to Defaults
+                    </button>
+                    <small class="help-text" style="color: #ff6b6b;">This action cannot be undone</small>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Settings Actions Footer -->
+    <div class="settings-footer">
+        <button type="button" class="btn btn-secondary" id="cancelBtn">
+            <i class="fas fa-times"></i> Cancel
+        </button>
+        <button type="button" class="btn btn-primary" id="saveSettingsBtn">
+            <i class="fas fa-check"></i> Save Settings
+        </button>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p id="loadingText">Processing...</p>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

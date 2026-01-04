@@ -36,7 +36,8 @@ from modules.report import pdf_report
 # Filtering constants for UI/CSV noise reduction
 # =============================================================
 DEFAULT_MIN_SEVERITY = "LOW"
-DEFAULT_MIN_YEAR = 2018
+# Show all CVEs regardless of publish year by default
+DEFAULT_MIN_YEAR = 0
 HIDE_SCROLLBARS = True
 
 # Skip platform/framework packages that tend to explode CVE volume
@@ -153,6 +154,10 @@ class GUIController:
         self.scanning = False
         self.stop_event = threading.Event()
         self.stopping = False
+        # Ensure progress counters exist even in headless mode
+        self._ping_percent = 0
+        self._scan_percent = 0
+        self._alive_count = 0
 
         # =======================
         # BUILD GUI (LUÔN PHẢI CHẠY)
@@ -171,10 +176,31 @@ class GUIController:
             # =======================
             self.root.after(120, self._poll_queue)
         else:
-            # Headless mode: skip building the full GUI and periodic polling.
-            # Tests and non-GUI callers will still be able to instantiate
-            # the controller and call processing methods.
-            pass
+            # Headless mode: create minimal stubs so tests can interact
+            # with controller without real Tk widgets.
+            class _HostBoxStub:
+                def __init__(self):
+                    self._text = ""
+                def delete(self, start, end=None):
+                    self._text = ""
+                def insert(self, start, text):
+                    self._text += str(text or "")
+                def get(self, start, end):
+                    return self._text
+
+            class _SimpleVar:
+                def __init__(self, value=None):
+                    self._val = value
+                def get(self):
+                    return self._val
+                def set(self, v):
+                    self._val = v
+
+            self.host_box = _HostBoxStub()
+            # Defaults mirror GUI options but remain flexible for tests
+            self.scan_mode_var = _SimpleVar("Quét không xác thực")
+            self.input_mode_var = _SimpleVar("IP/CIDR")
+            # Do not build the full GUI or schedule polling in headless mode
 
     def on_progress(self, phase, percent, message=None):
         """
@@ -560,8 +586,8 @@ class GUIController:
         hosts_frame = tk.Frame(self.main_frame, bg=self.theme["bg"])
         hosts_frame.pack(fill="both", expand=True, padx=10, pady=(6,8))
         tk.Label(hosts_frame, text="Hosts & Services:", font=("Arial", 11, "bold"), bg=self.theme["bg"], fg=self.theme["text"]).pack(anchor="w")
-        # Streamlined columns: show IP/hostname, Port, Service, Version, Severity, CVE count
-        columns = ("host", "port_proto", "product", "version", "severity", "cve_count")
+        # Columns: Host (IP), Thiết bị, Port, Product, Version, Severity, CVE count
+        columns = ("host", "device", "port_proto", "product", "version", "severity", "cve_count")
         table_container = tk.Frame(hosts_frame, bg=self.theme["bg"]) 
         table_container.pack(fill="both", expand=True, pady=6)
         
@@ -571,17 +597,19 @@ class GUIController:
         self.hosts_tree.pack(side="left", fill="both", expand=True)
         if not HIDE_SCROLLBARS:
             yscroll.pack(side="right", fill="y")
-        # Headers: Host now displays as 'hostname (ip)' or 'ip' for user-friendly view
+        # Headers
         self.hosts_tree.heading("host", text="Host (IP)", anchor="w")
+        self.hosts_tree.heading("device", text="Thiết bị", anchor="w")
         self.hosts_tree.heading("port_proto", text="Port", anchor="center")
         self.hosts_tree.heading("product", text="Service", anchor="center")
         self.hosts_tree.heading("version", text="Version", anchor="center")
         self.hosts_tree.heading("severity", text="Severity", anchor="center")
         self.hosts_tree.heading("cve_count", text="CVEs", anchor="center")
-        # column widths: expand host column for hostname display
-        self.hosts_tree.column("host", width=200, anchor="w")
+        # column widths
+        self.hosts_tree.column("host", width=180, anchor="w")
+        self.hosts_tree.column("device", width=140, anchor="w")
         self.hosts_tree.column("port_proto", width=90, anchor="center")
-        self.hosts_tree.column("product", width=160, anchor="w")
+        self.hosts_tree.column("product", width=150, anchor="w")
         self.hosts_tree.column("version", width=110, anchor="center")
         self.hosts_tree.column("severity", width=90, anchor="center")
         self.hosts_tree.column("cve_count", width=60, anchor="center")
@@ -1004,8 +1032,14 @@ class GUIController:
         # reset overall progress
         self._ping_percent = 0
         self._scan_percent = 0
-        self.overall_var.set(0)
-        self.overall_label.config(text="0%")
+        try:
+            # Guard for headless/tests where these widgets are absent
+            if hasattr(self, "overall_var"):
+                self.overall_var.set(0)
+            if hasattr(self, "overall_label"):
+                self.overall_label.config(text="0%")
+        except Exception:
+            pass
 
         # disable export during scan
         try:
@@ -1132,12 +1166,20 @@ class GUIController:
         # Reload config from disk to catch any updates (e.g., scan_policy change in Settings)
         self.config = ConfigManager.load()
     
-        manager = ScanManager(
-            self.config,
-            logger=self.log,
-            progress_cb=self.on_progress,
-            stop_event=self.stop_event
-        )
+        # Instantiate ScanManager; support test doubles that may not accept all args
+        try:
+            manager = ScanManager(
+                self.config,
+                logger=self.log,
+                progress_cb=self.on_progress,
+                stop_event=self.stop_event
+            )
+        except TypeError:
+            manager = ScanManager(
+                self.config,
+                logger=self.log,
+                progress_cb=self.on_progress
+            )
 
         # Resolve hostnames to IPv4 for scanners that expect numeric IPs
         resolved_targets = []
@@ -1209,8 +1251,9 @@ class GUIController:
             return
 
         # provide a host-level callback so UI updates as each host finishes
-        def _host_cb(host, result):
+        def _host_cb(host, result, sync=None):
             label = alias_map.get(host, host)
+            # Always apply synchronously for deterministic updates in tests/UI
             self.process_host_result(label, result, sync=True)
         host_cb = _host_cb
 
@@ -1255,13 +1298,21 @@ class GUIController:
         # ==========================
         # RUN ENGINE
         # ==========================
-        results = manager.scan(
-            targets=resolved_targets,
-            authenticated=authenticated,
-            auth_data=auth_data,
-            host_result_cb=host_cb,
-            input_mode=input_mode  # Pass mode to pipeline
-        )
+        try:
+            results = manager.scan(
+                targets=resolved_targets,
+                authenticated=authenticated,
+                auth_data=auth_data,
+                host_result_cb=host_cb,
+                input_mode=input_mode  # Pass mode to pipeline
+            )
+        except TypeError:
+            results = manager.scan(
+                targets=resolved_targets,
+                authenticated=authenticated,
+                auth_data=auth_data,
+                host_result_cb=host_cb
+            )
     
         # ==========================
         # SAVE + LOG
@@ -1274,9 +1325,8 @@ class GUIController:
         for item in results:
             host_ip = item["host"]
             host_label = alias_map.get(host_ip, host_ip)
-            self.last_results[host_label] = item["result"]
-
-            # Count CVEs for logging
+            
+            # DEBUG: log what we got from results loop
             ports = item["result"].get("gui", {}).get("ports", [])
             cve_count = 0
             for p in ports:
@@ -1290,6 +1340,17 @@ class GUIController:
                             total_cve_counts[label] += 1
 
             scanned_hosts += 1
+            
+            # DEBUG: log what we got from results loop
+            self.log(f"[FINAL LOOP] {host_label}: {len(ports)} ports, {cve_count} CVEs from manager.scan()", "SYSTEM")
+            
+            # IMPORTANT: DO NOT overwrite self.last_results here
+            # It was already populated by host_result_cb during scan
+            # Only use this loop for CVE counting and logging
+            # If the key doesn't exist (no callback), add it
+            if host_label not in self.last_results:
+                self.last_results[host_label] = item["result"]
+                self.log(f"[FINAL LOOP] {host_label} missing from callbacks, adding from manager.scan()", "WARN")
 
             if cve_count > 0:
                 self.log(f"✅ Hoàn tất host: {host_label}", "SUCCESS")
@@ -1343,6 +1404,9 @@ class GUIController:
         """
         def _do():
             try:
+                # In headless/test mode there is no tree or KPI widgets
+                if not hasattr(self, "hosts_tree"):
+                    return
                 # Skip updating tree if we're stopping (to prevent flickering)
                 if self.stopping:
                     return
@@ -1354,11 +1418,8 @@ class GUIController:
                 rows, kpi_counts, sev_counts = results_to_rows(self.last_results)
 
                 for r in rows:
-                    if len(r) > 6 and r[6] == 0:
-                        continue
-                    # rows from helper have 7-cols: (host, port/proto, service, product, version, severity, cve_count)
-                    # Tree displays without Service column
-                    display = (r[0], r[1], r[3], r[4], r[5], r[6])
+                    # rows: (host, port, service, product, version, severity, cve_count, device)
+                    display = (r[0], r[7], r[1], r[3], r[4], r[5], r[6])
                     sev = r[5] if len(r) > 5 and r[5] else "NONE"
                     self.hosts_tree.insert("", "end", values=display, tags=(sev,))
 
@@ -1398,9 +1459,7 @@ class GUIController:
         for i in self.hosts_tree.get_children():
             self.hosts_tree.delete(i)
         for r in new_rows:
-            if len(r) > 6 and r[6] == 0:
-                continue
-            display = (r[0], r[1], r[3], r[4], r[5], r[6])
+            display = (r[0], r[7], r[1], r[3], r[4], r[5], r[6])
             sev = r[5] if len(r) > 5 and r[5] else "NONE"
             self.hosts_tree.insert("", "end", values=display, tags=(sev,))
 
@@ -1597,10 +1656,15 @@ class GUIController:
 
             def _job():
                 self.log("Starting DB rebuild from feeds...", "SYSTEM")
-                path = db_entry.get().strip() or "modules/cve/nvd_data"
+                feed_path = "modules/cve/nvd_data"
+                db_path = db_entry.get().strip() or "modules/cve/nvd_cve.db"
                 try:
                     from modules.cve.local_db_fetcher import LocalDBFetcher
-                    fetcher = LocalDBFetcher(db_path=self.config.get("local_db_path") or "modules/cve/nvd_cve.db")
+                    # Ensure destination folder exists
+                    import os
+                    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+
+                    fetcher = LocalDBFetcher(db_path=db_path)
 
                     def _progress(filename, idx, total):
                         if filename:
@@ -1608,7 +1672,7 @@ class GUIController:
                         else:
                             self.log(f"Finished file {idx}/{total}", "SYSTEM")
 
-                    fetcher.rebuild_db_from_feeds(path, progress_cb=_progress)
+                    fetcher.rebuild_db_from_feeds(feed_path, progress_cb=_progress)
 
                     self.log("DB rebuild completed.", "SUCCESS")
                     self._safe_after(lambda: messagebox.showinfo("Success", "DB rebuild completed."))
@@ -1760,6 +1824,7 @@ def _filter_and_dedupe_ports(ports):
         if _should_skip_product(product):
             continue
 
+        # Keep ports even if there are no CVEs; just sanitize CVE list
         filtered_cves = _filter_cves(port.get("cves", []))
 
         key = (product.lower(), version.lower())
@@ -1802,10 +1867,25 @@ def _filtered_results(results):
     return filtered
 
 
+def _split_host_label(label: str):
+    """Tách nhãn host thành (hostname, ip)."""
+    if not label:
+        return "", ""
+    lbl = str(label).strip()
+    if "(" in lbl and lbl.endswith(")"):
+        base, rest = lbl.rsplit("(", 1)
+        host = base.strip()
+        ip = rest[:-1].strip()
+        if host and host != ip:
+            return host, ip
+        return "", ip or lbl
+    return "", lbl
+
+
 def results_to_rows(results):
     """Convert `results` dict to rows for the TreeView and KPI counts.
     Host keys are already formatted as 'hostname (ip)' or just 'ip' from pipeline.
-    Display them user-friendly in the table.
+    Display chúng tách riêng cột Thiết bị và Host (IP).
     """
     filtered = _filtered_results(results)
 
@@ -1817,9 +1897,10 @@ def results_to_rows(results):
     sev_counts = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0}
 
     for host, host_result in filtered.items():
-        # host key is already formatted as "hostname (ip)" or "ip" from pipeline
-        # Ensure it's displayed as-is for user-friendliness
-        display_host = host
+        # host key là "hostname (ip)" hoặc chỉ "ip"
+        device_name, ip_only = _split_host_label(host)
+        display_host = ip_only or host
+        display_device = device_name
         
         ports = host_result.get("gui", {}).get("ports", [])
         open_services += len(ports)
@@ -1845,7 +1926,8 @@ def results_to_rows(results):
             if not version and cves:
                 version = _version_from_cpe((cves[0] or {}).get("cpe"))
 
-            rows.append((display_host, port_proto, p.get("service") or "", p.get("product") or "", version, highest_sev, p_cve_count))
+            # Keep legacy ordering for host/port (tests), append device at the end
+            rows.append((display_host, port_proto, p.get("service") or "", p.get("product") or "", version, highest_sev, p_cve_count, display_device))
 
     kpi_counts = {"hosts": hosts, "scanned": scanned, "open_services": open_services, "cves_found": cves_found}
     return rows, kpi_counts, sev_counts
@@ -1859,7 +1941,7 @@ class _ResultsHelpers:
 
 def results_sort_rows(rows, col, reverse=False):
     """Return sorted rows by column name (helper for tests)."""
-    col_map = {"host": 0, "port_proto": 1, "service": 2, "product": 3, "version": 4, "severity": 5, "cve_count": 6}
+    col_map = {"host": 0, "port_proto": 1, "service": 2, "product": 3, "version": 4, "severity": 5, "cve_count": 6, "device": 7}
     idx = col_map.get(col, 0)
 
     def _key(r):
@@ -1882,11 +1964,13 @@ def write_scan_results_to_csv(results, path):
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
 
+        # Include Device column next to Host
         writer.writerow([
-            "Host", "Service/Product", "Version", "Port", "CPE", "CVE ID", "Severity", "Description", "CVSS v2", "CVSS v3", "CVSS v4"
+            "Host", "Device", "Service/Product", "Version", "Port", "CPE", "CVE ID", "Severity", "Description", "CVSS v2", "CVSS v3", "CVSS v4"
         ])
 
         for host, host_result in filtered.items():
+            device_name, ip_only = _split_host_label(host)
             for port_info in host_result.get("gui", {}).get("ports", []):
                 port = port_info.get("port")
                 service = port_info.get("service")
@@ -1906,7 +1990,8 @@ def write_scan_results_to_csv(results, path):
                             cve.get("severity", {}).get("label") if isinstance(cve.get("severity"), dict) else ""
                         )
                         writer.writerow([
-                            host,
+                            ip_only or host,
+                            device_name or "",
                             product or service,
                             version,
                             port,
@@ -1919,7 +2004,7 @@ def write_scan_results_to_csv(results, path):
                             cve.get("cvss_v4") if cve.get("cvss_v4") is not None else ""
                         ])
                 else:
-                    writer.writerow([host, product or service, version, port, "", "", "", "", "", "", ""])
+                    writer.writerow([ip_only or host, device_name or "", product or service, version, port, "", "", "", "", "", ""])
 
 
 if __name__ == "__main__":

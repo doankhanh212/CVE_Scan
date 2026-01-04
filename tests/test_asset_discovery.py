@@ -235,6 +235,38 @@ class TestAssetDiscovery:
 
 
 # ======================================================================
+# TEST: WHOISLookup CIDR extraction (RDAP nested fields)
+# ======================================================================
+class TestWHOISLookupCIDRExtraction:
+    def test_lookup_ip_extracts_network_cidr_from_rdap(self):
+        """ipwhois.lookup_rdap() usually returns CIDR under results['network']['cidr']."""
+        import modules.discovery.asset_discovery as ad
+
+        # Force ipwhois availability in module under test
+        original_have_ipwhois = ad._HAVE_IPWHOIS
+        ad._HAVE_IPWHOIS = True
+
+        try:
+            mock_whois_instance = MagicMock()
+            mock_whois_instance.lookup_rdap.return_value = {
+                "asn": "131374",
+                # Intentionally no top-level 'cidr'
+                "network": {"cidr": "103.98.152.0/22", "name": "TEST-NET"},
+            }
+
+            with patch.object(ad, "IPWhois", return_value=mock_whois_instance):
+                lookup = WHOISLookup(timeout=1)
+                asn, cidr, org, success = lookup.lookup_ip("103.98.152.188")
+
+            assert success is True
+            assert asn == "131374"
+            assert cidr == "103.98.152.0/22"
+            assert org in ("TEST-NET", "arin", "ripencc", None) or isinstance(org, str)
+        finally:
+            ad._HAVE_IPWHOIS = original_have_ipwhois
+
+
+# ======================================================================
 # TEST: Confidence Scoring
 # ======================================================================
 class TestConfidenceScoring:

@@ -58,6 +58,7 @@ CONFIDENCE_SCORES = {
     "whois_timeout": 0.70,        # WHOIS timed out, fallback to IP
     "reverse_dns": 0.85,          # Reverse DNS found
     "cidr_inferred": 0.75,        # Inferred from ASN CIDR
+    "cidr_asset": 0.75,           # Asset from explicit CIDR expansion
 }
 
 
@@ -210,6 +211,64 @@ class WHOISLookup:
     def __init__(self, timeout: int = WHOIS_TIMEOUT):
         self.timeout = timeout
 
+    @staticmethod
+    def _extract_best_cidr(ip: str, results: Dict) -> Optional[str]:
+        """Extract the most specific CIDR containing `ip` from ipwhois results."""
+
+        def _candidate_strings(value) -> List[str]:
+            if not value:
+                return []
+            if isinstance(value, str):
+                # ipwhois can return comma/space-separated CIDRs
+                parts = []
+                for chunk in value.replace(";", ",").replace(" ", ",").split(","):
+                    chunk = chunk.strip()
+                    if chunk:
+                        parts.append(chunk)
+                return parts
+            if isinstance(value, list):
+                out: List[str] = []
+                for item in value:
+                    out.extend(_candidate_strings(item))
+                return out
+            return []
+
+        ip_obj = None
+        try:
+            ip_obj = ip_address(ip)
+        except Exception:
+            return None
+
+        candidates: List[str] = []
+
+        # Legacy top-level keys
+        candidates.extend(_candidate_strings(results.get("cidr")))
+        candidates.extend(_candidate_strings(results.get("asn_cidr")))
+
+        # RDAP structure: results['network']['cidr']
+        network = results.get("network")
+        if isinstance(network, dict):
+            candidates.extend(_candidate_strings(network.get("cidr")))
+
+        # WHOIS structure: results['nets'][*]['cidr']
+        nets = results.get("nets")
+        if isinstance(nets, list):
+            for net in nets:
+                if isinstance(net, dict):
+                    candidates.extend(_candidate_strings(net.get("cidr")))
+
+        best_net = None
+        for cidr in candidates:
+            try:
+                net = ip_network(cidr, strict=False)
+                if ip_obj in net:
+                    if best_net is None or net.prefixlen > best_net.prefixlen:
+                        best_net = net
+            except Exception:
+                continue
+
+        return str(best_net) if best_net else None
+
     def lookup_ip(self, ip: str) -> Tuple[Optional[str], Optional[str], Optional[str], bool]:
         """
         Lookup IP via WHOIS → ASN, CIDR, Org
@@ -233,7 +292,9 @@ class WHOISLookup:
                     raise e
 
             asn = results.get("asn")
-            cidr = results.get("cidr")
+
+            # ipwhois RDAP/WHOIS results often nest CIDR under `network` or `nets`
+            cidr = self._extract_best_cidr(ip, results)
             
             # Handle org field (can be dict or string)
             org_field = results.get("org")
@@ -245,6 +306,12 @@ class WHOISLookup:
             # Fallback to asn_registry if org not found
             if not org_name:
                 org_name = results.get("asn_registry")
+
+            # RDAP often provides network name, which is better than empty
+            if not org_name:
+                network = results.get("network")
+                if isinstance(network, dict):
+                    org_name = network.get("name")
 
             logger.debug(f"[WHOIS] {ip} → ASN={asn}, CIDR={cidr}, Org={org_name}")
             return asn, cidr, org_name, True
@@ -271,7 +338,9 @@ class WHOISLookup:
                 for ip in ips
             }
 
-            for future in as_completed(futures, timeout=self.timeout * 2):
+            # Do not enforce a global timeout here; let each future respect self.timeout
+            # If we timeout the as_completed loop, we get "futures unfinished" and abort the scan.
+            for future in as_completed(futures):
                 ip = futures[future]
                 try:
                     asn, cidr, org, success = future.result(timeout=self.timeout)

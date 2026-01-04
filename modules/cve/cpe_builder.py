@@ -26,9 +26,6 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-
-
-
 # =============================================================================
 # VENDOR/PRODUCT SYNONYM MAPPING
 # =============================================================================
@@ -43,7 +40,8 @@ VENDOR_MAPPING = {
     "dnsmasq": "thekelleys",
     "apache": "apache",
     "apache httpd": "apache",
-    "nginx": "f5",
+    # NVD typically lists vendor as 'nginx' for nginx products
+    "nginx": "nginx",
     "microsoft": "microsoft",
     "cisco": "cisco",
     "vmware": "vmware",

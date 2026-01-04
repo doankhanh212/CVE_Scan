@@ -1,0 +1,135 @@
+<!-- Test API Key Usage Modal -->
+<div class="modal" id="api-test-modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>🔑 API Key Test</h3>
+            <button class="modal-close" onclick="closeApiTestModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="test-info">
+                <p>Đang kiểm tra API key với NVD API v2.0...</p>
+                <div class="loading-spinner"></div>
+            </div>
+            <div class="test-result" id="test-result" style="display: none;">
+                <!-- Result will be inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px;
+}
+
+.modal-close:hover {
+    color: var(--danger);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.test-info {
+    text-align: center;
+    padding: 20px;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+    margin-top: 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.test-result {
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.test-result.success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid var(--success);
+    color: var(--success);
+}
+
+.test-result.error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+.test-details {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.test-details strong {
+    color: var(--text-primary);
+}
+</style>
+
+<script>
+function closeApiTestModal() {
+    document.getElementById('api-test-modal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+document.getElementById('api-test-modal')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeApiTestModal();
+    }
+});
+</script>

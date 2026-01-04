@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "source": "Secure Coding Practices (CWE-based)",
+  "practices": [
+    {
+      "id": "SCP001",
+      "category": "Input Validation",
+      "practice": "Always validate and sanitize user inputs",
+      "severity": "CRITICAL",
+      "description": "All user-supplied data must be validated against a whitelist or strict pattern.",
+      "related_cwe": [20, 77, 78, 79, 89, 90, 943],
+      "remediation": "Implement input validation using parameterized queries and prepared statements."
+    },
+    {
+      "id": "SCP002",
+      "category": "Output Encoding",
+      "practice": "Encode output based on context",
+      "severity": "CRITICAL",
+      "description": "Always encode output according to the context in which it will be used (HTML, JavaScript, URL, CSS, etc.)",
+      "related_cwe": [79],
+      "remediation": "Use context-appropriate encoding functions for all dynamic output."
+    },
+    {
+      "id": "SCP003",
+      "category": "Authentication",
+      "practice": "Implement strong authentication mechanisms",
+      "severity": "CRITICAL",
+      "description": "Use strong password policies, multi-factor authentication, and secure session management.",
+      "related_cwe": [255, 287, 640],
+      "remediation": "Implement MFA, use strong password policies, secure session tokens."
+    },
+    {
+      "id": "SCP004",
+      "category": "Access Control",
+      "practice": "Implement proper access controls",
+      "severity": "CRITICAL",
+      "description": "Verify that users have proper authorization before granting access to resources.",
+      "related_cwe": [200, 201, 269],
+      "remediation": "Implement role-based access control (RBAC) and check permissions before all operations."
+    },
+    {
+      "id": "SCP005",
+      "category": "Cryptography",
+      "practice": "Use strong, industry-standard encryption",
+      "severity": "CRITICAL",
+      "description": "Use well-vetted cryptographic algorithms and avoid hard-coded keys.",
+      "related_cwe": [321, 327],
+      "remediation": "Use AES-256 for encryption, TLS 1.2+ for transport, rotate keys regularly."
+    },
+    {
+      "id": "SCP006",
+      "category": "Error Handling",
+      "practice": "Implement secure error handling",
+      "severity": "MEDIUM",
+      "description": "Do not expose sensitive information in error messages.",
+      "related_cwe": [209],
+      "remediation": "Log detailed errors internally, show generic messages to users."
+    },
+    {
+      "id": "SCP007",
+      "category": "Secure Dependencies",
+      "practice": "Keep dependencies updated",
+      "severity": "HIGH",
+      "description": "Regularly audit and update all third-party components and libraries.",
+      "related_cwe": [426, 494],
+      "remediation": "Use dependency scanning tools, update regularly, monitor security advisories."
+    },
+    {
+      "id": "SCP008",
+      "category": "Logging & Monitoring",
+      "practice": "Implement comprehensive logging",
+      "severity": "HIGH",
+      "description": "Log all security-relevant events without exposing sensitive data.",
+      "related_cwe": [778],
+      "remediation": "Log authentication attempts, access control decisions, security events."
+    },
+    {
+      "id": "SCP009",
+      "category": "File Upload",
+      "practice": "Validate and restrict file uploads",
+      "severity": "HIGH",
+      "description": "Restrict file upload types, size, and location.",
+      "related_cwe": [434],
+      "remediation": "Whitelist allowed file types, store uploads outside webroot, validate MIME types."
+    },
+    {
+      "id": "SCP010",
+      "category": "API Security",
+      "practice": "Secure API endpoints",
+      "severity": "HIGH",
+      "description": "Use authentication, rate limiting, and input validation for all API endpoints.",
+      "related_cwe": [79, 89, 918],
+      "remediation": "Implement API authentication, rate limiting, CORS policies, input validation."
+    }
+  ]
+}

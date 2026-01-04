@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}Scan Targets - CVE Scan Platform{% endblock %}
+{% block page_title %}Scan Targets{% endblock %}
+
+{% block content %}
+<!-- Scan Configuration -->
+<div class="panel">
+    <h2 class="panel-title">New Scan Configuration</h2>
+    
+    <form id="scan-form">
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label for="targets">Target Hosts</label>
+                <textarea id="targets" name="targets" rows="5" placeholder="Enter IP addresses, CIDR ranges, or hostnames (one per line)&#10;Example:&#10;192.168.1.10&#10;192.168.1.0/24&#10;example.com"></textarea>
+                <span class="form-help">Supports: IP addresses, CIDR notation, hostnames</span>
+            </div>
+
+            <div class="form-group">
+                <label for="input-mode">Input Mode</label>
+                <select id="input-mode" name="input_mode">
+                    <option value="IP/CIDR">IP / CIDR (Direct Scan)</option>
+                    <option value="Hostname (Domain)">Hostname (DNS Resolution)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="authenticated">
+                    <input type="checkbox" id="authenticated" name="authenticated">
+                    Authenticated Scan
+                </label>
+                <span class="form-help">Enable for credential-based scanning</span>
+            </div>
+        </div>
+
+        <!-- Authentication Section (Hidden by default) -->
+        <div id="auth-section" class="auth-section" style="display: none;">
+            <h3 class="section-title">Authentication Credentials</h3>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="auth-type">Authentication Type</label>
+                    <select id="auth-type" name="auth_type">
+                        <option value="ssh">SSH (Linux)</option>
+                        <option value="winrm">WinRM (Windows)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="admin">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••">
+                </div>
+
+                <div class="form-group">
+                    <label for="port">Port (Optional)</label>
+                    <input type="number" id="port" name="port" placeholder="22 or 5985">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="reset-btn">
+                <i class="fas fa-redo"></i>
+                Reset
+            </button>
+            <button type="submit" class="btn btn-primary" id="start-scan-btn">
+                <i class="fas fa-play"></i>
+                Start Scan
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Active Scans -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">Active Scans</h2>
+        <button type="button" class="btn btn-secondary btn-sm" id="refresh-scans-btn">
+            <i class="fas fa-sync"></i>
+            Refresh
+        </button>
+    </div>
+    
+    <div class="scans-list" id="active-scans">
+        <div class="empty-state">
+            <i class="fas fa-info-circle"></i>
+            <p>No active scans</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/scan.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let activeScanInterval = null;
+
+// Toggle auth section
+document.getElementById('authenticated').addEventListener('change', (e) => {
+    document.getElementById('auth-section').style.display = e.target.checked ? 'block' : 'none';
+});
+
+// Reset form
+document.getElementById('reset-btn').addEventListener('click', () => {
+    document.getElementById('scan-form').reset();
+    document.getElementById('auth-section').style.display = 'none';
+});
+
+// Load active scans
+async function loadActiveScans() {
+    try {
+        const response = await fetch('/api/scans');
+        const data = await response.json();
+        
+        const scans = (data.scans || []).filter(s => s.status === 'running');
+        const container = document.getElementById('active-scans');
+        
+        if (scans.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-info-circle"></i>
+                    <p>No active scans</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = '';
+        scans.forEach(scan => {
+            const progress = scan.progress || 0;
+            const targets = Array.isArray(scan.hosts) ? scan.hosts.slice(0, 3).join(', ') : scan.hosts;
+            const moreTargets = Array.isArray(scan.hosts) && scan.hosts.length > 3 ? 
+                ` +${scan.hosts.length - 3} more` : '';
+            
+            const item = document.createElement('div');
+            item.className = 'scan-item';
+            item.innerHTML = `
+                <div class="scan-item-header">
+                    <div class="scan-item-id">${scan.scan_id}</div>
+                    <div class="scan-item-targets">${targets}${moreTargets}</div>
+                    <div class="scan-item-progress">
+                        <div class="scan-item-progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="scan-item-meta">
+                        <span>${progress}%</span>
+                        <span>${scan.message || 'Scanning...'}</span>
+                    </div>
+                </div>
+                <div class="scan-item-actions">
+                    <button type="button" class="icon-btn-small" onclick="viewScanDetail('${scan.scan_id}')" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button type="button" class="icon-btn-small danger" onclick="stopScan('${scan.scan_id}')" title="Stop Scan">
+                        <i class="fas fa-stop"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    } catch (error) {
+        console.error('Error loading active scans:', error);
+    }
+}
+
+function viewScanDetail(scanId) {
+    window.location.href = `/result/${scanId}`;
+}
+
+// Submit scan
+document.getElementById('scan-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const targets = document.getElementById('targets').value.split('\n').filter(t => t.trim());
+    const inputMode = document.getElementById('input-mode').value;
+    const authenticated = document.getElementById('authenticated').checked;
+    
+    if (targets.length === 0) {
+        alert('Please enter at least one target');
+        return;
+    }
+    
+    const payload = {
+        hosts: targets,
+        input_mode: inputMode,
+        authenticated: authenticated
+    };
+    
+    if (authenticated) {
+        payload.auth_data = {
+            type: document.getElementById('auth-type').value,
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+            port: document.getElementById('port').value || null
+        };
+    }
+    
+    try {
+        const response = await fetch('/api/scan', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            document.getElementById('scan-form').reset();
+            document.getElementById('auth-section').style.display = 'none';
+            loadActiveScans();
+            startActiveScansUpdate();
+        } else {
+            alert('Error starting scan: ' + (data.error || 'Unknown error'));
+        }
+    } catch (error) {
+        alert('Error starting scan: ' + error.message);
+    }
+});
+
+function startActiveScansUpdate() {
+    if (activeScanInterval) clearInterval(activeScanInterval);
+    // Reduced refresh rate to 5s to lower server load
+    activeScanInterval = setInterval(loadActiveScans, 5000);
+}
+
+async function stopScan(scanId) {
+    if (!confirm('Are you sure you want to stop this scan?')) return;
+    
+    try {
+        await fetch(`/api/scan/${scanId}`, { method: 'DELETE' });
+        loadActiveScans();
+    } catch (error) {
+        alert('Error stopping scan: ' + error.message);
+    }
+}
+
+document.getElementById('refresh-scans-btn').addEventListener('click', loadActiveScans);
+
+// Initial load
+document.addEventListener('DOMContentLoaded', () => {
+    loadActiveScans();
+    startActiveScansUpdate();
+});
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (activeScanInterval) clearInterval(activeScanInterval);
+});
+</script>
+{% endblock %}

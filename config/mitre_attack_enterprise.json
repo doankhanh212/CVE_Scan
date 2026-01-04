@@ -1,0 +1,177 @@
+{
+  "version": "13.1",
+  "source": "https://attack.mitre.org/",
+  "last_updated": "2023-04-12",
+  "tactics": [
+    {
+      "id": "TA0043",
+      "name": "Reconnaissance",
+      "description": "The adversary is trying to gather information they can use to plan future operations."
+    },
+    {
+      "id": "TA0042",
+      "name": "Resource Development",
+      "description": "The adversary is trying to establish resources they can use to support operations."
+    },
+    {
+      "id": "TA0001",
+      "name": "Initial Access",
+      "description": "The adversary is trying to get into your network."
+    },
+    {
+      "id": "TA0002",
+      "name": "Execution",
+      "description": "The adversary is trying to run malicious code."
+    },
+    {
+      "id": "TA0003",
+      "name": "Persistence",
+      "description": "The adversary is trying to keep their access."
+    },
+    {
+      "id": "TA0004",
+      "name": "Privilege Escalation",
+      "description": "The adversary is trying to gain higher-level permissions."
+    },
+    {
+      "id": "TA0005",
+      "name": "Defense Evasion",
+      "description": "The adversary is trying to avoid being detected."
+    },
+    {
+      "id": "TA0006",
+      "name": "Credential Access",
+      "description": "The adversary is trying to steal account names and passwords."
+    },
+    {
+      "id": "TA0007",
+      "name": "Discovery",
+      "description": "The adversary is trying to figure out your environment."
+    },
+    {
+      "id": "TA0008",
+      "name": "Lateral Movement",
+      "description": "The adversary is trying to move through your environment."
+    },
+    {
+      "id": "TA0009",
+      "name": "Collection",
+      "description": "The adversary is trying to gather data of interest to achieve their goal."
+    },
+    {
+      "id": "TA0010",
+      "name": "Exfiltration",
+      "description": "The adversary is trying to steal data."
+    },
+    {
+      "id": "TA0011",
+      "name": "Command and Control",
+      "description": "The adversary is trying to communicate with compromised systems to control them."
+    },
+    {
+      "id": "TA0040",
+      "name": "Impact",
+      "description": "The adversary is trying to manipulate, interrupt, or destroy your systems and data."
+    }
+  ],
+  "techniques": [
+    {
+      "id": "T1190",
+      "name": "Exploit Public-Facing Application",
+      "tactic_id": "TA0001",
+      "description": "An adversary may attempt to take advantage of a weakness in an Internet-facing computer or program using software, data, or commands in order to cause unintended or unanticipated behavior.",
+      "common_cwe": [20, 22, 78, 79, 89, 90, 94, 95, 200, 201, 434, 503, 640, 863, 918, 943]
+    },
+    {
+      "id": "T1592",
+      "name": "Gather Victim Identity Information",
+      "tactic_id": "TA0043",
+      "description": "Adversaries may gather information about the victim's identity that can be used during targeting.",
+      "common_cwe": [200, 201, 202, 215, 220, 541]
+    },
+    {
+      "id": "T1589",
+      "name": "Gather Victim Network Information",
+      "tactic_id": "TA0043",
+      "description": "Adversaries may gather information about the victim's network that can be used during targeting.",
+      "common_cwe": [200, 541, 829]
+    },
+    {
+      "id": "T1590",
+      "name": "Gather Victim Network Information",
+      "tactic_id": "TA0043",
+      "description": "Adversaries may gather information about the victim's network infrastructure that can be used during targeting.",
+      "common_cwe": [200, 541]
+    },
+    {
+      "id": "T1598",
+      "name": "Phishing for Information",
+      "tactic_id": "TA0043",
+      "description": "Adversaries may send phishing messages to elicit sensitive information that can be used during targeting.",
+      "common_cwe": [200, 266]
+    },
+    {
+      "id": "T1566",
+      "name": "Phishing",
+      "tactic_id": "TA0001",
+      "description": "Adversaries may send phishing messages to gain access to victim systems. All forms of phishing are attacks that attempt to acquire sensitive information for use in further attacks.",
+      "common_cwe": [200, 266, 310, 521, 640, 799, 804]
+    },
+    {
+      "id": "T1091",
+      "name": "Replication Through Removable Media",
+      "tactic_id": "TA0001",
+      "description": "Adversaries may move onto systems, possibly those on disconnected or air-gapped networks, by copying malware to removable media which may be used by a common and expected user activity such as copying data from one storage device to another.",
+      "common_cwe": [434]
+    },
+    {
+      "id": "T1195",
+      "name": "Supply Chain Compromise",
+      "tactic_id": "TA0001",
+      "description": "Adversaries may compromise software, firmware, or hardware throughout the supply chain of an organization in order to introduce malware or backdoors during initial installation.",
+      "common_cwe": [426, 494, 829]
+    },
+    {
+      "id": "T1199",
+      "name": "Trusted Relationship",
+      "tactic_id": "TA0001",
+      "description": "Adversaries may breach or otherwise leverage organizations who have access to victim networks, systems, or data by compromising the trusted third party and leveraging the access granted to them.",
+      "common_cwe": [639, 863]
+    },
+    {
+      "id": "T1189",
+      "name": "Drive-by Compromise",
+      "tactic_id": "TA0001",
+      "description": "A user visits a website over the normal course of browsing and is targeted for exploitation by a malicious script embedded in the website. Vulnerabilities in browsers, browser plugins, and web applications that do not patch are common attack vectors.",
+      "common_cwe": [79, 94, 95, 434, 863, 918]
+    },
+    {
+      "id": "T1548",
+      "name": "Abuse Elevation Control Mechanism",
+      "tactic_id": "TA0004",
+      "description": "Adversaries may circumvent mechanisms that limit the ability to perform privileged operations to avoid detection, masking, or altering the intended way of modifying the system.",
+      "common_cwe": [269, 271, 276, 280, 434, 471, 648, 680]
+    },
+    {
+      "id": "T1547",
+      "name": "Boot or Logon Autostart Execution",
+      "tactic_id": "TA0003",
+      "description": "Adversaries may achieve persistence by executing malicious content triggered during boot or user logon.",
+      "common_cwe": [427, 428, 434, 470, 639]
+    },
+    {
+      "id": "T1197",
+      "name": "BITS Jobs",
+      "tactic_id": "TA0003",
+      "description": "Adversaries may abuse BITS jobs to persistently execute code and perform latency-obfuscated data exfiltration.",
+      "common_cwe": [426, 434]
+    },
+    {
+      "id": "T1562",
+      "name": "Impair Defenses",
+      "tactic_id": "TA0005",
+      "description": "Adversaries may maliciously modify components of a victim environment in order to hinder or disable defensive capabilities.",
+      "common_cwe": [269, 276, 434, 693]
+    }
+  ]
+}

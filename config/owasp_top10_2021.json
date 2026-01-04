@@ -1,0 +1,66 @@
+{
+  "version": "2021",
+  "source": "https://owasp.org/www-project-top-ten/",
+  "categories": [
+    {
+      "code": "A01:2021",
+      "name": "Broken Access Control",
+      "description": "Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification, or destruction of all data or performing a business function outside the user's limits.",
+      "common_cwe": [200, 201, 220, 284, 285, 639, 862]
+    },
+    {
+      "code": "A02:2021",
+      "name": "Cryptographic Failures",
+      "description": "Failures related to cryptography which often lead to exposure of sensitive data. The first thing is to determine the protection needs of data in transit and at rest. For example, passwords, credit card numbers, health records, personal information, and business secrets require extra protection, mainly if that data falls under privacy laws, e.g. GDPR, or other regulations like PCI DSS.",
+      "common_cwe": [257, 259, 321, 322, 327, 330, 340, 347, 523, 720, 780]
+    },
+    {
+      "code": "A03:2021",
+      "name": "Injection",
+      "description": "An application is vulnerable to attack when: User-supplied data is not validated, filtered, or sanitized by the application. Dynamic queries or non-parameterized calls without context-aware escaping are used directly in the interpreter.",
+      "common_cwe": [20, 77, 78, 79, 89, 90, 91, 93, 95, 943]
+    },
+    {
+      "code": "A04:2021",
+      "name": "Insecure Design",
+      "description": "Insecure design is a broad category representing different weaknesses, expressed as missing or ineffective control design. An insecure design cannot be fixed by a perfect implementation as by definition, needed security controls were never created to defend against specific attacks.",
+      "common_cwe": [209, 213, 235, 340, 434, 444, 656, 730, 778, 1021, 1104]
+    },
+    {
+      "code": "A05:2021",
+      "name": "Security Misconfiguration",
+      "description": "The application might be vulnerable if the application is missing appropriate security hardening across any part of the application stack, or if permissions on cloud services are improperly configured. Developers and system administrators need to work together to ensure the entire stack is configured securely.",
+      "common_cwe": [2, 13, 15, 16, 260, 286, 315, 441, 497, 798]
+    },
+    {
+      "code": "A06:2021",
+      "name": "Vulnerable and Outdated Components",
+      "description": "You are likely vulnerable: If you do not know the versions of all components you use (both client-side and server-side). If software is unsupported, unmaintained, or does not issue security patches for older versions. If you do not scan for vulnerabilities regularly and subscribe to security bulletins related to the components you use.",
+      "common_cwe": [16, 494, 540, 1035, 1104]
+    },
+    {
+      "code": "A07:2021",
+      "name": "Identification and Authentication Failures",
+      "description": "Confirmation of the user's identity, authentication, and session management is critical to protect against authentication-related attacks. There may be authentication weaknesses if the application: Permits automated attacks such as credential stuffing, where the attacker has a list of valid usernames and passwords.",
+      "common_cwe": [255, 259, 287, 288, 640, 798, 1021, 1045, 1104]
+    },
+    {
+      "code": "A08:2021",
+      "name": "Software and Data Integrity Failures",
+      "description": "Software and data integrity failures relate to code and infrastructure that does not protect against integrity violations. An example of this is where an application relies upon plugins, libraries, or modules from untrusted sources, repositories, and content delivery networks (CDNs).",
+      "common_cwe": [345, 353, 426, 494, 502, 565, 829, 1021, 1104]
+    },
+    {
+      "code": "A09:2021",
+      "name": "Logging and Monitoring Failures",
+      "description": "This category is to help detect, escalate, and respond to active breaches. Without logging and monitoring, breaches cannot be detected. Insufficient logging, detection, monitoring and active response occurs any time: Auditable events, such as login, failed login, or high-value transactions are not logged.",
+      "common_cwe": [223, 778, 1021, 1062, 1104]
+    },
+    {
+      "code": "A10:2021",
+      "name": "Server-Side Request Forgery (SSRF)",
+      "description": "SSRF flaws occur whenever a web application is fetching a remote resource without validating the user-supplied URL. This allows an attacker to coerce the application to send a crafted request to an unexpected destination, even when protected by a firewall, VPN, or another type of network access control list (ACL).",
+      "common_cwe": [94, 95, 200, 201, 352, 400, 444, 918, 943]
+    }
+  ]
+}

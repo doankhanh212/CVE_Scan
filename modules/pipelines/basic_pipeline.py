@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
 import socket
 import ipaddress
+import re
 
 from modules.scanners.nmap_scanner import NmapScanner
 from modules.scanners.rustscan_scanner import RustScanScanner
@@ -11,6 +12,7 @@ from modules.discovery.host_discovery import HostDiscovery
 from modules.cve.cpe_builder import build_cpe
 from modules.cve.cve_matcher import CVEMatcher
 from modules.report.json_report import JSONReport
+from modules.progress_tracker import ProgressTracker
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -40,14 +42,17 @@ class BasicPipeline:
         self.max_concurrent_scans = int(config.get("max_concurrent_scans", 4))
         # Cap CVEs per service to avoid overwhelming outputs on broad CPEs
         self.cve_max_per_service = int(config.get("cve_max_per_service", 50))
-        # Year window to keep CVEs recent (e.g., last 10 years). 0/None disables.
-        self.cve_year_window = int(config.get("cve_year_window", 10))
+        # Year window filter disabled by default (return all CVEs)
+        self.cve_year_window = int(config.get("cve_year_window", 0))
         # Toggle CIDR-expanded IP scanning and cap overall scan IPs
         self.scan_cidr_assets = bool(config.get("scan_cidr_expansion", False))
         self.max_scan_ips = int(config.get("max_scan_ips", 64))
         # Adaptive policy: scan all alive if small CIDR (e.g., /24)
         self.scan_policy = str(config.get("scan_policy", "fixed")).lower()
         self.adaptive_full_scan_prefixlen = int(config.get("adaptive_full_scan_prefixlen", 24))
+        
+        # Progress tracker (will be initialized in execute_batch with proper input_mode)
+        self.progress_tracker = None
 
         self.logger("BasicPipeline initialized", "SYSTEM")
 
@@ -105,6 +110,16 @@ class BasicPipeline:
         all_per_host_results = []
         all_aggregate = {"services": {}, "vulnerabilities": {}}
         
+        # Initialize progress tracker with correct input mode
+        if input_mode is None:
+            input_mode = "Hostname (Domain)"  # Default to hostname mode
+        
+        self.progress_tracker = ProgressTracker(
+            scan_type="basic",
+            input_mode=input_mode
+        )
+        self.logger(f"🔧 Progress Tracker: scan_type=basic, input_mode={input_mode}", "INFO")
+        
         # ============================================================
         # Check Input Mode routing
         # ============================================================
@@ -134,6 +149,19 @@ class BasicPipeline:
                 # Fallback if method not available
                 alive_ips = self.host_discovery.discover(expanded_ips)
             
+            # Notify progress callback of ping completion with alive count
+            try:
+                if self.progress_cb and self.progress_tracker:
+                    overall = self.progress_tracker.report_progress(
+                        "ping", 100, self.progress_cb,
+                        f"Ping hoàn tát: {len(alive_ips)} host(s) sống"
+                    )
+                    self.logger(f"📊 Progress: ping=100% → overall={overall}%", "SYSTEM")
+                elif self.progress_cb:
+                    self.progress_cb("progress", 20, f"Ping hoàn tát: {len(alive_ips)} host(s) sống")
+            except Exception:
+                pass
+            
             if not alive_ips:
                 self.logger("❌ No alive hosts found", "ERROR")
                 return {
@@ -144,7 +172,7 @@ class BasicPipeline:
             
             # 2️⃣ Scan alive IPs
             self.logger(f"✅ Found {len(alive_ips)} alive host(s)", "SUCCESS")
-            per_host_results = self._scan_hosts(alive_ips)
+            per_host_results = self._scan_hosts(alive_ips, assets_map=None)
             
             return {
                 "multi_host": True,
@@ -207,10 +235,16 @@ class BasicPipeline:
         while not self.host_discovery.alive_queue.empty():
             alive_ips.append(self.host_discovery.alive_queue.get())
 
-        # Notify GUI of alive count
+        # Notify GUI of ping completion
         try:
-            if self.progress_cb:
-                self.progress_cb("ping", 100, {"alive": len(alive_ips)})
+            if self.progress_cb and self.progress_tracker:
+                overall = self.progress_tracker.report_progress(
+                    "ping", 100, self.progress_cb,
+                    f"Ping hoàn tất: {len(alive_ips)} host(s) sống"
+                )
+                self.logger(f"📊 Progress: ping=100% → overall={overall}%", "SYSTEM")
+            elif self.progress_cb:
+                self.progress_cb("progress", 35, f"Ping hoàn tất: {len(alive_ips)} host(s) sống")
         except Exception:
             pass
         
@@ -326,9 +360,11 @@ class BasicPipeline:
                 if self.host_result_cb:
                     try:
                         per_host_report = self.reporter.generate(normalized)
+                        self.logger(f"[{scan_ip}] Callback result: {len(per_host_report.get('gui', {}).get('ports', []))} ports, CVEs in normalized: {sum(len(v.get('cves', [])) for v in normalized.get('vulnerabilities', {}).values())}", "SYSTEM")
                         self.host_result_cb(scan_ip, per_host_report)
                         all_per_host_results.append((label, per_host_report))
-                    except Exception:
+                    except Exception as e:
+                        self.logger(f"[{scan_ip}] Callback exception: {e}", "ERROR")
                         pass
 
                 # Progress update per completed IP
@@ -363,6 +399,16 @@ class BasicPipeline:
                 self.logger(f"✅ [SCAN] Hoàn tất host: {label}", "SUCCESS")
 
         self.logger(f"✅ ✅ Hoàn tất quét {len(alive_ips)} host(s)", "SUCCESS")
+
+        # CVE mapping complete - update progress using cve_mapping/report phases so overall reaches 100%
+        if self.progress_cb:
+            try:
+                # cve_mapping 100% maps to overall 100% (80-100 range)
+                self.progress_cb("cve_mapping", 100, "CVE mapping complete")
+                # report 100% keeps overall at 100 and signals completion
+                self.progress_cb("report", 100, "Scan complete")
+            except Exception:
+                pass
 
         # Return multi-host result
         return {
@@ -650,12 +696,18 @@ class BasicPipeline:
             # ==================================================
             # 1️⃣ BUILD CPE from Nmap service + version (with Windows guards)
             # ==================================================
+            # Fallback: use service name if product is empty (from nmap fallback)
+            if not product and service:
+                product = service
+            
             if not product:
                 self.logger(
                     f"Skipping port {port}/{service}: no product detected",
                     "INFO"
                 )
                 continue
+
+            # Cho phép CPE rộng khi thiếu version theo yêu cầu (không bỏ qua port)
 
             # Guard rails for noisy Windows mappings
             product_for_cpe = product
@@ -668,6 +720,9 @@ class BasicPipeline:
                     product_for_cpe = "active_directory"
                 elif "microsoft windows kerberos" in pl or pl == "kerberos":
                     product_for_cpe = "kerberos"
+                elif "netbios" in pl or service == "netbios-ssn":
+                    # NetBIOS banners often read like "Microsoft Windows ..." and explode to OS-wide CVEs
+                    product_for_cpe = "netbios-ssn"
             except Exception:
                 product_for_cpe = product
 
@@ -790,11 +845,11 @@ class BasicPipeline:
                     self.logger(f"[ERROR] Future for {scan_ip} failed: {e}", "ERROR")
                     label, normalized = scan_ip, {"target": scan_ip, "scan_type": "basic", "services": {}, "vulnerabilities": {}}
                 
-                # Emit per-IP result to GUI
+                # Emit per-IP result to GUI (prefer display label so device/hostname shows)
                 if self.host_result_cb:
                     try:
                         per_host_report = self.reporter.generate(normalized)
-                        self.host_result_cb(scan_ip, per_host_report)
+                        self.host_result_cb(label, per_host_report)
                         per_host_results.append((label, per_host_report))
                     except Exception:
                         pass

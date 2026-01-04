@@ -1,0 +1,1122 @@
+{% extends "base.html" %}
+
+{% block title %}Vulnerabilities - CVE Scan Platform{% endblock %}
+{% block page_title %}Vulnerabilities{% endblock %}
+
+{% block content %}
+<!-- Filter Section -->
+<div class="panel">
+    <div class="filter-section">
+        <div class="filter-group">
+            <label for="severityFilter">Severity</label>
+            <select id="severityFilter" class="filter-select">
+                <option value="">All Severity</option>
+                <option value="CRITICAL">Critical</option>
+                <option value="HIGH">High</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LOW">Low</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="hostFilter">Host</label>
+            <select id="hostFilter" class="filter-select">
+                <option value="">All Hosts</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="searchInput">Search</label>
+            <input type="text" id="searchInput" class="filter-input" placeholder="Search CVE, service, description...">
+        </div>
+
+        <div class="filter-actions">
+            <button class="btn btn-secondary" id="reset-filter-btn">
+                <i class="fas fa-redo"></i>
+                Reset
+            </button>
+            <button class="btn btn-primary" id="export-vuln-csv-btn">
+                <i class="fas fa-download"></i>
+                Export CSV
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Vulnerabilities Table -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title">All Vulnerabilities (<span id="vuln-count">0</span>)</h2>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="vuln-table" id="vuln-table">
+            <thead>
+                <tr>
+                    <th>HOST / IP</th>
+                    <th>PORT</th>
+                    <th>SERVICE</th>
+                    <th>VERSION</th>
+                    <th>CVE ID</th>
+                    <th>CVSS v2</th>
+                    <th>CVSS v3</th>
+                    <th>CVSS v4</th>
+                    <th>SEVERITY</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+            </thead>
+            <tbody id="vuln-tbody">
+                <tr class="loading-row">
+                    <td colspan="10">
+                        <div class="loading-spinner"></div>
+                        Loading vulnerabilities...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- CVE Detail Modal -->
+<div id="cve-detail-modal" class="modal hidden">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-cve-id">CVE-XXXX-XXXXX</h2>
+            <button class="modal-close" onclick="closeCVEModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <!-- Tabs -->
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="overview">Overview</button>
+                <button class="modal-tab" data-tab="standards">Security Standards</button>
+                <button class="modal-tab" data-tab="remediation">Remediation</button>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="modal-tab-content">
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-pane active">
+                    <div class="modal-section">
+                        <h3>CVE Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Title:</label>
+                                <p id="modal-title">Loading...</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Description:</label>
+                                <p id="modal-description">Loading...</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Category:</label>
+                                <p id="modal-category">Network Security</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Severity:</label>
+                                <p id="modal-severity-label">
+                                    <span class="severity-badge" id="modal-severity-badge">MEDIUM</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>OWASP Top 10 Mapping</h3>
+                        <div id="modal-owasp-badges" class="framework-badges">
+                            <span class="framework-badge loading">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>MITRE ATT&CK Mapping</h3>
+                        <div id="modal-mitre-badges" class="framework-badges">
+                            <span class="framework-badge loading">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>Recommendations</h3>
+                        <div id="modal-context" class="context-text">
+                            <p id="modal-recommendations-text">Loading recommendations...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>CVSS Scores</h3>
+                        <div class="cvss-grid">
+                            <div class="cvss-card">
+                                <div class="cvss-version">CVSS v2.0</div>
+                                <div id="modal-cvss-v2" class="cvss-score">-</div>
+                                <div id="modal-cvss-v2-vector" class="cvss-vector">Vector: N/A</div>
+                            </div>
+                            <div class="cvss-card">
+                                <div class="cvss-version">CVSS v3.1</div>
+                                <div id="modal-cvss-v3" class="cvss-score">-</div>
+                                <div id="modal-cvss-v3-vector" class="cvss-vector">Vector: N/A</div>
+                            </div>
+                            <div class="cvss-card">
+                                <div class="cvss-version">CVSS v4.0</div>
+                                <div id="modal-cvss-v4" class="cvss-score">-</div>
+                                <div id="modal-cvss-v4-vector" class="cvss-vector">Vector: N/A</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>Affected Products</h3>
+                        <div id="modal-affected-products" class="affected-products-list">
+                            Loading...
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Standards Mapping Tab -->
+                <div id="standards-tab" class="tab-pane">
+                    <div class="modal-section">
+                        <h3>OWASP Top 10 2021</h3>
+                        <div id="modal-owasp" class="frameworks-grid">
+                            Loading...
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>MITRE ATT&CK Framework</h3>
+                        <div id="modal-mitre" class="frameworks-grid">
+                            Loading...
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>Secure Coding Practices</h3>
+                        <div id="modal-scp" class="frameworks-grid">
+                            Loading...
+                        </div>
+                    </div>
+                    
+                    <div class="modal-section">
+                        <h3>Risk Score</h3>
+                        <div class="risk-score-container">
+                            <div class="risk-score-value" id="modal-risk-score">7.5/10</div>
+                            <div class="risk-score-bar">
+                                <div class="risk-score-fill" id="modal-risk-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Remediation Tab -->
+                <div id="remediation-tab" class="tab-pane">
+                    <div class="modal-section">
+                        <h3>Remediation Guidance</h3>
+                        <div id="modal-recommendations" class="recommendations-list">
+                            Loading...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <a id="modal-nvd-link" href="#" target="_blank" class="btn btn-primary">
+                <i class="fas fa-external-link-alt"></i>
+                View on NVD
+            </a>
+            <button class="btn btn-secondary" onclick="closeCVEModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-select,
+.filter-input {
+    padding: 10px 14px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.loading-row {
+    text-align: center;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.host-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+.cve-link {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.cve-link:hover {
+    text-decoration: underline;
+}
+
+.cvss-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.description-cell {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Modal Styles */
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-in;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--text-primary);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 24px 24px 24px;
+}
+
+.modal-tabs {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+    margin: -24px -24px 24px -24px;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-secondary);
+}
+
+.modal-tab {
+    background: none;
+    border: none;
+    padding: 16px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-tab:hover {
+    color: var(--text-primary);
+}
+
+.modal-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.modal-tab-content {
+    /* position: relative; */
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.modal-section {
+    margin-bottom: 32px;
+}
+
+.modal-section h3 {
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.info-item {
+    background: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.info-item label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.info-item p {
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.cvss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.cvss-card {
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.cvss-version {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.cvss-score {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.cvss-vector {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'Courier New', monospace;
+    overflow-wrap: break-word;
+}
+
+.frameworks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.framework-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.framework-card-title {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 13px;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+}
+
+.framework-card-content {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.framework-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.framework-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #1e3a5f;
+    color: #4a9eff;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid #2a4a6f;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.framework-badge:hover {
+    background: #2a4a6f;
+    color: #6bb6ff;
+    border-color: #4a9eff;
+}
+
+.framework-badge.loading {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    cursor: default;
+}
+
+.framework-badge.owasp {
+    background: #3d1e5f;
+    color: #b77fff;
+    border-color: #5a2e7f;
+}
+
+.framework-badge.owasp:hover {
+    background: #5a2e7f;
+    color: #d4a6ff;
+    border-color: #b77fff;
+}
+
+.framework-badge.scp {
+    background: #1e5f3d;
+    color: #4aff9e;
+    border-color: #2e7f5a;
+}
+
+.framework-badge.scp:hover {
+    background: #2e7f5a;
+    color: #6bffc4;
+    border-color: #4aff9e;
+}
+
+.context-text {
+    background: var(--bg-tertiary);
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 3px solid #4a9eff;
+}
+
+.context-text p {
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+.risk-score-container {
+    background: var(--bg-tertiary);
+    padding: 24px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.risk-score-value {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+}
+
+.risk-score-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.risk-score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #FFC107, #FF6B6B);
+    width: 75%;
+    transition: width 0.3s ease;
+}
+
+.affected-products-list,
+.recommendations-list {
+    display: grid;
+    gap: 12px;
+}
+
+.product-item,
+.recommendation-item {
+    background: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary);
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.product-item {
+    font-family: 'Courier New', monospace;
+}
+
+.recommendation-item {
+    border-left-color: var(--text-secondary);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.modal-footer .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let allVulnerabilities = [];
+let filteredVulnerabilities = [];
+
+async function loadVulnerabilities() {
+    try {
+        const response = await fetch('/api/vulnerabilities');
+        const data = await response.json();
+
+        console.log('Vulnerabilities data:', response);
+        
+        allVulnerabilities = data.vulnerabilities || [];
+        filteredVulnerabilities = [...allVulnerabilities];
+        
+        // Populate host filter
+        const hosts = [...new Set(allVulnerabilities.map(v => v.host))];
+        const hostFilter = document.getElementById('hostFilter');
+        hosts.forEach(host => {
+            const option = document.createElement('option');
+            option.value = host;
+            option.textContent = host;
+            hostFilter.appendChild(option);
+        });
+        
+        renderTable();
+    } catch (error) {
+        console.error('Error loading vulnerabilities:', error);
+        document.getElementById('vuln-tbody').innerHTML = 
+            '<tr><td colspan="10" style="text-align:center;">Error loading data</td></tr>';
+    }
+}
+
+function renderTable() {
+    const tbody = document.getElementById('vuln-tbody');
+    tbody.innerHTML = '';
+    
+    document.getElementById('vuln-count').textContent = filteredVulnerabilities.length;
+    
+    if (filteredVulnerabilities.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;">No vulnerabilities found</td></tr>';
+        return;
+    }
+    
+    filteredVulnerabilities.forEach(vuln => {
+        console.log('Rendering vulnerability:', vuln);
+        const row = document.createElement('tr');
+        const sevClass = (vuln.severity || '').toLowerCase();
+        
+        
+        // Make host/CVE clickable
+        const hostCell = document.createElement('td');
+        const hostSpan = document.createElement('span');
+        hostSpan.className = 'host-tag';
+        hostSpan.textContent = vuln?.host || 'N/A';
+        hostSpan.style.cursor = 'pointer';
+        hostSpan.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openCVEModal(vuln.cve_id, vuln);
+        });
+        hostCell.appendChild(hostSpan);
+        
+        row.appendChild(hostCell);
+        
+        // Add other cells
+        const portCell = document.createElement('td');
+        portCell.textContent = vuln.port || 'N/A';
+        row.appendChild(portCell);
+        
+        const serviceCell = document.createElement('td');
+        serviceCell.textContent = vuln.service || 'N/A';
+        row.appendChild(serviceCell);
+        
+        const versionCell = document.createElement('td');
+        versionCell.textContent = vuln.version || 'N/A';
+        row.appendChild(versionCell);
+        
+        const cveCell = document.createElement('td');
+        const cveLink = document.createElement('a');
+        cveLink.href = `https://nvd.nist.gov/vuln/detail/${vuln.cve_id}`;
+        cveLink.target = '_blank';
+        cveLink.className = 'cve-link';
+        cveLink.textContent = vuln.cve_id || 'N/A';
+        cveLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCVEModal(vuln.cve_id, vuln);
+        });
+        cveCell.appendChild(cveLink);
+        row.appendChild(cveCell);
+        
+        const cvssv2Cell = document.createElement('td');
+        const cvssv2Badge = document.createElement('span');
+        cvssv2Badge.className = 'cvss-badge';
+        cvssv2Badge.textContent = vuln.cvss_v2 || '-';
+        cvssv2Cell.appendChild(cvssv2Badge);
+        row.appendChild(cvssv2Cell);
+        
+        const cvssv3Cell = document.createElement('td');
+        const cvssv3Badge = document.createElement('span');
+        cvssv3Badge.className = 'cvss-badge';
+        cvssv3Badge.textContent = vuln.cvss_v3 || '-';
+        cvssv3Cell.appendChild(cvssv3Badge);
+        row.appendChild(cvssv3Cell);
+        
+        const cvssv4Cell = document.createElement('td');
+        const cvssv4Badge = document.createElement('span');
+        cvssv4Badge.className = 'cvss-badge';
+        cvssv4Badge.textContent = vuln.cvss_v4 || '-';
+        cvssv4Cell.appendChild(cvssv4Badge);
+        row.appendChild(cvssv4Cell);
+        
+        const sevCell = document.createElement('td');
+        const sevBadge = document.createElement('span');
+        sevBadge.className = `severity-badge ${sevClass}`;
+        sevBadge.textContent = vuln.severity || 'UNKNOWN';
+        sevCell.appendChild(sevBadge);
+        row.appendChild(sevCell);
+        
+        const descCell = document.createElement('td');
+        descCell.className = 'description-cell';
+        descCell.textContent = vuln.summary || 'No description available';
+        row.appendChild(descCell);
+        
+        tbody.appendChild(row);
+    });
+}
+
+async function openCVEModal(cveId, vulnData) {
+    const modal = document.getElementById('cve-detail-modal');
+    modal.classList.remove('hidden');
+    
+    // Update header
+    document.getElementById('modal-cve-id').textContent = cveId;
+    document.getElementById('modal-nvd-link').href = `https://nvd.nist.gov/vuln/detail/${cveId}`;
+    
+    try {
+        const response = await fetch(`/api/cve/${cveId}/analysis`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const analysis = await response.json();
+        
+        // Update Overview tab
+        document.getElementById('modal-title').textContent = analysis.title || 'N/A';
+        document.getElementById('modal-description').textContent = analysis.description || 'No description available';
+        document.getElementById('modal-category').textContent = vulnData?.service || 'Network Security';
+        
+        // Update severity badge
+        const severityBadge = document.getElementById('modal-severity-badge');
+        const severity = vulnData?.severity || 'UNKNOWN';
+        severityBadge.textContent = severity;
+        severityBadge.className = `severity-badge ${severity.toLowerCase()}`;
+        
+        // OWASP Badges (in Overview tab)
+        const owaspBadgesDiv = document.getElementById('modal-owasp-badges');
+        owaspBadgesDiv.innerHTML = '';
+        if (analysis.owasp && analysis.owasp.length > 0) {
+            analysis.owasp.forEach(owasp => {
+                const badge = document.createElement('span');
+                badge.className = 'framework-badge owasp';
+                badge.textContent = `${owasp.category} - ${owasp.name}`;
+                badge.title = owasp.description || '';
+                owaspBadgesDiv.appendChild(badge);
+            });
+        } else {
+            owaspBadgesDiv.innerHTML = '<span class="framework-badge loading">No OWASP mapping available</span>';
+        }
+        
+        // MITRE ATT&CK Badges (in Overview tab - Group-IB style)
+        const mitreBadgesDiv = document.getElementById('modal-mitre-badges');
+        mitreBadgesDiv.innerHTML = '';
+        if (analysis.mitre && Object.keys(analysis.mitre).length > 0) {
+            Object.entries(analysis.mitre).forEach(([tactic, techniques]) => {
+                // Add tactic badge
+                const tacticBadge = document.createElement('span');
+                tacticBadge.className = 'framework-badge';
+                tacticBadge.textContent = tactic;
+                tacticBadge.title = `Tactic: ${tactic}`;
+                mitreBadgesDiv.appendChild(tacticBadge);
+                
+                // Add technique badges (limit to first 2 per tactic)
+                if (Array.isArray(techniques)) {
+                    techniques.slice(0, 2).forEach(technique => {
+                        const techBadge = document.createElement('span');
+                        techBadge.className = 'framework-badge';
+                        techBadge.textContent = technique.split(' - ')[1] || technique;
+                        techBadge.title = technique;
+                        mitreBadgesDiv.appendChild(techBadge);
+                    });
+                }
+            });
+        } else {
+            mitreBadgesDiv.innerHTML = '<span class="framework-badge loading">No MITRE ATT&CK mapping available</span>';
+        }
+        
+        // Recommendations (context in Overview)
+        const contextText = document.getElementById('modal-recommendations-text');
+        if (analysis.recommendations && analysis.recommendations.length > 0) {
+            contextText.textContent = analysis.recommendations[0];
+        } else {
+            contextText.textContent = 'It is recommended to address this vulnerability based on the security frameworks identified above.';
+        }
+        
+        // CVSS Scores
+        const cvss = analysis.cvss || {};
+        document.getElementById('modal-cvss-v2').textContent = cvss.v2?.base_score || '-';
+        document.getElementById('modal-cvss-v2-vector').textContent = 
+            cvss.v2?.vector ? `Vector: ${cvss.v2.vector}` : 'Vector: N/A';
+        
+        document.getElementById('modal-cvss-v3').textContent = cvss.v3?.base_score || '-';
+        document.getElementById('modal-cvss-v3-vector').textContent = 
+            cvss.v3?.vector ? `Vector: ${cvss.v3.vector}` : 'Vector: N/A';
+        
+        document.getElementById('modal-cvss-v4').textContent = cvss.v4?.base_score || '-';
+        document.getElementById('modal-cvss-v4-vector').textContent = 
+            cvss.v4?.vector ? `Vector: ${cvss.v4.vector}` : 'Vector: N/A';
+        
+        // Affected Products
+        const affectedDiv = document.getElementById('modal-affected-products');
+        affectedDiv.innerHTML = '';
+        if (analysis.affected_cpes && analysis.affected_cpes.length > 0) {
+            analysis.affected_cpes.forEach(cpe => {
+                const item = document.createElement('div');
+                item.className = 'product-item';
+                item.textContent = cpe;
+                affectedDiv.appendChild(item);
+            });
+        } else {
+            affectedDiv.innerHTML = '<p>No affected products listed</p>';
+        }
+        
+        // Standards Mapping Tab
+        const owaspDiv = document.getElementById('modal-owasp');
+        owaspDiv.innerHTML = '';
+        if (analysis.owasp && analysis.owasp.length > 0) {
+            analysis.owasp.forEach(owasp => {
+                const card = document.createElement('div');
+                card.className = 'framework-card';
+                card.innerHTML = `
+                    <h4 class="framework-card-title">${owasp.category}</h4>
+                    <div class="framework-card-content">
+                        <strong>${owasp.name}</strong><br>
+                        Risk: ${owasp.risk_rating || 'N/A'}<br>
+                        ${owasp.description ? `<small>${owasp.description.substring(0, 100)}...</small>` : ''}
+                    </div>
+                `;
+                owaspDiv.appendChild(card);
+            });
+        } else {
+            owaspDiv.innerHTML = '<p>No OWASP mapping available</p>';
+        }
+        
+        const mitreDiv = document.getElementById('modal-mitre');
+        mitreDiv.innerHTML = '';
+        if (analysis.mitre && Object.keys(analysis.mitre).length > 0) {
+            Object.entries(analysis.mitre).forEach(([tactic, techniques]) => {
+                const card = document.createElement('div');
+                card.className = 'framework-card';
+                card.innerHTML = `
+                    <h4 class="framework-card-title">${tactic}</h4>
+                    <div class="framework-card-content">
+                        ${Array.isArray(techniques) ? techniques.slice(0, 3).join('<br>') : 'N/A'}
+                    </div>
+                `;
+                mitreDiv.appendChild(card);
+            });
+        } else {
+            mitreDiv.innerHTML = '<p>No MITRE ATT&CK mapping available</p>';
+        }
+        
+        const scpDiv = document.getElementById('modal-scp');
+        scpDiv.innerHTML = '';
+        if (analysis.scp && analysis.scp.length > 0) {
+            analysis.scp.forEach(scp => {
+                const card = document.createElement('div');
+                card.className = 'framework-card';
+                card.innerHTML = `
+                    <h4 class="framework-card-title">${scp.category}</h4>
+                    <div class="framework-card-content">
+                        <strong>${scp.practice}</strong><br>
+                        Severity: ${scp.severity || 'N/A'}<br>
+                        ${scp.description ? `<small>${scp.description.substring(0, 80)}...</small>` : ''}
+                    </div>
+                `;
+                scpDiv.appendChild(card);
+            });
+        } else {
+            scpDiv.innerHTML = '<p>No SCP mapping available</p>';
+        }
+        
+        // Risk Score
+        if (analysis.risk_score) {
+            document.getElementById('modal-risk-score').textContent = 
+                `${analysis.risk_score.toFixed(2)}/10`;
+            const fillPercent = (analysis.risk_score / 10) * 100;
+            document.getElementById('modal-risk-bar').style.width = `${fillPercent}%`;
+        }
+        
+        // Recommendations
+        const recsDiv = document.getElementById('modal-recommendations');
+        recsDiv.innerHTML = '';
+        if (analysis.recommendations && analysis.recommendations.length > 0) {
+            analysis.recommendations.forEach(rec => {
+                const item = document.createElement('div');
+                item.className = 'recommendation-item';
+                item.textContent = rec;
+                recsDiv.appendChild(item);
+            });
+        } else {
+            recsDiv.innerHTML = '<p>No recommendations available</p>';
+        }
+        
+    } catch (error) {
+        console.error('Error loading CVE analysis:', error);
+        document.getElementById('modal-title').textContent = 'Error loading CVE analysis';
+        document.getElementById('modal-description').textContent = error.message;
+    }
+}
+
+function closeCVEModal() {
+    const modal = document.getElementById('cve-detail-modal');
+    modal.classList.add('hidden');
+}
+
+// Tab switching
+document.querySelectorAll('.modal-tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+        const tabName = e.target.closest('.modal-tab').dataset.tab;
+        
+        document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        
+        e.target.closest('.modal-tab').classList.add('active');
+        document.getElementById(`${tabName}-tab`).classList.add('active');
+    });
+});
+
+// Close modal on outside click
+document.getElementById('cve-detail-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'cve-detail-modal') {
+        closeCVEModal();
+    }
+});
+
+function applyFilters() {
+    const severityFilter = document.getElementById('severityFilter').value;
+    const hostFilter = document.getElementById('hostFilter').value;
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    
+    filteredVulnerabilities = allVulnerabilities.filter(vuln => {
+        const matchSeverity = !severityFilter || vuln.severity === severityFilter;
+        const matchHost = !hostFilter || vuln.host === hostFilter;
+        const matchSearch = !searchInput || 
+            (vuln.cve_id || '').toLowerCase().includes(searchInput) ||
+            (vuln.service || '').toLowerCase().includes(searchInput) ||
+            (vuln.summary || '').toLowerCase().includes(searchInput);
+        
+        return matchSeverity && matchHost && matchSearch;
+    });
+    
+    renderTable();
+}
+
+document.getElementById('severityFilter').addEventListener('change', applyFilters);
+document.getElementById('hostFilter').addEventListener('change', applyFilters);
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+document.getElementById('reset-filter-btn').addEventListener('click', () => {
+    document.getElementById('severityFilter').value = '';
+    document.getElementById('hostFilter').value = '';
+    document.getElementById('searchInput').value = '';
+    applyFilters();
+});
+
+document.getElementById('export-vuln-csv-btn').addEventListener('click', () => {
+    if (filteredVulnerabilities.length === 0) {
+        alert('No vulnerabilities to export');
+        return;
+    }
+    
+    const headers = ['Host', 'Port', 'Service', 'Version', 'CVE ID', 'CVSS v2', 'CVSS v3', 'CVSS v4', 'Severity', 'Description'];
+    const csv = [
+        headers.join(','),
+        ...filteredVulnerabilities.map(v => [
+            v.host, v.port, v.service, v.version, v.cve_id, v.cvss_v2 || '-', v.cvss_v3 || '-', v.cvss_v4 || '-', v.severity,
+            `"${(v.summary || '').replace(/"/g, '""')}"`
+        ].join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `vulnerabilities_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+});
+
+document.addEventListener('DOMContentLoaded', loadVulnerabilities);
+</script>
+{% endblock %}

@@ -13,9 +13,7 @@ class HostDiscovery:
     HostDiscovery using Nmap -sn for fast subnet/CIDR scanning.
     
     Nmap -sn is significantly faster than sequential ping:
-    - Uses ARP scan on LAN (instant detection)
-    - Uses TCP SYN/ICMP in parallel for distant subnets
-    - Automatically handles firewall bypass
+    - Runs parallel host discovery probes (nmap engine)
     
     For CIDR ranges: use discover_cidr(cidr_range)
     For individual IPs: use discover(ip_list)
@@ -110,35 +108,23 @@ class HostDiscovery:
                 cmd = [
                     "nmap",
                     "-sn",
-                    "-PR",  # ARP discovery on local networks
-                    "-PE",  # ICMP Echo
-                    "-PP",  # ICMP Timestamp
-                    "-PS", "22,80,443,445,3389",  # TCP SYN probes
-                    "-PA", "80,443",  # TCP ACK probes
                     "-T4",
-                    "--min-parallelism", "100",
                     "-n",
                     "-oG", "-",
                     "-iL", temp_file
                 ]
-                self.logger(f"[NMAP-SN] Running nmap (extended probes) on {len(ips)} IPs (via temp file)", "INFO")
+                self.logger(f"[NMAP-SN] Running nmap -sn -T4 on {len(ips)} IPs (via temp file)", "INFO")
             else:
                 # Single IP or CIDR range - use directly
                 cmd = [
                     "nmap",
                     "-sn",
-                    "-PR",  # ARP discovery on local networks
-                    "-PE",  # ICMP Echo
-                    "-PP",  # ICMP Timestamp
-                    "-PS", "22,80,443,445,3389",  # TCP SYN probes
-                    "-PA", "80,443",  # TCP ACK probes
                     "-T4",
-                    "--min-parallelism", "100",
                     "-n",
                     "-oG", "-",
                     target
                 ]
-                self.logger(f"[NMAP-SN] Running (extended probes): {' '.join(cmd)}", "INFO")
+                self.logger(f"[NMAP-SN] Running: {' '.join(cmd)}", "INFO")
 
             proc = subprocess.run(
                 cmd,

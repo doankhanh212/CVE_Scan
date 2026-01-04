@@ -59,26 +59,30 @@ class CVEMatcher:
     def __init__(self, api_key: Optional[str] = None, local_db_path: Optional[str] = None, year_window: Optional[int] = None):
         self.fetcher = None
         self.year_window = year_window
+        self.fetcher_type = None  # Track which fetcher is used
 
         # Prefer local DB fetcher when provided
         if local_db_path:
             try:
                 from modules.cve.local_db_fetcher import LocalDBFetcher
                 self.fetcher = LocalDBFetcher(db_path=local_db_path)
-                logger.info("Using LocalDBFetcher: %s", local_db_path)
+                self.fetcher_type = "LocalDB"
+                logger.info("✅ Using LocalDBFetcher: %s", local_db_path)
                 return
             except Exception as e:
-                logger.error("Init LocalDBFetcher failed: %s", e)
+                logger.error("❌ Init LocalDBFetcher failed: %s", e)
                 self.fetcher = None
 
         if NVDFetcherPRO is None:
-            logger.warning("NVDFetcherPRO import failed — CVE disabled")
+            logger.warning("⚠️ NVDFetcherPRO import failed — CVE disabled")
             return
 
         try:
             self.fetcher = NVDFetcherPRO(api_key=api_key)
+            self.fetcher_type = "NVD_API"
+            logger.info("✅ Using NVDFetcherPRO with API key: %s", "Yes" if api_key else "No")
         except Exception as e:
-            logger.error("Init NVDFetcherPRO failed: %s", e)
+            logger.error("❌ Init NVDFetcherPRO failed: %s", e)
             self.fetcher = None
 
     # ==================================================
@@ -86,11 +90,15 @@ class CVEMatcher:
     # ==================================================
     def match_by_cpe(self, cpe: str, max_results: int = 50, year_window: Optional[int] = None) -> List[Dict]:
         if not cpe or cpe == "N/A":
+            logger.debug("🔍 CPE is empty or N/A, skipping CVE lookup")
             return []
 
         if not self.fetcher:
             # 🔥 CHỐT: KHÔNG ĐƯỢC CRASH
+            logger.warning("⚠️ No fetcher available (DB or API) — CVE lookup disabled")
             return []
+        
+        logger.debug("🔍 Searching CVE for CPE: %s (fetcher: %s)", cpe, self.fetcher_type or "Unknown")
 
         # Determine min_year based on window (prefer explicit arg, else instance default)
         window = year_window if year_window is not None else self.year_window
@@ -99,6 +107,7 @@ class CVEMatcher:
             if window and window > 0:
                 current_year = datetime.datetime.utcnow().year
                 min_year = current_year - window + 1
+                logger.debug("📅 Year window: %d (min_year=%d)", window, min_year)
         except Exception:
             min_year = None
 
@@ -120,8 +129,10 @@ class CVEMatcher:
                     cpe,
                     max_results=max_results
                 )
+            
+            logger.debug("📊 Found %d exact matches for CPE: %s", len(raw_cves), cpe)
         except Exception as e:
-            logger.error("Fetch CVE failed for %s: %s", cpe, e)
+            logger.error("❌ Fetch CVE failed for %s: %s", cpe, e)
             raw_cves = []
 
         # If no exact matches and we have a local DB fetcher with fuzzy capabilities,
@@ -130,21 +141,23 @@ class CVEMatcher:
             try:
                 # LocalDBFetcher exposes fuzzy_match_cpe_to_cve; pass through max_results when supported
                 if hasattr(self.fetcher, 'fuzzy_match_cpe_to_cve'):
-                    logger.info("No exact CVEs for %s — trying fuzzy DB lookup", cpe)
+                    logger.info("🔍 No exact CVEs for %s — trying fuzzy DB lookup", cpe)
                     try:
                         if min_year is not None:
                             raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results, min_year=min_year)
                         else:
                             raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results)
+                        logger.debug("📊 Fuzzy match found %d CVEs", len(raw_cves))
                     except TypeError:
                         # Backward compatibility with older signature
                         raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe)
+                        logger.debug("📊 Fuzzy match (legacy) found %d CVEs", len(raw_cves))
                 else:
                     # As a fallback, import matcher and run fuzzy against a cursor if possible
                     try:
                         from modules.cve.local_db_fetcher import LocalDBFetcher
                         if isinstance(self.fetcher, LocalDBFetcher):
-                            logger.info("Using LocalDBFetcher fuzzy matcher for %s", cpe)
+                            logger.info("🔍 Using LocalDBFetcher fuzzy matcher for %s", cpe)
                             try:
                                 if min_year is not None:
                                     raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results, min_year=min_year)
@@ -152,13 +165,25 @@ class CVEMatcher:
                                     raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe, max_results=max_results)
                             except TypeError:
                                 raw_cves = self.fetcher.fuzzy_match_cpe_to_cve(cpe)
+                            logger.debug("📊 Fuzzy fallback found %d CVEs", len(raw_cves))
                     except Exception:
                         raw_cves = []
             except Exception as e:
-                logger.debug("Fuzzy lookup failed for %s: %s", cpe, e)
+                logger.debug("⚠️ Fuzzy lookup failed for %s: %s", cpe, e)
                 raw_cves = []
+        
+        if not raw_cves:
+            logger.info("ℹ️ No CVEs found for CPE: %s", cpe)
 
         normalized = self._normalize(raw_cves)
+
+        # Apply year filter locally if fetcher doesn't support it
+        # Ensures older CVEs are excluded even when using NVD API without min_year.
+        try:
+            if min_year is not None:
+                normalized = [c for c in normalized if (self._cve_year(c.get("id")) or 0) >= min_year]
+        except Exception:
+            pass
 
         # Sort newest-first by CVE year, then by CVSS score to prefer fresh/high-impact CVEs
         def _sort_key(c):

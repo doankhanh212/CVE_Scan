@@ -1,0 +1,57 @@
+<section class="scan-form">
+    <h2>Tạo scan mới</h2>
+
+    <form id="scan-form">
+        <div class="form-group">
+            <label>Hosts (mỗi dòng 1 host hoặc CIDR):</label>
+            <textarea id="hosts" rows="5" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Input Mode:</label>
+            <select id="input-mode">
+                <option value="IP/CIDR">IP/CIDR</option>
+                <option value="Hostname (Domain)">Hostname (Domain)</option>
+            </select>
+        </div>
+
+        <label>
+            <input type="checkbox" id="authenticated">
+            Quét có xác thực
+        </label>
+
+        <div id="auth-fields" style="display:none">
+            <div id="auth-fields" style="display: none;">
+                <div class="form-group">
+                    <label for="auth-os">Target OS:</label>
+                    <select id="auth-os">
+                        <option value="linux">Linux</option>
+                        <option value="windows">Windows</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="auth-username">Username:</label>
+                    <input type="text" id="auth-username">
+                </div>
+
+                <div class="form-group">
+                    <label for="auth-password">Password:</label>
+                    <input type="password" id="auth-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="auth-keyfile">Private Key (optional):</label>
+                    <input type="text" id="auth-keyfile" placeholder="Path to .pem file">
+                </div>
+
+                <div class="form-group">
+                    <label for="auth-port">Port:</label>
+                    <input type="number" id="auth-port" value="22">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit">Bắt đầu quét</button>
+    </form>
+</section>
