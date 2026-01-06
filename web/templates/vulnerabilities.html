@@ -1094,27 +1094,110 @@ document.getElementById('reset-filter-btn').addEventListener('click', () => {
     applyFilters();
 });
 
-document.getElementById('export-vuln-csv-btn').addEventListener('click', () => {
+document.getElementById('export-vuln-csv-btn').addEventListener('click', async () => {
     if (filteredVulnerabilities.length === 0) {
         alert('No vulnerabilities to export');
         return;
     }
     
-    const headers = ['Host', 'Port', 'Service', 'Version', 'CVE ID', 'CVSS v2', 'CVSS v3', 'CVSS v4', 'Severity', 'Description'];
-    const csv = [
-        headers.join(','),
-        ...filteredVulnerabilities.map(v => [
-            v.host, v.port, v.service, v.version, v.cve_id, v.cvss_v2 || '-', v.cvss_v3 || '-', v.cvss_v4 || '-', v.severity,
-            `"${(v.summary || '').replace(/"/g, '""')}"`
-        ].join(','))
-    ].join('\n');
+    // Show loading indicator
+    const btn = document.getElementById('export-vuln-csv-btn');
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exporting...';
     
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `vulnerabilities_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
+    try {
+        const headers = ['Host', 'Port', 'Service', 'Version', 'CVE ID', 'CVSS v2', 'CVSS v3', 'CVSS v4', 'Severity', 'Description', 'OWASP Categories', 'MITRE Techniques', 'SCP Practices', 'Risk Score'];
+        
+        // Fetch security framework mappings for each CVE
+        // Use allSettled to avoid a single failed analysis blocking the entire export
+        const enrichedDataResults = await Promise.allSettled(filteredVulnerabilities.map(async (v) => {
+            let owasp = '';
+            let mitre = '';
+            let scp = '';
+            let riskScore = '';
+            
+            try {
+                const response = await fetch(`/api/cve/${v.cve_id}/analysis`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Format OWASP
+                    if (data.owasp && Array.isArray(data.owasp)) {
+                        owasp = data.owasp.map(o => o.category).filter(c => c).join('; ');
+                    }
+                    
+                    // Format MITRE (limit to 3 techniques)
+                    if (data.mitre && typeof data.mitre === 'object') {
+                        const techniques = [];
+                        for (const [tactic, techList] of Object.entries(data.mitre)) {
+                            techniques.push(...techList);
+                        }
+                        mitre = techniques.slice(0, 3).join('; ');
+                    }
+                    
+                    // Format SCP (limit to 3 practices)
+                    if (data.scp && Array.isArray(data.scp)) {
+                        scp = data.scp.slice(0, 3).map(s => s.practice).filter(p => p).join('; ');
+                    }
+                    
+                    // Risk score
+                    riskScore = data.risk_score || '';
+                }
+            } catch (error) {
+                console.error(`Failed to fetch analysis for ${v.cve_id}:`, error);
+            }
+            
+            return [
+                v.host, 
+                v.port, 
+                v.service, 
+                v.version, 
+                v.cve_id, 
+                v.cvss_v2 || '-', 
+                v.cvss_v3 || '-', 
+                v.cvss_v4 || '-', 
+                v.severity,
+                `"${(v.summary || '').replace(/"/g, '""')}"`,
+                `"${owasp.replace(/"/g, '""')}"`,
+                `"${mitre.replace(/"/g, '""')}"`,
+                `"${scp.replace(/"/g, '""')}"`,
+                riskScore
+            ].join(',');
+        }));
+
+        // Flatten results, skipping rejected promises but keeping rows we built
+        const enrichedData = enrichedDataResults
+            .filter(r => r.status === 'fulfilled')
+            .map(r => r.value);
+
+        const csv = [headers.join(','), ...enrichedData].join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `vulnerabilities_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        
+        // Show success message
+        btn.innerHTML = '<i class="fas fa-check"></i> Exported!';
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Export failed:', error);
+        alert('Failed to export CSV. Please try again.');
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+    }
 });
 
 document.addEventListener('DOMContentLoaded', loadVulnerabilities);

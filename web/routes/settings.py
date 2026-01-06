@@ -173,10 +173,11 @@ def get_db_status():
                 import sqlite3
                 conn = sqlite3.connect(db_path)
                 cursor = conn.cursor()
-                cursor.execute("SELECT COUNT(*) FROM cves")
+                cursor.execute("SELECT COUNT(*) FROM cve")
                 status["cve_count"] = cursor.fetchone()[0]
                 conn.close()
-            except:
+            except Exception as e:
+                print(f"[ERROR] Failed to count CVEs: {e}")
                 status["cve_count"] = 0
         else:
             status["status"] = "Not Found"
@@ -192,6 +193,7 @@ def rebuild_db():
     try:
         import os
         import threading
+        from datetime import datetime
         from modules.cve.db_importer import import_feeds
         
         config = ConfigManager.load()
