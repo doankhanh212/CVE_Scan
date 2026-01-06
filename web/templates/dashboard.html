@@ -386,8 +386,8 @@
             'low': severity.low|default(0)
         },
         'trend': {
-            'labels': trend_data.labels|default([]) if trend_data else [],
-            'values': trend_data.values|default([]) if trend_data else []
+            'labels': trend_data.get('labels', [])|default([]) if trend_data else [],
+            'values': trend_data.get('values', [])|default([]) if trend_data else []
         },
         'ports': {
             'labels': top_ports_labels|default([]), 
