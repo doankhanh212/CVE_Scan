@@ -13,7 +13,7 @@ def _extract_top_ports(scan_results):
     if not scan_results:
         return [], []
     
-    # scan_results is a dict: { "host_label": { "ports": [...], ... }, ... }
+    # scan_results is a dict: { "host_label": { "hosts": [...], ... }, ... }
     if not isinstance(scan_results, dict):
         return [], []
     
@@ -22,28 +22,51 @@ def _extract_top_ports(scan_results):
         if not isinstance(host_data, dict):
             continue
         
-        ports = host_data.get("ports", [])
-        if not isinstance(ports, list):
+        # NEW: Handle nested 'hosts' structure
+        hosts_list = host_data.get("hosts", [])
+        if not isinstance(hosts_list, list):
             continue
         
-        for port_info in ports:
-            if not isinstance(port_info, dict):
+        for host in hosts_list:
+            if not isinstance(host, dict):
                 continue
             
-            port_num = port_info.get("port", "unknown")
-            service = port_info.get("service", f"Port {port_num}")
-            port_services[port_num] = service
+            # Get vulnerabilities from this host
+            vulnerabilities = host.get("vulnerabilities", [])
+            if not isinstance(vulnerabilities, list):
+                continue
             
-            cves = port_info.get("cves", [])
-            if isinstance(cves, list):
-                cve_count = len(cves)
-                if cve_count > 0:
-                    port_count[port_num] += cve_count
+            # Count CVEs by service (e.g., "ssh:22")
+            for vuln in vulnerabilities:
+                if not isinstance(vuln, dict):
+                    continue
+                
+                service_name = vuln.get("service", "unknown")  # e.g., "ssh:22"
+                
+                # Extract port number from service name
+                if ":" in service_name:
+                    service_label, port_str = service_name.rsplit(":", 1)
+                    try:
+                        port_num = int(port_str)
+                    except:
+                        port_num = port_str
+                else:
+                    service_label = service_name
+                    port_num = "unknown"
+                
+                port_services[port_num] = service_label
+                port_count[port_num] += 1  # Count each CVE
     
-    # Sort by CVE count descending - show top 10 ports for better visualization
+    # Sort by CVE count descending - show top 10 ports (or all if less than 10)
     sorted_ports = sorted(port_count.items(), key=lambda x: x[1], reverse=True)[:10]
     
-    labels = [port_services.get(p[0], f"Port {p[0]}") for p in sorted_ports]
+    # Format labels with service:port format
+    labels = []
+    for p in sorted_ports:
+        port_num = p[0]
+        service = port_services.get(port_num, "unknown")
+        labels.append(f"{service}:{port_num}")
+    
     values = [p[1] for p in sorted_ports]
     
     return labels, values

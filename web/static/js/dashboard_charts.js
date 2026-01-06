@@ -132,31 +132,41 @@
                     data: values,
                     backgroundColor: 'rgba(59,130,246,0.9)',
                     borderColor: '#3b82f6',
-                    borderWidth: 2,
+                    borderWidth: 1.5,
                     borderSkipped: false,
-                    borderRadius: 6
+                    borderRadius: 4,
+                    barThickness: 'flex',  // Flexible bar thickness
+                    maxBarThickness: 28    // Max 28px per bar for compact display
                 }]
             },
             options: {
                 indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 5,
+                        right: 10,
+                        top: 5,
+                        bottom: 5
+                    }
+                },
                 plugins: {
                     legend: { 
                         display: true, 
                         labels: { 
                             color: '#a0aec0', 
-                            font: { size: 12, weight: 'bold' },
-                            padding: 15
+                            font: { size: 10, weight: 'bold' },
+                            padding: 8
                         } 
                     },
                     tooltip: {
                         backgroundColor: 'rgba(0,0,0,0.9)',
                         titleColor: '#fff',
                         bodyColor: '#a0aec0',
-                        padding: 12,
-                        titleFont: { size: 12, weight: 'bold' },
-                        bodyFont: { size: 11 },
+                        padding: 10,
+                        titleFont: { size: 11, weight: 'bold' },
+                        bodyFont: { size: 10 },
                         displayColors: false,
                         callbacks: {
                             label: function(context) {
@@ -169,18 +179,20 @@
                     x: { 
                         ticks: { 
                             color: '#a0aec0', 
-                            font: { size: 11 },
+                            font: { size: 10 },
                             callback: function(value) { return value; }
                         }, 
                         grid: { color: 'rgba(160,174,192,0.1)' },
-                        title: { display: true, text: 'CVE Count', color: '#a0aec0', font: { size: 12 } }
+                        title: { display: true, text: 'CVE Count', color: '#a0aec0', font: { size: 10 } }
                     },
                     y: { 
                         ticks: { 
                             color: '#a0aec0', 
-                            font: { size: 11, weight: '500' },
-                            padding: 10
-                        }
+                            font: { size: 10, weight: '500' },
+                            padding: 6,
+                            autoSkip: false  // Show all labels
+                        },
+                        grid: { display: false }  // Hide horizontal grid for cleaner look
                     }
                 }
             }
