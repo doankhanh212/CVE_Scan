@@ -1955,18 +1955,26 @@ def results_sort_rows(rows, col, reverse=False):
 
 
 def write_scan_results_to_csv(results, path):
-    """Write `results` dict to CSV path. This helper is independent of GUI objects and suitable for tests."""
+    """Write `results` dict to CSV path including OWASP, MITRE, and SCP security framework mappings."""
     if not path:
         raise ValueError("No path provided")
 
     filtered = _filtered_results(results)
+    
+    # Import security mapper here to avoid circular imports
+    try:
+        from web.security_standards import UnifiedSecurityMapper
+    except ImportError:
+        UnifiedSecurityMapper = None
 
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
 
-        # Include Device column next to Host
+        # Enhanced headers with security framework columns
         writer.writerow([
-            "Host", "Device", "Service/Product", "Version", "Port", "CPE", "CVE ID", "Severity", "Description", "CVSS v2", "CVSS v3", "CVSS v4"
+            "Host", "Device", "Service/Product", "Version", "Port", "CPE", "CVE ID", "Severity", "Description", 
+            "CVSS v2", "CVSS v3", "CVSS v4",
+            "OWASP Categories", "MITRE Techniques", "SCP Practices", "Risk Score"
         ])
 
         for host, host_result in filtered.items():
@@ -1989,6 +1997,77 @@ def write_scan_results_to_csv(results, path):
                         sev = cve.get("severity") if isinstance(cve.get("severity"), str) else (
                             cve.get("severity", {}).get("label") if isinstance(cve.get("severity"), dict) else ""
                         )
+                        
+                        # Get security framework mappings
+                        owasp_str = ""
+                        mitre_str = ""
+                        scp_str = ""
+                        risk_score = ""
+                        
+                        if UnifiedSecurityMapper:
+                            try:
+                                cve_id = cve.get("id") or ""
+                                cwe_ids = cve.get("cwe_ids", [])
+                                if not cwe_ids:
+                                    cwe_ids = cve.get("cwe", [])
+                                
+                                # If no explicit CWE, try to infer from description
+                                if not cwe_ids:
+                                    cwe_mapping = {
+                                        'buffer overflow': 120, 'heap overflow': 122, 'integer overflow': 190,
+                                        'sql injection': 89, 'xss': 79, 'command injection': 78,
+                                        'path traversal': 22, 'authentication': 287, 'authorization': 285,
+                                        'cryptographic': 327, 'arbitrary file': 434, 'xxe': 611,
+                                        'insecure deserialization': 502, 'race condition': 362,
+                                        'use after free': 416, 'null pointer': 476, 'format string': 134,
+                                    }
+                                    description = (cve.get('description') or '').lower()
+                                    for keyword, cwe_id in cwe_mapping.items():
+                                        if keyword in description:
+                                            cwe_ids = [cwe_id]
+                                            break
+                                    if not cwe_ids:
+                                        cwe_ids = [79, 89, 434]
+                                
+                                analysis = UnifiedSecurityMapper.analyze_cve(
+                                    cve_id=cve_id,
+                                    cwe_ids=cwe_ids,
+                                    description=cve.get('description', ''),
+                                    severity=sev
+                                )
+                                
+                                # Format OWASP
+                                owasp_categories = []
+                                for mapping in analysis.get("owasp", {}).get("mappings", []):
+                                    cat = mapping.get("owasp_code", "")
+                                    if cat:
+                                        owasp_categories.append(cat)
+                                owasp_str = "; ".join(owasp_categories) if owasp_categories else ""
+                                
+                                # Format MITRE
+                                mitre_techniques = []
+                                for technique in analysis.get("mitre_attack", {}).get("techniques", []):
+                                    tech_id = technique.get("technique_id", "")
+                                    tech_name = technique.get("technique_name", "")
+                                    if tech_id:
+                                        mitre_techniques.append(f"{tech_id} ({tech_name})" if tech_name else tech_id)
+                                mitre_str = "; ".join(mitre_techniques[:3]) if mitre_techniques else ""  # Limit to 3
+                                
+                                # Format SCP
+                                scp_practices = []
+                                for practice in analysis.get("secure_coding", {}).get("practices", []):
+                                    practice_name = practice.get("practice", "")
+                                    if practice_name:
+                                        scp_practices.append(practice_name)
+                                scp_str = "; ".join(scp_practices[:3]) if scp_practices else ""  # Limit to 3
+                                
+                                # Risk score
+                                risk_score = analysis.get("risk_score", "")
+                                
+                            except Exception as e:
+                                # If mapping fails, just skip the security framework data
+                                pass
+                        
                         writer.writerow([
                             ip_only or host,
                             device_name or "",
@@ -2001,10 +2080,14 @@ def write_scan_results_to_csv(results, path):
                             cve.get("description") or "",
                             cve.get("cvss_v2") if cve.get("cvss_v2") is not None else "",
                             cve.get("cvss_v3") if cve.get("cvss_v3") is not None else "",
-                            cve.get("cvss_v4") if cve.get("cvss_v4") is not None else ""
+                            cve.get("cvss_v4") if cve.get("cvss_v4") is not None else "",
+                            owasp_str,
+                            mitre_str,
+                            scp_str,
+                            risk_score
                         ])
                 else:
-                    writer.writerow([ip_only or host, device_name or "", product or service, version, port, "", "", "", "", "", ""])
+                    writer.writerow([ip_only or host, device_name or "", product or service, version, port, "", "", "", "", "", "", "", "", "", "", ""])
 
 
 if __name__ == "__main__":

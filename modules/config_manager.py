@@ -3,18 +3,21 @@ import json
 import os
 import stat
 import logging
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
-CONFIG_DIR = os.path.expanduser("~/.cvescanner")
-CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
+# Use config directory in project root
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+CONFIG_DIR = PROJECT_ROOT / "config"
+CONFIG_PATH = CONFIG_DIR / "web_config.json"
 
 class ConfigManager:
     @staticmethod
     def load():
         default = {"nvd_api_key": "", "use_local_db": False, "local_db_path": ""}
-        if not os.path.exists(CONFIG_PATH):
+        if not CONFIG_PATH.exists():
             return default
         try:
             with open(CONFIG_PATH, "r", encoding="utf-8") as f:
@@ -30,13 +33,13 @@ class ConfigManager:
     @staticmethod
     def save(data: dict):
         try:
-            os.makedirs(CONFIG_DIR, exist_ok=True)
-            tmp = CONFIG_PATH + ".tmp"
+            CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+            tmp = str(CONFIG_PATH) + ".tmp"
             with open(tmp, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4)
-            os.replace(tmp, CONFIG_PATH)
+            os.replace(tmp, str(CONFIG_PATH))
             try:
-                os.chmod(CONFIG_PATH, stat.S_IRUSR | stat.S_IWUSR)
+                os.chmod(str(CONFIG_PATH), stat.S_IRUSR | stat.S_IWUSR)
             except Exception:
                 pass
             return True

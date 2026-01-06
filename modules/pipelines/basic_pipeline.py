@@ -141,13 +141,16 @@ class BasicPipeline:
                     # Plain IP
                     expanded_ips.append(target)
             
-            # 1️⃣ Ping check to find alive hosts (use threaded ping for Windows stability)
-            self.logger(f"🏓 Ping check for {len(expanded_ips)} IP(s)", "INFO")
+            # 1️⃣ Ping check to find alive hosts (use threaded ICMP ping for better coverage)
+            self.logger(f"🏓 ICMP ping discovery for {len(expanded_ips)} IP(s)", "INFO")
             try:
                 alive_ips = self.host_discovery.discover_ping(expanded_ips)
             except AttributeError:
                 # Fallback if method not available
                 alive_ips = self.host_discovery.discover(expanded_ips)
+            except Exception as e:
+                self.logger(f"❌ Host discovery failed: {e}", "ERROR")
+                alive_ips = []
             
             # Notify progress callback of ping completion with alive count
             try:

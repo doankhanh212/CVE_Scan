@@ -190,12 +190,49 @@ def get_db_status():
 def rebuild_db():
     """Rebuild local CVE database from feeds."""
     try:
-        # This is a long-running task, should be done in background
-        # For now, return a placeholder response
+        import os
+        import threading
+        from modules.cve.db_importer import import_feeds
+        
+        config = ConfigManager.load()
+        db_path = config.get("local_db_path", "modules/cve/nvd_cve.db")
+        feed_dir = config.get("feed_dir", "modules/cve/nvd_data")
+        
+        # Check if feed directory exists
+        if not os.path.exists(feed_dir):
+            return jsonify({
+                "error": "Feed directory not found. Please download feeds first.",
+                "feed_dir": feed_dir
+            }), 400
+        
+        # Run rebuild in background thread
+        def rebuild_task():
+            try:
+                print(f"[INFO] Starting database rebuild from {feed_dir}")
+                
+                # Remove old database to force fresh rebuild
+                if os.path.exists(db_path):
+                    os.remove(db_path)
+                    print(f"[INFO] Removed old database: {db_path}")
+                
+                # Import feeds
+                import_feeds(feed_dir, db_path)
+                
+                # Touch the file to update modification time
+                os.utime(db_path, None)
+                
+                print(f"[INFO] Database rebuild completed successfully")
+            except Exception as e:
+                print(f"[ERROR] Database rebuild failed: {e}")
+        
+        # Start background thread
+        thread = threading.Thread(target=rebuild_task, daemon=True)
+        thread.start()
         
         return jsonify({
             "message": "Database rebuild started in background",
-            "status": "processing"
+            "status": "processing",
+            "db_path": db_path
         }), 202
     except Exception as e:
         return jsonify({"error": str(e)}), 500

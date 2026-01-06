@@ -39857,5 +39857,12 @@
   "cpe::cpe:2.3:a:smtp:smtp:*:*:*:*:*:*:*:*": [],
   "cpe::cpe:2.3:a:postfix:postfix_smtpd:*:*:*:*:*:*:*:*": [],
   "cpe::cpe:2.3:a:plesk:plesk_onyx:*:*:*:*:*:*:*:*": [],
-  "cpe::cpe:2.3:a:h264dvr:h264dvr_rtspd:1.0:*:*:*:*:*:*:*": []
+  "cpe::cpe:2.3:a:h264dvr:h264dvr_rtspd:1.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:port6185:port6185:*:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:zephyr-clt:zephyr-clt:*:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:node.js:node.js_express:*:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:gt-proxy:gt-proxy:*:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:microsoft:http_api:2.0:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:port9501:port9501:*:*:*:*:*:*:*:*": [],
+  "cpe::cpe:2.3:a:apache:http_server:*:*:*:*:*:*:*:*": []
 }
