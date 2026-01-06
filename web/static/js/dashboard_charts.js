@@ -216,6 +216,73 @@
             console.error('Error creating ports chart:', e);
         }
     }
+
+    // ===== HOST RISK CHART (Radar) =====
+    const hostRiskEl = document.getElementById('hostsChart');
+    if (hostRiskEl) {
+        const hostRiskData = data.hostRisk || [];
+        const hosts = hostRiskData.length > 0 
+            ? hostRiskData.map(h => h.name || 'Host').slice(0, 10)
+            : ['Host 1', 'Host 2', 'Host 3', 'Host 4'];
+        const risks = hostRiskData.length > 0 
+            ? hostRiskData.map(h => h.cves || 0).slice(0, 10)
+            : [15, 12, 8, 5];
+        
+        console.log('Creating host risk chart with hosts:', hosts);
+        
+        try {
+            const ctx = hostRiskEl.getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: hosts,
+                    datasets: [{
+                        label: 'CVE Count',
+                        data: risks,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239,68,68,0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#ef4444',
+                        pointBorderColor: '#1e2432',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            labels: { 
+                                color: '#a0aec0', 
+                                font: { size: 11 }
+                            } 
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#a0aec0',
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        r: {
+                            ticks: {
+                                color: '#a0aec0',
+                                font: { size: 10 }
+                            },
+                            grid: {
+                                color: 'rgba(160,174,192,0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (e) {
+            console.error('Error creating host risk chart:', e);
+        }
+    }
     
     console.log('Dashboard charts initialization complete');
 })();
