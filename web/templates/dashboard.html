@@ -1,270 +1,404 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - CVE Scan Platform{% endblock %}
-{% block page_title %}Vulnerability Overview{% endblock %}
-{% block last_scan %}Last scan: {{ last_scan_time }}{% endblock %}
+{% block title %}Enterprise Dashboard - CVE Scan Security Platform{% endblock %}
 
-{% block content %}
-<!-- Stats Cards Grid -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon blue">
-            <i class="fas fa-server"></i>
-        </div>
-        <div class="stat-content">
-            <div class="stat-label">Total Hosts Scanned</div>
-            <div class="stat-value">{{ stats.hosts_scanned or 0 }}</div>
-            <div class="stat-change positive">+{{ stats.hosts_change or 12 }} from last scan</div>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon green">
-            <i class="fas fa-network-wired"></i>
-        </div>
-        <div class="stat-content">
-            <div class="stat-label">Open Ports</div>
-            <div class="stat-value">{{ stats.open_ports or 0 }}</div>
-            <div class="stat-change positive">+{{ stats.ports_change or 156 }} from last scan</div>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon yellow">
-            <i class="fas fa-shield-alt"></i>
-        </div>
-        <div class="stat-content">
-            <div class="stat-label">Total CVEs Found</div>
-            <div class="stat-value">{{ stats.total_cves or 0 }}</div>
-            <div class="stat-change positive">+{{ stats.cves_change or 47 }} from last scan</div>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon red">
-            <i class="fas fa-exclamation-triangle"></i>
-        </div>
-        <div class="stat-content">
-            <div class="stat-label">Critical CVEs</div>
-            <div class="stat-value">{{ stats.critical or 0 }}</div>
-            <div class="stat-change warning">+{{ stats.critical_change or 5 }} from last scan</div>
-        </div>
-    </div>
-</div>
-
-<!-- CVE Severity Distribution -->
-<section class="panel">
-    <h2 class="panel-title">CVE Severity Distribution</h2>
-    
-    <div class="severity-grid">
-        <div class="severity-card critical">
-            <div class="severity-count">{{ severity.critical or 0 }}</div>
-            <div class="severity-label">Critical</div>
-            <div class="severity-range">CVSS 9.0-10.0</div>
-        </div>
-
-        <div class="severity-card high">
-            <div class="severity-count">{{ severity.high or 0 }}</div>
-            <div class="severity-label">High</div>
-            <div class="severity-range">CVSS 7.0-8.9</div>
-        </div>
-
-        <div class="severity-card medium">
-            <div class="severity-count">{{ severity.medium or 0 }}</div>
-            <div class="severity-label">Medium</div>
-            <div class="severity-range">CVSS 4.0-6.9</div>
-        </div>
-
-        <div class="severity-card low">
-            <div class="severity-count">{{ severity.low or 0 }}</div>
-            <div class="severity-label">Low</div>
-            <div class="severity-range">CVSS 0.1-3.9</div>
-        </div>
-    </div>
-</section>
-
-<!-- Recent Vulnerability Findings -->
-<section class="panel">
-    <div class="panel-header">
-        <h2 class="panel-title">Recent Vulnerability Findings</h2>
-        <div class="panel-actions">
-            <button class="btn btn-secondary" id="filter-btn">
-                <i class="fas fa-filter"></i>
-                Filter
-            </button>
-            <button class="btn btn-primary" id="export-csv-btn">
-                <i class="fas fa-download"></i>
-                Export CSV
-            </button>
-        </div>
-    </div>
-
-    <div class="table-wrapper">
-        <table class="vuln-table" id="vuln-table">
-            <thead>
-                <tr>
-                    <th>HOST / IP</th>
-                    <th>PORT</th>
-                    <th>SERVICE</th>
-                    <th>VERSION</th>
-                    <th>CVE ID</th>
-                    <th>CVSS v2</th>
-                    <th>CVSS v3</th>
-                    <th>CVSS v4</th>
-                    <th>SEVERITY</th>
-                    <th>DESCRIPTION</th>
-                </tr>
-            </thead>
-            <tbody id="vuln-tbody">
-                <tr class="loading-row">
-                    <td colspan="10">
-                        <div class="loading-spinner"></div>
-                        Loading vulnerabilities...
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/enterprise-dashboard.css') }}">
 {% endblock %}
 
 {% block extra_js %}
-<script>
-// Load recent vulnerabilities
-async function loadVulnerabilities() {
-    try {
-        const response = await fetch('/api/vulnerabilities');
-        const data = await response.json();
-        
-        const vulnerabilities = data.vulnerabilities || [];
-        
-        // Update stats in realtime
-        updateDashboardStats(vulnerabilities);
-        
-        const tbody = document.getElementById('vuln-tbody');
-        tbody.innerHTML = '';
-        
-        if (vulnerabilities.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No vulnerabilities found</td></tr>';
-            return;
-        }
-        
-        // Show top 10 most recent
-        vulnerabilities.slice(0, 10).forEach(vuln => {
-            const row = document.createElement('tr');
-            
-            // Determine severity class
-            const sevClass = (vuln.severity || '').toLowerCase();
-            
-            row.innerHTML = `
-                <td><span class="host-tag">${vuln.host || 'N/A'}</span></td>
-                <td>${vuln.port || 'N/A'}</td>
-                <td>${vuln.service || 'N/A'}</td>
-                <td>${vuln.version || 'N/A'}</td>
-                <td><a href="https://nvd.nist.gov/vuln/detail/${vuln.cve_id}" target="_blank" class="cve-link">${vuln.cve_id || 'N/A'}</a></td>
-                <td><span class="cvss-badge">${vuln.cvss_v2 || '-'}</span></td>
-                <td><span class="cvss-badge">${vuln.cvss_v3 || '-'}</span></td>
-                <td><span class="cvss-badge">${vuln.cvss_v4 || '-'}</span></td>
-                <td><span class="severity-badge ${sevClass}">${vuln.severity || 'UNKNOWN'}</span></td>
-                <td class="description-cell">${vuln.summary || 'No description available'}</td>
-            `;
-            
-            tbody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Error loading vulnerabilities:', error);
-        document.getElementById('vuln-tbody').innerHTML = 
-            '<tr><td colspan="8" style="text-align:center;">Error loading data</td></tr>';
-    }
-}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+<script src="{{ url_for('static', filename='js/dashboard_charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cve_modal.js') }}"></script>
+{% endblock %}
 
-// Update dashboard stats in realtime
-function updateDashboardStats(vulnerabilities) {
-    const stats = {
-        hosts: new Set(),
-        ports: new Set(),
-        cves: new Set(),
-        critical: 0
-    };
-    
-    const severity = {
-        critical: 0,
-        high: 0,
-        medium: 0,
-        low: 0
-    };
-    
-    vulnerabilities.forEach(v => {
-        if (v.host) stats.hosts.add(v.host);
-        if (v.port) stats.ports.add(v.port);
-        if (v.cve_id) stats.cves.add(v.cve_id);
-        
-        const sev = (v.severity || '').toUpperCase();
-        if (sev === 'CRITICAL') {
-            stats.critical++;
-            severity.critical++;
-        } else if (sev === 'HIGH') {
-            severity.high++;
-        } else if (sev === 'MEDIUM') {
-            severity.medium++;
-        } else if (sev === 'LOW') {
-            severity.low++;
-        }
-    });
-    
-    // Update stat cards
-    const statValues = document.querySelectorAll('.stat-value');
-    if (statValues[0]) statValues[0].textContent = stats.hosts.size;
-    if (statValues[1]) statValues[1].textContent = stats.ports.size;
-    if (statValues[2]) statValues[2].textContent = stats.cves.size;
-    if (statValues[3]) statValues[3].textContent = stats.critical;
-    
-    // Update severity cards
-    const sevCounts = document.querySelectorAll('.severity-count');
-    if (sevCounts[0]) sevCounts[0].textContent = severity.critical;
-    if (sevCounts[1]) sevCounts[1].textContent = severity.high;
-    if (sevCounts[2]) sevCounts[2].textContent = severity.medium;
-    if (sevCounts[3]) sevCounts[3].textContent = severity.low;
-}
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css" rel="stylesheet">
 
-// Export CSV
-document.getElementById('export-csv-btn').addEventListener('click', async () => {
-    try {
-        const response = await fetch('/api/vulnerabilities');
-        const data = await response.json();
-        
-        if (!data.vulnerabilities || data.vulnerabilities.length === 0) {
-            alert('No vulnerabilities to export');
-            return;
-        }
-        
-        // Create CSV
-        const headers = ['Host', 'Port', 'Service', 'Version', 'CVE ID', 'CVSS v2', 'CVSS v3', 'CVSS v4', 'Severity', 'Description'];
-        const csv = [
-            headers.join(','),
-            ...data.vulnerabilities.map(v => [
-                v.host, v.port, v.service, v.version, v.cve_id, v.cvss_v2 || '-', v.cvss_v3 || '-', v.cvss_v4 || '-', v.severity,
-                `"${(v.summary || '').replace(/"/g, '""')}"`
-            ].join(','))
-        ].join('\\n');
-        
-        // Download
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `vulnerabilities_${new Date().toISOString().split('T')[0]}.csv`;
-        a.click();
-    } catch (error) {
-        console.error('Export error:', error);
-        alert('Failed to export CSV');
-    }
-});
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h2 class="dashboard-title">Security Dashboard</h2>
+            <p class="dashboard-subtitle">Real-time vulnerability overview and threat assessment</p>
+        </div>
 
-// Load on page load
-document.addEventListener('DOMContentLoaded', loadVulnerabilities);
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <!-- Total CVEs -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Total CVEs Detected</span>
+                    <div class="kpi-icon red">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ stats.total_cves or 0 }}</div>
+                {% if stats.cves_change is defined and stats.cves_change != 0 %}
+                <div class="kpi-change {% if stats.cves_change > 0 %}negative{% else %}positive{% endif %}">
+                    <i class="fas fa-arrow-{% if stats.cves_change > 0 %}up{% else %}down{% endif %}"></i>
+                    <span>{{ stats.cves_change|abs }} from last scan</span>
+                </div>
+                {% else %}
+                <div class="kpi-change">
+                    <i class="fas fa-minus"></i>
+                    <span>No change</span>
+                </div>
+                {% endif %}
+            </div>
 
-// Auto-refresh every 30 seconds
-setInterval(loadVulnerabilities, 30000);
-</script>
+            <!-- Critical CVEs -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Critical Severity</span>
+                    <div class="kpi-icon red">
+                        <i class="fas fa-skull"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ stats.critical or 0 }}</div>
+                {% if stats.critical_change is defined and stats.critical_change != 0 %}
+                <div class="kpi-change {% if stats.critical_change > 0 %}negative{% else %}positive{% endif %}">
+                    <i class="fas fa-arrow-{% if stats.critical_change > 0 %}up{% else %}down{% endif %}"></i>
+                    <span>{{ stats.critical_change|abs }} from last scan</span>
+                </div>
+                {% else %}
+                <div class="kpi-change">
+                    <i class="fas fa-minus"></i>
+                    <span>No change</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Hosts Affected -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Hosts Affected</span>
+                    <div class="kpi-icon blue">
+                        <i class="fas fa-server"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ stats.hosts_scanned or 0 }}</div>
+                {% if stats.hosts_change is defined and stats.hosts_change != 0 %}
+                <div class="kpi-change {% if stats.hosts_change > 0 %}positive{% else %}negative{% endif %}">
+                    <i class="fas fa-arrow-{% if stats.hosts_change > 0 %}up{% else %}down{% endif %}"></i>
+                    <span>{{ stats.hosts_change|abs }} from last scan</span>
+                </div>
+                {% else %}
+                <div class="kpi-change">
+                    <i class="fas fa-minus"></i>
+                    <span>No change</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Security Posture -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Security Score</span>
+                    <div class="kpi-icon {% if security_posture >= 70 %}green{% elif security_posture >= 50 %}orange{% else %}red{% endif %}">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ security_posture or 0 }}%</div>
+                <div class="kpi-change">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Risk assessment</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Severity Overview -->
+        <div class="severity-section">
+            <div class="severity-card critical">
+                <div class="severity-number">{{ severity.critical or 0 }}</div>
+                <div class="severity-title">Critical</div>
+                <div class="severity-description">CVSS 9.0 - 10.0 | Immediate Action Required</div>
+            </div>
+
+            <div class="severity-card high">
+                <div class="severity-number">{{ severity.high or 0 }}</div>
+                <div class="severity-title">High</div>
+                <div class="severity-description">CVSS 7.0 - 8.9 | High Priority</div>
+            </div>
+
+            <div class="severity-card medium">
+                <div class="severity-number">{{ severity.medium or 0 }}</div>
+                <div class="severity-title">Medium</div>
+                <div class="severity-description">CVSS 4.0 - 6.9 | Schedule Remediation</div>
+            </div>
+
+            <div class="severity-card low">
+                <div class="severity-number">{{ severity.low or 0 }}</div>
+                <div class="severity-title">Low</div>
+                <div class="severity-description">CVSS 0.1 - 3.9 | Monitor</div>
+            </div>
+        </div>
+
+        <!-- Charts & Analytics -->
+        <div class="dashboard-grid dashboard-grid-3col">
+            <!-- CVE Distribution + Top Vulnerable Ports Combined -->
+            <div class="panel panel-compact">
+                <div class="panel-header">
+                    <h3 class="panel-title">Vulnerability Analytics</h3>
+                    <div class="panel-actions">
+                        <button class="panel-btn" aria-label="Refresh"><i class="fas fa-redo"></i></button>
+                        <button class="panel-btn" aria-label="Export"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="dual-chart-container">
+                    <div class="chart-section">
+                        <h4 class="chart-subtitle">CVE Distribution by Severity</h4>
+                        <div class="chart-container chart-container-sm">
+                            <canvas id="severityChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-section">
+                        <h4 class="chart-subtitle">Top Vulnerable Ports</h4>
+                        <div class="chart-container chart-container-sm">
+                            <canvas id="portsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CVE Trend Chart -->
+            <div class="panel panel-trend">
+                <div class="panel-header">
+                    <h3 class="panel-title">CVE Discovery Trend</h3>
+                    <div class="panel-actions">
+                        <button class="panel-btn">7D</button>
+                        <button class="panel-btn">30D</button>
+                        <button class="panel-btn">90D</button>
+                    </div>
+                </div>
+                <div class="chart-container chart-container-full">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Host Risk Matrix -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Host Risk Assessment</h3>
+                    <div class="panel-actions filter-controls">
+                        <select id="hostFilter" class="filter-select" aria-label="Filter by host">
+                            <option value="">All Hosts</option>
+                        </select>
+                        <input type="text" id="hostSearch" placeholder="Search host..." class="filter-input">
+                    </div>
+                </div>
+                <div class="host-risk-wrapper-scroll">
+                    <div class="host-risk-container host-risk-container-sm">
+                    {% if host_risk_data %}
+                        <div class="host-risk-table host-risk-table-sm">
+                            {% for host in host_risk_data %}
+                            <div class="host-risk-row" data-host="{{ host.host }}">
+                                <div class="host-name">{{ host.host }}</div>
+                                <div class="risk-bars">
+                                    {% if host.critical > 0 %}
+                                    <span class="risk-bar critical" title="Critical: {{ host.critical }}">
+                                        <span class="risk-count">{{ host.critical }}</span>
+                                    </span>
+                                    {% endif %}
+                                    {% if host.high > 0 %}
+                                    <span class="risk-bar high" title="High: {{ host.high }}">
+                                        <span class="risk-count">{{ host.high }}</span>
+                                    </span>
+                                    {% endif %}
+                                    {% if host.medium > 0 %}
+                                    <span class="risk-bar medium" title="Medium: {{ host.medium }}">
+                                        <span class="risk-count">{{ host.medium }}</span>
+                                    </span>
+                                    {% endif %}
+                                    {% if host.low > 0 %}
+                                    <span class="risk-bar low" title="Low: {{ host.low }}">
+                                        <span class="risk-count">{{ host.low }}</span>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div style="padding: 20px; text-align: center; color: #666;">
+                            No host risk data available yet
+                        </div>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row: 2 columns -->
+        <div class="dashboard-grid dashboard-grid-2col">
+            <!-- Critical Vulnerabilities Panel -->
+            <div class="panel alert-panel-2col">
+                <div class="panel-header">
+                    <div class="alert-icon-small">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="alert-header-content">
+                        <h3 class="panel-title">Critical Vulnerabilities Detected</h3>
+                        <p class="alert-subtitle">{{ stats.critical or 0 }} critical-severity CVEs require immediate attention</p>
+                    </div>
+                </div>
+                <div class="alert-wrapper-scroll">
+                    <div class="alert-list-compact">
+                    {% if critical_cves %}
+                        {% for cve in critical_cves %}
+                        <div class="alert-item-compact" data-cve-id="{{ cve.id }}" data-cve-description="{{ cve.description or 'No description available' }}" data-cve-cvss="{{ cve.cvss or 'N/A' }}" data-cve-host="{{ cve.host }}" data-cve-port="{{ cve.port }}" data-cve-service="{{ cve.service or 'Unknown' }}" data-cve-severity="{{ cve.severity }}" data-cve-remediation="{{ cve.remediation or 'Contact vendor for security updates' }}" style="cursor: pointer;">
+                            <div class="alert-content-compact">
+                                <div class="alert-cve-id-compact">{{ cve.id }}</div>
+                                <div class="alert-metadata-compact">
+                                    <span class="meta-item"><i class="fas fa-server"></i> {{ cve.host }}</span>
+                                    <span class="meta-item"><i class="fas fa-shield-alt"></i> {{ cve.port }}</span>
+                                    <span class="meta-item"><i class="fas fa-star"></i> {{ cve.cvss }}</span>
+                                </div>
+                            </div>
+                            <div class="severity-badge {% if cve.severity == 'Critical' %}critical{% else %}high{% endif %}">{{ cve.severity }}</div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div style="padding: 1.5rem; text-align: center; color: var(--text-secondary);">
+                        <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--success);"></i>
+                        <p>No critical vulnerabilities detected</p>
+                    </div>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Recent Vulnerabilities Table -->
+            <div class="panel table-section">
+                <div class="panel-header">
+                    <h3 class="panel-title">Recent Vulnerability Discoveries</h3>
+                    <div class="panel-actions filter-controls">
+                        <select id="severityFilter" class="filter-select" aria-label="Filter by severity">
+                            <option value="">All Severity</option>
+                            <option value="Critical">Critical</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                        <input type="text" id="cveSearch" placeholder="Search CVE ID..." class="filter-input">
+                    </div>
+                </div>
+                <div class="table-wrapper-scroll">
+                    <table class="data-table" id="cveTable">
+                        <thead>
+                            <tr>
+                                <th>CVE ID <span class="info-tooltip" title="Common Vulnerabilities and Exposures - A unique identifier for each known vulnerability"><i class="fas fa-info-circle"></i></span></th>
+                                <th>Host <span class="info-tooltip" title="The computer or server affected by the vulnerability"><i class="fas fa-info-circle"></i></span></th>
+                                <th>Port/Service <span class="info-tooltip" title="Network port number and service name"><i class="fas fa-info-circle"></i></span></th>
+                                <th>Severity <span class="info-tooltip" title="Impact level: Critical (most severe) to Low"><i class="fas fa-info-circle"></i></span></th>
+                                <th>CVSS Score <span class="info-tooltip" title="CVSS = Common Vulnerability Scoring System (0-10 scale)"><i class="fas fa-info-circle"></i></span></th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cveTableBody">
+                            {% if critical_cves %}
+                                {% for cve in critical_cves %}
+                                <tr class="cve-row" data-severity="{{ cve.severity }}">
+                                    <td class="cve-id">{{ cve.id }}</td>
+                                    <td class="table-host">{{ cve.host }}</td>
+                                    <td class="table-port">{{ cve.port }} ({{ cve.service }})</td>
+                                    <td><span class="severity-badge {% if cve.severity == 'Critical' %}critical{% else %}high{% endif %}">{{ cve.severity }}</span></td>
+                                    <td><strong>{{ cve.cvss }}</strong></td>
+                                    <td style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Needs Review</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 2rem; color: #10b981;">
+                                        <i class="fas fa-check-circle"></i> No critical/high severity CVEs found
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="dashboard-footer">
+            <div>
+                <span>Last Updated:</span>
+                <strong>{{ last_scan_time or 'Never' }}</strong>
+            </div>
+            <div>
+                <span>Total Scans: {{ recent_scans|length if recent_scans else 0 }} | Platform Version: 2.1.0 Enterprise</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CVE Detail Modal -->
+    <div id="cveDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalCveId" class="modal-title">CVE-2019-1234</h2>
+                <button class="modal-close" onclick="closeCveModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3 class="modal-subtitle">Basic Information</h3>
+                    <div class="modal-grid">
+                        <div class="modal-field">
+                            <span class="field-label">Affected Host:</span>
+                            <span class="field-value" id="modalHost">-</span>
+                        </div>
+                        <div class="modal-field">
+                            <span class="field-label">Port/Service:</span>
+                            <span class="field-value" id="modalPort">-</span>
+                        </div>
+                        <div class="modal-field">
+                            <span class="field-label">Severity:</span>
+                            <span class="field-value" id="modalSeverity">-</span>
+                        </div>
+                        <div class="modal-field">
+                            <span class="field-label">CVSS Score:</span>
+                            <span class="field-value" id="modalCvss">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3 class="modal-subtitle">Vulnerability Description</h3>
+                    <p class="modal-text" id="modalDescription">No description available</p>
+                </div>
+
+                <div class="modal-section">
+                    <h3 class="modal-subtitle">Remediation / Fix</h3>
+                    <div class="modal-remediation" id="modalRemediation">Contact vendor for security updates</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="viewOnNVD()" title="Open in NVD"><i class="fas fa-external-link-alt"></i> View on NVD</button>
+                <button class="modal-btn modal-btn-secondary" onclick="copyToClipboard()" title="Copy CVE ID"><i class="fas fa-copy"></i> Copy CVE ID</button>
+                <button class="modal-btn modal-btn-primary" onclick="closeCveModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inject template data as JSON for external JS to consume -->
+    <script id="dashboard-data" type="application/json">{{ {
+        'severity': {
+            'critical': severity.critical|default(0), 
+            'high': severity.high|default(0), 
+            'medium': severity.medium|default(0), 
+            'low': severity.low|default(0)
+        },
+        'trend': {
+            'labels': trend_data.labels|default([]) if trend_data else [],
+            'values': trend_data.values|default([]) if trend_data else []
+        },
+        'ports': {
+            'labels': top_ports_labels|default([]), 
+            'values': top_ports_values|default([])
+        },
+        'hostRisk': host_risk_data|default([]),
+        'critical_cves': critical_cves|default([])
+    } | tojson }}</script>
+
 {% endblock %}
