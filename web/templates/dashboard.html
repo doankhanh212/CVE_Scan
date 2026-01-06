@@ -6,12 +6,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/enterprise-dashboard.css') }}">
 {% endblock %}
 
-{% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
-<script src="{{ url_for('static', filename='js/dashboard_charts.js') }}"></script>
-<script src="{{ url_for('static', filename='js/cve_modal.js') }}"></script>
-{% endblock %}
-
 {% block content %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css" rel="stylesheet">
@@ -400,5 +394,10 @@
         'hostRisk': host_risk_data|default([]),
         'critical_cves': critical_cves|default([])
     } | tojson }}</script>
+
+<!-- Scripts - load at end to ensure DOM is ready -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+<script src="{{ url_for('static', filename='js/dashboard_charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cve_modal.js') }}"></script>
 
 {% endblock %}
