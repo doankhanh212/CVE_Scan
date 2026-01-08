@@ -58,9 +58,7 @@
                     <th>SERVICE</th>
                     <th>VERSION</th>
                     <th>CVE ID</th>
-                    <th>CVSS v2</th>
-                    <th>CVSS v3</th>
-                    <th>CVSS v4</th>
+                    <th>CVSS</th>
                     <th>SEVERITY</th>
                     <th>DESCRIPTION</th>
                 </tr>
@@ -91,8 +89,8 @@
             <!-- Tabs -->
             <div class="modal-tabs">
                 <button class="modal-tab active" data-tab="overview">Overview</button>
-                <button class="modal-tab" data-tab="standards">Security Standards</button>
-                <button class="modal-tab" data-tab="remediation">Remediation</button>
+                <button class="modal-tab" data-tab="vector">CVSS Vector</button>
+                <button class="modal-tab" data-tab="cwe">CWE Explanations</button>
             </div>
             
             <!-- Tab Content -->
@@ -165,6 +163,42 @@
                         </div>
                     </div>
                     
+                    <!-- Likelihood Score Section -->
+                    <div class="modal-section">
+                        <h3>Exploitation Likelihood</h3>
+                        <div class="likelihood-container">
+                            <div class="likelihood-card">
+                                <div class="likelihood-header">
+                                    <span class="likelihood-label">LIKELIHOOD SCORE</span>
+                                    <span id="modal-likelihood-badge" class="severity-badge low">LOW</span>
+                                </div>
+                                <div id="modal-likelihood-score" class="likelihood-score-large">-</div>
+                                <div class="likelihood-formula">
+                                    <span class="formula-label">Formula:</span>
+                                    <span class="formula-text">Likelihood = CVSS × EPSS</span>
+                                </div>
+                                <div class="likelihood-details">
+                                    <div class="likelihood-detail-item">
+                                        <span class="detail-label">CVSS Base:</span>
+                                        <span id="modal-likelihood-cvss" class="detail-value">-</span>
+                                    </div>
+                                    <div class="likelihood-detail-item">
+                                        <span class="detail-label">EPSS:</span>
+                                        <span id="modal-likelihood-epss" class="detail-value">-</span>
+                                    </div>
+                                    <div class="likelihood-detail-item">
+                                        <span class="detail-label">Percentile:</span>
+                                        <span id="modal-likelihood-percentile" class="detail-value">-</span>
+                                    </div>
+                                </div>
+                                <div class="likelihood-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Likelihood combines CVSS severity with EPSS exploitation probability to show real-world risk</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="modal-section">
                         <h3>Affected Products</h3>
                         <div id="modal-affected-products" class="affected-products-list">
@@ -172,47 +206,87 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Standards Mapping Tab -->
-                <div id="standards-tab" class="tab-pane">
+                <!-- CVSS Vector Tab -->
+                <div id="vector-tab" class="tab-pane">
                     <div class="modal-section">
-                        <h3>OWASP Top 10 2021</h3>
-                        <div id="modal-owasp" class="frameworks-grid">
-                            Loading...
-                        </div>
-                    </div>
-                    
-                    <div class="modal-section">
-                        <h3>MITRE ATT&CK Framework</h3>
-                        <div id="modal-mitre" class="frameworks-grid">
-                            Loading...
-                        </div>
-                    </div>
-                    
-                    <div class="modal-section">
-                        <h3>Secure Coding Practices</h3>
-                        <div id="modal-scp" class="frameworks-grid">
-                            Loading...
-                        </div>
-                    </div>
-                    
-                    <div class="modal-section">
-                        <h3>Risk Score</h3>
-                        <div class="risk-score-container">
-                            <div class="risk-score-value" id="modal-risk-score">7.5/10</div>
-                            <div class="risk-score-bar">
-                                <div class="risk-score-fill" id="modal-risk-bar"></div>
+                        <h3>CVSS Vector Parameters</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Version Used</label>
+                                <p id="cvss-version-used">-</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Vector</label>
+                                <p id="cvss-vector-string" style="font-family: 'Courier New', monospace; word-break: break-word;">-</p>
+                            </div>
+                            <div class="info-item">
+                                <label>Summary</label>
+                                <p id="cvss-summary-explanation">-</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Remediation Tab -->
-                <div id="remediation-tab" class="tab-pane">
                     <div class="modal-section">
-                        <h3>Remediation Guidance</h3>
-                        <div id="modal-recommendations" class="recommendations-list">
-                            Loading...
+                        <div class="cvss-params-wrapper">
+                            <table class="cvss-params-table">
+                                <thead>
+                                    <tr>
+                                        <th>Group</th>
+                                        <th>Parameter</th>
+                                        <th>Name</th>
+                                        <th>Value</th>
+                                        <th>Meaning</th>
+                                        <th>Explanation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cvss-params-tbody">
+                                    <tr><td colspan="6" style="text-align:center;">No vector data</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- CWE Explanations Tab -->
+                <div id="cwe-tab" class="tab-pane">
+                    <div class="modal-section">
+                        <h3>CWE Consequences</h3>
+                        <div class="cwe-table-wrapper">
+                            <table class="cwe-table">
+                                <thead>
+                                    <tr>
+                                        <th>CWE ID</th>
+                                        <th>CWE Name</th>
+                                        <th>Scope</th>
+                                        <th>Impact</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cwe-consequences-tbody">
+                                    <tr><td colspan="4" style="text-align:center;">No CWE data available</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-section">
+                        <h3>CWE Mitigations</h3>
+                        <div class="cwe-table-wrapper">
+                            <table class="cwe-table">
+                                <thead>
+                                    <tr>
+                                        <th>CWE ID</th>
+                                        <th>CWE Name</th>
+                                        <th>Phase</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cwe-mitigations-tbody">
+                                    <tr><td colspan="4" style="text-align:center;">No CWE data available</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-section">
+                        <h3>Extended Description</h3>
+                        <div id="cwe-extended-desc" class="context-text">
+                            <p>No extended description available</p>
                         </div>
                     </div>
                 </div>
@@ -644,6 +718,67 @@
     font-size: 13px;
 }
 
+/* CVSS Vector Table */
+.cvss-params-wrapper {
+    overflow-x: auto;
+}
+.cvss-params-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.cvss-params-table th,
+.cvss-params-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 13px;
+}
+.cvss-params-table thead th {
+    background: var(--bg-secondary);
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.cvss-params-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* CWE Tables */
+.cwe-table-wrapper {
+    overflow-x: auto;
+}
+.cwe-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.cwe-table th,
+.cwe-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 13px;
+    text-align: left;
+}
+.cwe-table thead th {
+    background: var(--bg-secondary);
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+.cwe-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+.cwe-table td:first-child {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: var(--primary);
+}
+
 .risk-score-container {
     background: var(--bg-tertiary);
     padding: 24px;
@@ -710,6 +845,152 @@
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* Severity and Likelihood Badge Styles */
+.severity-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.severity-badge.critical {
+    background: #ff4444;
+    color: white;
+}
+
+.severity-badge.high {
+    background: #ff6b6b;
+    color: white;
+}
+
+.severity-badge.medium {
+    background: #ffa500;
+    color: white;
+}
+
+.severity-badge.low {
+    background: #4caf50;
+    color: white;
+}
+
+.severity-badge.unknown {
+    background: #9e9e9e;
+    color: white;
+}
+
+/* Likelihood Card Styles */
+.likelihood-container {
+    display: flex;
+    justify-content: center;
+}
+
+.likelihood-card {
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.likelihood-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.likelihood-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.likelihood-score-large {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+    margin: 16px 0;
+}
+
+.likelihood-formula {
+    text-align: center;
+    margin: 16px 0;
+    padding: 12px;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+}
+
+.formula-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-right: 8px;
+}
+
+.formula-text {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.likelihood-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.likelihood-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+}
+
+.detail-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.detail-value {
+    font-size: 18px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.likelihood-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(74, 158, 255, 0.1);
+    border-left: 3px solid var(--primary);
+    border-radius: 6px;
+    margin-top: 16px;
+}
+
+.likelihood-info i {
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.likelihood-info span {
+    font-size: 12px;
+    color: var(--text-primary);
+    line-height: 1.5;
 }
 
 </style>
@@ -805,26 +1086,40 @@ function renderTable() {
         cveCell.appendChild(cveLink);
         row.appendChild(cveCell);
         
-        const cvssv2Cell = document.createElement('td');
-        const cvssv2Badge = document.createElement('span');
-        cvssv2Badge.className = 'cvss-badge';
-        cvssv2Badge.textContent = vuln.cvss_v2 || '-';
-        cvssv2Cell.appendChild(cvssv2Badge);
-        row.appendChild(cvssv2Cell);
-        
-        const cvssv3Cell = document.createElement('td');
-        const cvssv3Badge = document.createElement('span');
-        cvssv3Badge.className = 'cvss-badge';
-        cvssv3Badge.textContent = vuln.cvss_v3 || '-';
-        cvssv3Cell.appendChild(cvssv3Badge);
-        row.appendChild(cvssv3Cell);
-        
-        const cvssv4Cell = document.createElement('td');
-        const cvssv4Badge = document.createElement('span');
-        cvssv4Badge.className = 'cvss-badge';
-        cvssv4Badge.textContent = vuln.cvss_v4 || '-';
-        cvssv4Cell.appendChild(cvssv4Badge);
-        row.appendChild(cvssv4Cell);
+        // CVSS (best available: v4 → v3.x → v2.0)
+        const cvssCell = document.createElement('td');
+        const cvssBadge = document.createElement('span');
+        cvssBadge.className = 'cvss-badge';
+        let bestCVSS = null;
+        let bestVersionLabel = '';
+
+        if (vuln.cvss_v4) {
+            bestCVSS = vuln.cvss_v4;
+            bestVersionLabel = 'CVSS 4.0';
+        } else if (vuln.cvss_v3) {
+            bestCVSS = vuln.cvss_v3;
+            bestVersionLabel = 'CVSS 3.x';
+        } else if (vuln.cvss_v2) {
+            bestCVSS = vuln.cvss_v2;
+            bestVersionLabel = 'CVSS 2.0';
+        }
+
+        // Format: one decimal if numeric (e.g., 6.8)
+        let displayCVSS = '-';
+        if (typeof bestCVSS === 'number') {
+            displayCVSS = bestCVSS.toFixed(1);
+        } else if (typeof bestCVSS === 'string' && bestCVSS.trim() !== '') {
+            // If string, try to parse number; else show as-is
+            const parsed = Number(bestCVSS);
+            displayCVSS = isNaN(parsed) ? bestCVSS : parsed.toFixed(1);
+        }
+
+        cvssBadge.textContent = displayCVSS;
+        if (bestVersionLabel) {
+            cvssBadge.title = bestVersionLabel; // Tooltip shows the version
+        }
+        cvssCell.appendChild(cvssBadge);
+        row.appendChild(cvssCell);
         
         const sevCell = document.createElement('td');
         const sevBadge = document.createElement('span');
@@ -856,11 +1151,13 @@ async function openCVEModal(cveId, vulnData) {
             headers: { 'Content-Type': 'application/json' }
         });
         
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+        let analysis = {};
+        if (response.ok) {
+            analysis = await response.json();
+        } else {
+            console.warn(`CVE analysis API failed for ${cveId}, using basic data`);
+            analysis = { error: 'CVE not found in NVD' };
         }
-        
-        const analysis = await response.json();
         
         // Update Overview tab
         document.getElementById('modal-title').textContent = analysis.title || 'N/A';
@@ -873,44 +1170,73 @@ async function openCVEModal(cveId, vulnData) {
         severityBadge.textContent = severity;
         severityBadge.className = `severity-badge ${severity.toLowerCase()}`;
         
-        // OWASP Badges (in Overview tab)
+        // OWASP Badges (in Overview tab) — support config schema (code/name)
         const owaspBadgesDiv = document.getElementById('modal-owasp-badges');
         owaspBadgesDiv.innerHTML = '';
-        if (analysis.owasp && analysis.owasp.length > 0) {
-            analysis.owasp.forEach(owasp => {
+        if (Array.isArray(analysis.owasp) && analysis.owasp.length > 0) {
+            analysis.owasp.forEach(item => {
+                const code = item.code || item.category || '';
+                const name = item.name || item.title || '';
+                const text = code ? `${code} - ${name}` : (name || 'OWASP');
                 const badge = document.createElement('span');
                 badge.className = 'framework-badge owasp';
-                badge.textContent = `${owasp.category} - ${owasp.name}`;
-                badge.title = owasp.description || '';
+                badge.textContent = text;
+                badge.title = item.description || '';
                 owaspBadgesDiv.appendChild(badge);
             });
         } else {
             owaspBadgesDiv.innerHTML = '<span class="framework-badge loading">No OWASP mapping available</span>';
         }
         
-        // MITRE ATT&CK Badges (in Overview tab - Group-IB style)
+        // MITRE ATT&CK Badges (in Overview tab) — show tactics and techniques with IDs
         const mitreBadgesDiv = document.getElementById('modal-mitre-badges');
         mitreBadgesDiv.innerHTML = '';
-        if (analysis.mitre && Object.keys(analysis.mitre).length > 0) {
-            Object.entries(analysis.mitre).forEach(([tactic, techniques]) => {
-                // Add tactic badge
-                const tacticBadge = document.createElement('span');
-                tacticBadge.className = 'framework-badge';
-                tacticBadge.textContent = tactic;
-                tacticBadge.title = `Tactic: ${tactic}`;
-                mitreBadgesDiv.appendChild(tacticBadge);
-                
-                // Add technique badges (limit to first 2 per tactic)
-                if (Array.isArray(techniques)) {
-                    techniques.slice(0, 2).forEach(technique => {
-                        const techBadge = document.createElement('span');
-                        techBadge.className = 'framework-badge';
-                        techBadge.textContent = technique.split(' - ')[1] || technique;
-                        techBadge.title = technique;
-                        mitreBadgesDiv.appendChild(techBadge);
-                    });
-                }
-            });
+        if (analysis.mitre) {
+            if (Array.isArray(analysis.mitre.tactics) && analysis.mitre.tactics.length > 0) {
+                analysis.mitre.tactics.forEach(t => {
+                    // Tactic badge with ID
+                    const tacticBadge = document.createElement('span');
+                    tacticBadge.className = 'framework-badge';
+                    const tacticId = t.id || '';
+                    const tacticName = t.name || 'Tactic';
+                    tacticBadge.textContent = tacticId ? `${tacticId} - ${tacticName}` : tacticName;
+                    tacticBadge.title = t.description || tacticId || '';
+                    mitreBadgesDiv.appendChild(tacticBadge);
+
+                    // Technique badges under this tactic (if any)
+                    if (Array.isArray(t.techniques) && t.techniques.length > 0) {
+                        t.techniques.forEach(tech => {
+                            const techBadge = document.createElement('span');
+                            techBadge.className = 'framework-badge';
+                            const techId = tech.id || '';
+                            const techName = tech.name || 'Technique';
+                            techBadge.textContent = techId ? `${techId} - ${techName}` : techName;
+                            techBadge.title = tech.description || techId || '';
+                            mitreBadgesDiv.appendChild(techBadge);
+                        });
+                    }
+                });
+            } else if (Object.keys(analysis.mitre).length > 0) {
+                // Backward compatibility with object mapping: { tacticName: [techniques] }
+                Object.entries(analysis.mitre).forEach(([tactic, techniques]) => {
+                    const tacticBadge = document.createElement('span');
+                    tacticBadge.className = 'framework-badge';
+                    tacticBadge.textContent = tactic;
+                    tacticBadge.title = `Tactic: ${tactic}`;
+                    mitreBadgesDiv.appendChild(tacticBadge);
+                    if (Array.isArray(techniques)) {
+                        techniques.forEach(technique => {
+                            const techBadge = document.createElement('span');
+                            techBadge.className = 'framework-badge';
+                            techBadge.textContent = (technique && technique.split) ? (technique.split(' - ')[1] || technique) : (technique?.name || 'Technique');
+                            techBadge.title = (typeof technique === 'string') ? technique : (technique?.description || '');
+                            mitreBadgesDiv.appendChild(techBadge);
+                        });
+                    }
+                });
+            } else {
+                mitreBadgesDiv.innerHTML = '<span class="framework-badge loading">No MITRE ATT&CK mapping available</span>';
+            }
         } else {
             mitreBadgesDiv.innerHTML = '<span class="framework-badge loading">No MITRE ATT&CK mapping available</span>';
         }
@@ -936,6 +1262,137 @@ async function openCVEModal(cveId, vulnData) {
         document.getElementById('modal-cvss-v4').textContent = cvss.v4?.base_score || '-';
         document.getElementById('modal-cvss-v4-vector').textContent = 
             cvss.v4?.vector ? `Vector: ${cvss.v4.vector}` : 'Vector: N/A';
+
+        // CVSS Vector Tab population
+        const analysisObj = analysis.cvss_analysis || null;
+        const versionUsedEl = document.getElementById('cvss-version-used');
+        const vectorStrEl = document.getElementById('cvss-vector-string');
+        const summaryEl = document.getElementById('cvss-summary-explanation');
+        const tbody = document.getElementById('cvss-params-tbody');
+        tbody.innerHTML = '';
+
+        if (analysisObj) {
+            versionUsedEl.textContent = analysisObj.cvss_version_used || '-';
+            vectorStrEl.textContent = analysisObj.vector || '-';
+            summaryEl.textContent = analysisObj.summary_explanation || '-';
+
+            const addRows = (groupName, items) => {
+                (items || []).forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${groupName}</td>
+                        <td>${item.parameter || ''}</td>
+                        <td>${item.name || ''}</td>
+                        <td style="font-family: 'Courier New', monospace;">${item.raw_value || ''}</td>
+                        <td>${item.technical_meaning || ''}</td>
+                        <td>${item.explanation || ''}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            };
+
+            addRows('Exploitability', analysisObj.exploitability);
+            addRows('Technical Impact', analysisObj.technical_impact);
+            addRows('Lateral Impact', analysisObj.lateral_impact);
+
+            if (!tbody.children.length) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="6" style="text-align:center;">No vector parameters found</td>';
+                tbody.appendChild(tr);
+            }
+        } else {
+            versionUsedEl.textContent = '-';
+            vectorStrEl.textContent = '-';
+            summaryEl.textContent = 'No CVSS analysis available';
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td colspan="6" style="text-align:center;">No vector data</td>';
+            tbody.appendChild(tr);
+        }
+
+        // CWE Explanations Tab population
+        const cweExplanations = analysis.cwe_explanations || [];
+        const cweConsTable = document.getElementById('cwe-consequences-tbody');
+        const cweMitTable = document.getElementById('cwe-mitigations-tbody');
+        const cweExtDescDiv = document.getElementById('cwe-extended-desc');
+
+        cweConsTable.innerHTML = '';
+        cweMitTable.innerHTML = '';
+        cweExtDescDiv.innerHTML = '<p>No extended descriptions available</p>';
+
+        if (cweExplanations.length > 0) {
+            let hasConsequences = false;
+            let hasMitigations = false;
+            let extDescHtml = '';
+
+            cweExplanations.forEach(cweData => {
+                const cweName = cweData.cwe?.name || 'Unknown';
+                const cweId = cweData.cwe?.cwe_id || 'N/A';
+                const extDesc = cweData.cwe?.extended_description || '';
+
+                // Extended description
+                if (extDesc) {
+                    extDescHtml += `<div style="margin-bottom: 16px; padding: 12px; background: var(--bg-tertiary); border-radius: 6px;"><strong>${cweId}:</strong> ${extDesc}</div>`;
+                }
+
+                // Consequences
+                if (cweData.consequences && cweData.consequences.length > 0) {
+                    hasConsequences = true;
+                    cweData.consequences.forEach(cons => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${cweId}</td>
+                            <td>${cweName}</td>
+                            <td>${cons.scope || '-'}</td>
+                            <td>${cons.impact || '-'}</td>
+                        `;
+                        cweConsTable.appendChild(tr);
+                    });
+                }
+
+                // Mitigations
+                if (cweData.mitigations && cweData.mitigations.length > 0) {
+                    hasMitigations = true;
+                    cweData.mitigations.forEach(mit => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${cweId}</td>
+                            <td>${cweName}</td>
+                            <td>${mit.phase || '-'}</td>
+                            <td>${mit.description || '-'}</td>
+                        `;
+                        cweMitTable.appendChild(tr);
+                    });
+                }
+            });
+
+            if (!hasConsequences) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="4" style="text-align:center;">No consequence data</td>';
+                cweConsTable.appendChild(tr);
+            }
+
+            if (!hasMitigations) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="4" style="text-align:center;">No mitigation data</td>';
+                cweMitTable.appendChild(tr);
+            }
+
+            if (extDescHtml) {
+                cweExtDescDiv.innerHTML = extDescHtml;
+            }
+        } else {
+            const tr1 = document.createElement('tr');
+            tr1.innerHTML = '<td colspan="4" style="text-align:center;">No CWE data</td>';
+            cweConsTable.appendChild(tr1);
+
+            const tr2 = document.createElement('tr');
+            tr2.innerHTML = '<td colspan="4" style="text-align:center;">No CWE data</td>';
+            cweMitTable.appendChild(tr2);
+        }
+        
+        // 🔹 Calculate and Display Likelihood (always try, even if analysis failed)
+        console.log('Calling updateLikelihoodDisplay with:', {cveId, vulnData, cvss});
+        await updateLikelihoodDisplay(cveId, vulnData, cvss);
         
         // Affected Products
         const affectedDiv = document.getElementById('modal-affected-products');
@@ -951,91 +1408,109 @@ async function openCVEModal(cveId, vulnData) {
             affectedDiv.innerHTML = '<p>No affected products listed</p>';
         }
         
-        // Standards Mapping Tab
-        const owaspDiv = document.getElementById('modal-owasp');
-        owaspDiv.innerHTML = '';
-        if (analysis.owasp && analysis.owasp.length > 0) {
-            analysis.owasp.forEach(owasp => {
-                const card = document.createElement('div');
-                card.className = 'framework-card';
-                card.innerHTML = `
-                    <h4 class="framework-card-title">${owasp.category}</h4>
-                    <div class="framework-card-content">
-                        <strong>${owasp.name}</strong><br>
-                        Risk: ${owasp.risk_rating || 'N/A'}<br>
-                        ${owasp.description ? `<small>${owasp.description.substring(0, 100)}...</small>` : ''}
-                    </div>
-                `;
-                owaspDiv.appendChild(card);
-            });
-        } else {
-            owaspDiv.innerHTML = '<p>No OWASP mapping available</p>';
-        }
-        
-        const mitreDiv = document.getElementById('modal-mitre');
-        mitreDiv.innerHTML = '';
-        if (analysis.mitre && Object.keys(analysis.mitre).length > 0) {
-            Object.entries(analysis.mitre).forEach(([tactic, techniques]) => {
-                const card = document.createElement('div');
-                card.className = 'framework-card';
-                card.innerHTML = `
-                    <h4 class="framework-card-title">${tactic}</h4>
-                    <div class="framework-card-content">
-                        ${Array.isArray(techniques) ? techniques.slice(0, 3).join('<br>') : 'N/A'}
-                    </div>
-                `;
-                mitreDiv.appendChild(card);
-            });
-        } else {
-            mitreDiv.innerHTML = '<p>No MITRE ATT&CK mapping available</p>';
-        }
-        
-        const scpDiv = document.getElementById('modal-scp');
-        scpDiv.innerHTML = '';
-        if (analysis.scp && analysis.scp.length > 0) {
-            analysis.scp.forEach(scp => {
-                const card = document.createElement('div');
-                card.className = 'framework-card';
-                card.innerHTML = `
-                    <h4 class="framework-card-title">${scp.category}</h4>
-                    <div class="framework-card-content">
-                        <strong>${scp.practice}</strong><br>
-                        Severity: ${scp.severity || 'N/A'}<br>
-                        ${scp.description ? `<small>${scp.description.substring(0, 80)}...</small>` : ''}
-                    </div>
-                `;
-                scpDiv.appendChild(card);
-            });
-        } else {
-            scpDiv.innerHTML = '<p>No SCP mapping available</p>';
-        }
-        
-        // Risk Score
-        if (analysis.risk_score) {
-            document.getElementById('modal-risk-score').textContent = 
-                `${analysis.risk_score.toFixed(2)}/10`;
-            const fillPercent = (analysis.risk_score / 10) * 100;
-            document.getElementById('modal-risk-bar').style.width = `${fillPercent}%`;
-        }
-        
-        // Recommendations
-        const recsDiv = document.getElementById('modal-recommendations');
-        recsDiv.innerHTML = '';
-        if (analysis.recommendations && analysis.recommendations.length > 0) {
-            analysis.recommendations.forEach(rec => {
-                const item = document.createElement('div');
-                item.className = 'recommendation-item';
-                item.textContent = rec;
-                recsDiv.appendChild(item);
-            });
-        } else {
-            recsDiv.innerHTML = '<p>No recommendations available</p>';
-        }
-        
+
     } catch (error) {
-        console.error('Error loading CVE analysis:', error);
-        document.getElementById('modal-title').textContent = 'Error loading CVE analysis';
-        document.getElementById('modal-description').textContent = error.message;
+        console.error(`Error loading CVE analysis for ${cveId}:`, error);
+        // Fallback: try to calculate likelihood from vulnData only
+        await updateLikelihoodDisplay(cveId, vulnData, {});
+        // Minimal fallback for header fields
+        document.getElementById('modal-title').textContent = vulnData?.cve_id || cveId;
+        document.getElementById('modal-description').textContent = vulnData?.summary || 'No description available';
+        document.getElementById('modal-category').textContent = vulnData?.service || 'Network Security';
+    }
+}
+
+async function updateLikelihoodDisplay(cveId, vulnData, cvss) {
+    console.log('updateLikelihoodDisplay called:', {cveId, vulnData, cvss});
+    
+    try {
+        // 🔹 BƯỚC 1: Chọn CVSS_base "tốt nhất"
+        // Ưu tiên: CVSS 4.0 → CVSS 3.1 → CVSS 3.0 → CVSS 2.0
+        let cvssBase = null;
+        let cvssVersion = 'N/A';
+        
+        if (cvss && cvss.v4 && cvss.v4.base_score) {
+            cvssBase = cvss.v4.base_score;
+            cvssVersion = 'CVSS 4.0';
+        } else if (cvss && cvss.v3 && cvss.v3.base_score) {
+            cvssBase = cvss.v3.base_score;
+            cvssVersion = 'CVSS 3.1';
+        } else if (cvss && cvss.v2 && cvss.v2.base_score) {
+            cvssBase = cvss.v2.base_score;
+            cvssVersion = 'CVSS 2.0';
+        } else if (vulnData && vulnData.cvss_v3) {
+            cvssBase = vulnData.cvss_v3;
+            cvssVersion = 'CVSS 3.x';
+        } else if (vulnData && vulnData.cvss_v2) {
+            cvssBase = vulnData.cvss_v2;
+            cvssVersion = 'CVSS 2.0';
+        }
+        
+        console.log('Selected CVSS:', {cvssBase, cvssVersion});
+        
+        // 🔹 BƯỚC 2: Lấy EPSS theo CVE ID
+        if (cvssBase && cveId) {
+            console.log(`Fetching EPSS for ${cveId}...`);
+            const likelihoodResponse = await fetch(`/api/cve/${cveId}/likelihood`);
+            
+            if (likelihoodResponse.ok) {
+                const likelihoodData = await likelihoodResponse.json();
+                console.log('Likelihood data received:', likelihoodData);
+                
+                const epss = likelihoodData.epss || 0.01;
+                const percentile = likelihoodData.percentile;
+                const score = cvssBase * epss;
+                const level = score >= 7.0 ? 'HIGH' : score >= 4.0 ? 'MEDIUM' : 'LOW';
+                
+                console.log('Calculated:', {score, level, epss, percentile});
+                
+                // Update UI
+                document.getElementById('modal-likelihood-score').textContent = score.toFixed(5);
+                document.getElementById('modal-likelihood-cvss').textContent = 
+                    `${cvssBase.toFixed(2)} (${cvssVersion})`;
+                document.getElementById('modal-likelihood-epss').textContent = epss.toFixed(5);
+                document.getElementById('modal-likelihood-percentile').textContent = 
+                    percentile ? `${(percentile * 100).toFixed(2)}%` : 'N/A';
+                
+                // Update badge
+                const badge = document.getElementById('modal-likelihood-badge');
+                badge.textContent = level;
+                badge.className = `severity-badge ${level.toLowerCase()}`;
+                
+                console.log('UI updated successfully');
+            } else {
+                // Fallback: calculate manually
+                const epss = 0.01;
+                const score = cvssBase * epss;
+                const level = score >= 7.0 ? 'HIGH' : score >= 4.0 ? 'MEDIUM' : 'LOW';
+                
+                document.getElementById('modal-likelihood-score').textContent = score.toFixed(5);
+                document.getElementById('modal-likelihood-cvss').textContent = 
+                    `${cvssBase.toFixed(2)} (${cvssVersion})`;
+                document.getElementById('modal-likelihood-epss').textContent = '0.01000 (fallback)';
+                document.getElementById('modal-likelihood-percentile').textContent = 'N/A';
+                
+                const badge = document.getElementById('modal-likelihood-badge');
+                badge.textContent = level;
+                badge.className = `severity-badge ${level.toLowerCase()}`;
+            }
+        } else {
+            // No CVSS available
+            document.getElementById('modal-likelihood-score').textContent = 'N/A';
+            document.getElementById('modal-likelihood-cvss').textContent = 'No CVSS data';
+            document.getElementById('modal-likelihood-epss').textContent = 'N/A';
+            document.getElementById('modal-likelihood-percentile').textContent = 'N/A';
+            
+            const badge = document.getElementById('modal-likelihood-badge');
+            badge.textContent = 'UNKNOWN';
+            badge.className = 'severity-badge unknown';
+        }
+    } catch (error) {
+        console.error('Error updating likelihood display:', error);
+        document.getElementById('modal-likelihood-score').textContent = 'Error';
+        document.getElementById('modal-likelihood-cvss').textContent = 'Error';
+        document.getElementById('modal-likelihood-epss').textContent = 'Error';
+        document.getElementById('modal-likelihood-percentile').textContent = 'Error';
     }
 }
 

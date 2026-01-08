@@ -3,7 +3,7 @@
 {% block title %}Enterprise Dashboard - CVE Scan Security Platform{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/enterprise-dashboard.css') }}?v=9">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enterprise-dashboard.css') }}?v=11">
 {% endblock %}
 
 {% block content %}
@@ -401,5 +401,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
 <script src="{{ url_for('static', filename='js/dashboard_charts.js') }}"></script>
 <script src="{{ url_for('static', filename='js/cve_modal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/host_filter.js') }}"></script>
 
 {% endblock %}

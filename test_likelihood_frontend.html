@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Likelihood API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        .result {
+            background: #16213e;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #6bb6ff;
+        }
+        pre {
+            background: #0f1419;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Likelihood API</h1>
+    
+    <div class="result">
+        <h3>CVE: CVE-2025-26466</h3>
+        <button onclick="testAPI()">Test API Call</button>
+        <div id="output"></div>
+    </div>
+    
+    <div class="result">
+        <h3>CVSS Mock Data</h3>
+        <pre id="cvss-data"></pre>
+    </div>
+    
+    <div class="result">
+        <h3>Calculated Likelihood</h3>
+        <pre id="likelihood-calc"></pre>
+    </div>
+
+    <script>
+        const cveId = 'CVE-2025-26466';
+        
+        // Mock CVSS data (like from modal)
+        const mockCVSS = {
+            v3: { base_score: 5.3, vector: 'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N' },
+            v2: { base_score: 5.0, vector: 'AV:N/AC:L/Au:N/C:N/I:P/A:N' }
+        };
+        
+        const mockVulnData = {
+            cve_id: 'CVE-2025-26466',
+            cvss_v3: 5.3,
+            severity: 'MEDIUM'
+        };
+        
+        document.getElementById('cvss-data').textContent = JSON.stringify(mockCVSS, null, 2);
+        
+        async function testAPI() {
+            const output = document.getElementById('output');
+            const calcOutput = document.getElementById('likelihood-calc');
+            
+            output.innerHTML = '<p>Calling API...</p>';
+            
+            try {
+                // Step 1: Select CVSS
+                let cvssBase = null;
+                let cvssVersion = 'N/A';
+                
+                if (mockCVSS.v4 && mockCVSS.v4.base_score) {
+                    cvssBase = mockCVSS.v4.base_score;
+                    cvssVersion = 'CVSS 4.0';
+                } else if (mockCVSS.v3 && mockCVSS.v3.base_score) {
+                    cvssBase = mockCVSS.v3.base_score;
+                    cvssVersion = 'CVSS 3.1';
+                } else if (mockCVSS.v2 && mockCVSS.v2.base_score) {
+                    cvssBase = mockCVSS.v2.base_score;
+                    cvssVersion = 'CVSS 2.0';
+                }
+                
+                console.log('Step 1 - Selected CVSS:', {cvssBase, cvssVersion});
+                
+                // Step 2: Fetch EPSS
+                const response = await fetch(`http://localhost:5000/api/cve/${cveId}/likelihood`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Step 2 - EPSS data:', data);
+                
+                // Calculate
+                const score = cvssBase * data.epss;
+                const level = score >= 7.0 ? 'HIGH' : score >= 4.0 ? 'MEDIUM' : 'LOW';
+                
+                output.innerHTML = `
+                    <h4>✅ API Response:</h4>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+                calcOutput.innerHTML = `
+                    <h4>🔹 BƯỚC 1: Chọn CVSS_base</h4>
+                    <p>Selected: ${cvssVersion}</p>
+                    <p>CVSS Base: ${cvssBase}</p>
+                    
+                    <h4>🔹 BƯỚC 2: Lấy EPSS</h4>
+                    <p>EPSS: ${data.epss.toFixed(5)}</p>
+                    <p>Percentile: ${(data.percentile * 100).toFixed(2)}%</p>
+                    
+                    <h4>📊 Calculation</h4>
+                    <p>Formula: Likelihood = CVSS × EPSS</p>
+                    <p>Result: ${cvssBase} × ${data.epss.toFixed(5)} = ${score.toFixed(5)}</p>
+                    <p>Level: <strong style="color: ${level === 'HIGH' ? '#ff6b6b' : level === 'MEDIUM' ? '#ffa500' : '#4caf50'}">${level}</strong></p>
+                `;
+                
+            } catch (error) {
+                output.innerHTML = `<p style="color: #ff6b6b">❌ Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        // Auto-run on load
+        window.onload = () => {
+            testAPI();
+        };
+    </script>
+</body>
+</html>

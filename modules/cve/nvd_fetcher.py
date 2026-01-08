@@ -138,6 +138,30 @@ class NVDFetcherPRO:
         self._save_to_cache(cache_key, vulns)
         return vulns
 
+    def get_cve_by_id(self, cve_id: str) -> List[Dict]:
+        """Fetch CVE by CVE ID (v2.0 API supports cveId parameter).
+
+        Return: RAW NVD vulnerabilities list for the specific CVE ID
+        """
+        if not cve_id:
+            return []
+
+        cache_key = f"cveid::{cve_id}"
+        cached = self._load_from_cache(cache_key)
+        if cached:
+            return cached
+
+        params = {
+            "cveId": cve_id,
+            "resultsPerPage": 1,
+        }
+
+        data = self._api_call(params)
+        vulns = data.get("vulnerabilities", [])
+
+        self._save_to_cache(cache_key, vulns)
+        return vulns
+
     def search_cve_keyword(self, keyword: str, max_results: int = 50) -> List[Dict]:
         """
         Search CVEs by keyword (service / product / version)
