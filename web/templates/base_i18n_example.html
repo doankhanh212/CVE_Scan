@@ -1,0 +1,124 @@
+<!-- Example: Refactored base.html with i18n integration -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="common.app_name">HQG Security</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logs.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/i18n.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span data-i18n="common.app_name">HQG Security</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item {% if request.endpoint == 'dashboard.dashboard' or request.path == '/' %}active{% endif %}" data-i18n="sidebar.dashboard">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/scan" class="nav-item {% if 'scan' in request.endpoint %}active{% endif %}" data-i18n="sidebar.scan_targets">
+                <i class="fas fa-crosshairs"></i>
+                <span>Scan Targets</span>
+            </a>
+            <a href="/results" class="nav-item {% if 'results' in request.endpoint %}active{% endif %}" data-i18n="sidebar.scan_results">
+                <i class="fas fa-file-alt"></i>
+                <span>Scan Results</span>
+            </a>
+            <a href="/vulnerabilities" class="nav-item {% if 'vuln' in request.endpoint %}active{% endif %}" data-i18n="sidebar.vulnerabilities">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Vulnerabilities</span>
+            </a>
+            <a href="#" class="nav-item" data-i18n="sidebar.reports">
+                <i class="fas fa-download"></i>
+                <span>Reports</span>
+            </a>
+            <a href="/settings" class="nav-item {% if 'settings' in request.endpoint %}active{% endif %}" data-i18n="sidebar.settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="version" data-i18n="common.version">v1.0.0</div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="page-title">
+                <h1>{% block page_title %}<span data-i18n="dashboard.page_title">Dashboard</span>{% endblock %}</h1>
+                <span class="last-scan">
+                    <i class="fas fa-circle status-active"></i>
+                    <span>
+                        <span data-i18n="topbar.last_scan">Last scan</span>:
+                        <span id="last-scan-time">{% block last_scan %}{{ last_scan_time or 'Never' }}{% endblock %}</span>
+                    </span>
+                </span>
+            </div>
+            
+            <div class="top-bar-actions">
+                <!-- Language Selector -->
+                <div id="language-selector-container"></div>
+
+                <button class="icon-button" id="notifications-btn" data-i18n="topbar.notifications" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name">Khánh đẹp trai</div>
+                        <div class="user-role" data-i18n="topbar.security_analyst">Security Analyst</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/i18n-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modal-handlers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    
+    <!-- Initialize language selector after DOM is ready -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create language selector in the top bar
+            i18nUI.createLanguageSelector({
+                containerId: 'language-selector-container',
+                style: 'dropdown',
+                onLanguageChange: (lang) => {
+                    // Optional: Handle language change event
+                    console.log('Language changed to:', lang);
+                }
+            });
+
+            // Listen for language changes
+            document.addEventListener('i18n:languageChanged', (e) => {
+                console.log(`Language switched from ${e.detail.oldLanguage} to ${e.detail.newLanguage}`);
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

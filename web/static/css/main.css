@@ -581,6 +581,91 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* ============================================
+   LIGHT THEME SUPPORT
+   ============================================ */
+:root[data-theme="light"] {
+    /* Light Theme Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-card: #ffffff;
+    
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    
+    --border-color: #e5e7eb;
+    --border-hover: #d1d5db;
+    
+    /* Status Colors - Keep same */
+    --critical: #dc2626;
+    --critical-bg: rgba(220, 38, 38, 0.1);
+    --high: #ea580c;
+    --high-bg: rgba(234, 88, 12, 0.1);
+    --medium: #d97706;
+    --medium-bg: rgba(217, 119, 6, 0.1);
+    --low: #2563eb;
+    --low-bg: rgba(37, 99, 235, 0.1);
+    
+    /* UI Colors */
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+}
+
+:root[data-theme="light"] body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .sidebar {
+    background: var(--bg-secondary);
+    border-right-color: var(--border-color);
+}
+
+:root[data-theme="light"] .sidebar-header {
+    border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="light"] .nav-item {
+    color: var(--text-secondary);
+}
+
+:root[data-theme="light"] .nav-item:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .nav-item.active {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+}
+
+:root[data-theme="light"] .top-bar {
+    background: var(--bg-secondary);
+    border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="light"] .icon-button {
+    color: var(--text-secondary);
+}
+
+:root[data-theme="light"] .icon-button:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .content {
+    background: var(--bg-primary);
+}
+
+:root[data-theme="light"] .logs-container {
+    background: var(--bg-secondary);
+}
+
 /* RESPONSIVE */
 @media (max-width: 1024px) {
     .sidebar {

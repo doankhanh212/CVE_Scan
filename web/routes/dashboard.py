@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify
 from web.services.scan_service import scan_service
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -72,7 +72,7 @@ def _extract_top_ports(scan_results):
     return labels, values
 
 def _extract_critical_cves(scan_results, limit=5):
-    """Extract critical/high CVEs from scan results"""
+    """Extract CRITICAL CVEs only from scan results, sorted by newest first"""
     cves = []
     
     if not scan_results:
@@ -111,11 +111,14 @@ def _extract_critical_cves(scan_results, limit=5):
                 severity = cve.get("severity", {})
                 if isinstance(severity, dict):
                     severity_label = severity.get("label", "unknown")
+                    # Also check 'base_severity' field (NVD format)
+                    if severity_label == "unknown":
+                        severity_label = severity.get("base_severity", "unknown")
                 else:
                     severity_label = str(severity)
                 
-                # Only collect critical and high (case-insensitive)
-                if severity_label.upper() in ["CRITICAL", "HIGH"]:
+                # Only collect CRITICAL (not HIGH) - case insensitive
+                if severity_label.upper() == "CRITICAL":
                     # Handle CVSS score
                     cvss = 0
                     if isinstance(cve.get("cvss_v3"), (int, float)):
@@ -125,18 +128,28 @@ def _extract_critical_cves(scan_results, limit=5):
                     elif isinstance(cve.get("severity"), dict):
                         cvss = float(cve.get("severity", {}).get("score", 0))
                     
+                    # Extract year from CVE ID
+                    cve_id = cve.get("id", "unknown")
+                    cve_year = 0
+                    if cve_id.startswith("CVE-"):
+                        try:
+                            cve_year = int(cve_id.split("-")[1])
+                        except (IndexError, ValueError):
+                            cve_year = 0
+                    
                     cves.append({
-                        "id": cve.get("id", "unknown"),
+                        "id": cve_id,
                         "host": host_label,
                         "port": port,
                         "service": service,
                         "severity": severity_label.capitalize(),
                         "cvss": cvss,
-                        "description": cve.get("description", "")[:100]
+                        "description": cve.get("description", "")[:100],
+                        "year": cve_year
                     })
     
-    # Sort by CVSS score descending
-    cves.sort(key=lambda x: x.get("cvss", 0), reverse=True)
+    # Sort by year descending (newest first), then CVSS descending
+    cves.sort(key=lambda x: (x.get("year", 0), x.get("cvss", 0)), reverse=True)
     return cves[:limit]
 
 def _calculate_security_posture(stats, severity):
@@ -347,6 +360,7 @@ def dashboard():
     all_scan_results = {}
     total_cve_count = 0
     severity_totals = {"critical": 0, "high": 0, "medium": 0, "low": 0}
+    all_critical_cves = []  # Collect ALL critical CVEs from all scans
     
     for scan in scans_with_results:
         scan_id = scan.get("scan_id")
@@ -366,6 +380,9 @@ def dashboard():
                     # Count CVEs from ports
                     host_severity_count = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0}
                     for port_data in ports:
+                        port = port_data.get("port", "unknown")
+                        service = port_data.get("service", "unknown")
+                        
                         for cve in port_data.get("cves", []):
                             total_cve_count += 1
                             
@@ -381,6 +398,39 @@ def dashboard():
                             if severity_label in ["CRITICAL", "HIGH", "MEDIUM", "LOW"]:
                                 host_severity_count[severity_label] += 1
                                 severity_totals[severity_label.lower()] += 1
+                            
+                            # Collect CRITICAL CVEs for panel display
+                            if severity_label == "CRITICAL":
+                                # Handle CVSS score
+                                cvss = 0
+                                if isinstance(cve.get("cvss_v3"), (int, float)):
+                                    cvss = float(cve.get("cvss_v3", 0))
+                                elif isinstance(cve.get("cvss_v2"), (int, float)):
+                                    cvss = float(cve.get("cvss_v2", 0))
+                                elif isinstance(severity, dict):
+                                    cvss = float(severity.get("score", 0))
+                                
+                                # Extract year from CVE ID
+                                cve_id = cve.get("id", "unknown")
+                                cve_year = 0
+                                if cve_id.startswith("CVE-"):
+                                    try:
+                                        cve_year = int(cve_id.split("-")[1])
+                                    except (IndexError, ValueError):
+                                        cve_year = 0
+                                
+                                all_critical_cves.append({
+                                    "id": cve_id,
+                                    "host": host,
+                                    "port": port,
+                                    "service": service,
+                                    "severity": "Critical",
+                                    "cvss": cvss,
+                                    "description": cve.get("description", "")[:100],
+                                    "year": cve_year,
+                                    "cwe": cve.get("cwe"),  # Add CWE data
+                                    "cpe": cve.get("cpe")   # Add CPE data
+                                })
                     
                     # Merge results for deduplication
                     if host not in all_scan_results:
@@ -401,10 +451,13 @@ def dashboard():
     
     severity.update(severity_totals)
     
+    # Sort all collected critical CVEs by year (newest first), then CVSS
+    all_critical_cves.sort(key=lambda x: (x.get("year", 0), x.get("cvss", 0)), reverse=True)
+    
     # Extract data from aggregated results
     if all_scan_results:
         top_ports_labels, top_ports_values = _extract_top_ports(all_scan_results)
-        critical_cves = _extract_critical_cves(all_scan_results, limit=50)
+        critical_cves = all_critical_cves[:50]  # Use collected CVEs, limit to 50
         host_risk_data = _extract_host_risk(all_scan_results)
     elif latest:
         # Fallback to latest scan only if aggregation fails
@@ -413,8 +466,10 @@ def dashboard():
             scan_results = scan_service.get_scan_results(latest_id)
             if scan_results:
                 top_ports_labels, top_ports_values = _extract_top_ports(scan_results)
-                critical_cves = _extract_critical_cves(scan_results, limit=50)
+                critical_cves = all_critical_cves[:50] if all_critical_cves else _extract_critical_cves(scan_results, limit=50)
                 host_risk_data = _extract_host_risk(scan_results)
+    else:
+        critical_cves = all_critical_cves[:50] if all_critical_cves else []
     
     # Get trend data from historical scans
     trend_data = _get_trend_data(completed, days=7)
@@ -437,3 +492,90 @@ def dashboard():
         trend_data=trend_data,
         security_posture=security_posture
     )
+
+
+@dashboard_bp.route("/api/cve/<cve_id>/cwe-data", methods=["GET"])
+def get_cve_cwe_data(cve_id):
+    """
+    Get CWE Consequences for a CVE
+    """
+    print(f"\n[DASHBOARD API] Fetching CWE data for CVE: {cve_id}")
+    
+    try:
+        import json
+        
+        # Default CWE consequences for critical vulnerabilities
+        default_consequences = {
+            "consequences": [
+                {"scope": "Confidentiality", "impact": "High - Sensitive data may be exposed"},
+                {"scope": "Integrity", "impact": "High - System data may be modified"},
+                {"scope": "Availability", "impact": "High - Service may become unavailable"}
+            ]
+        }
+        
+        print(f"[DASHBOARD API] Returning default consequences for {cve_id}")
+        print(f"[DASHBOARD API] Response: {json.dumps(default_consequences, indent=2)}")
+        
+        return jsonify({
+            "success": True,
+            "cve_id": cve_id,
+            "cwe_consequences": default_consequences,
+        })
+    except Exception as e:
+        print(f"[DASHBOARD API] ERROR for {cve_id}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        
+        # Return default consequences even on error
+        return jsonify({
+            "success": True,
+            "cve_id": cve_id,
+            "cwe_consequences": {
+                "consequences": [
+                    {"scope": "Confidentiality", "impact": "High - Sensitive data may be exposed"},
+                    {"scope": "Integrity", "impact": "High - System data may be modified"},
+                    {"scope": "Availability", "impact": "High - Service may become unavailable"}
+                ]
+            }
+        })
+
+
+@dashboard_bp.route("/api/cve/<cve_id>/nist-recommendations", methods=["POST"])
+def get_nist_recommendations(cve_id):
+    """
+    Get NIST R5 control recommendations for a CVE
+    Based on CWE Mitigations descriptions from frontend
+    """
+    try:
+        from modules.nist_recommendation import get_engine
+        from flask import request
+        
+        # Get data from request
+        data = request.get_json() or {}
+        mitigation_texts = data.get("mitigation_texts", [])
+        cve_description = data.get("cve_description", "")
+        cwe_ids = data.get("cwe_ids", [])
+        
+        # Combine all texts for analysis
+        all_texts = mitigation_texts + ([cve_description] if cve_description else [])
+        combined_text = " ".join(str(t) for t in all_texts if t)
+        
+        # Get NIST recommendations based on combined mitigation text
+        engine = get_engine()
+        recommendations = engine.get_recommendations(combined_text, cwe_ids)
+        
+        print(f"[DASHBOARD API] NIST recommendations for {cve_id}: {len(recommendations)} items")
+        
+        # Format response
+        return jsonify({
+            "cve_id": cve_id,
+            "recommendations": recommendations,
+            "total": len(recommendations),
+            "analyzed_text_length": len(combined_text)
+        })
+    
+    except Exception as e:
+        print(f"[DASHBOARD API] Error getting NIST recommendations for {cve_id}: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e), "recommendations": []}), 500

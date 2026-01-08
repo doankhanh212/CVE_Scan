@@ -1,0 +1,186 @@
+<!-- Example: Refactored scan.html snippet with i18n -->
+<!-- Shows the pattern for form labels, placeholders, and help text -->
+
+{% extends "base.html" %}
+
+{% block title %}<span data-i18n="scan.page_title">Scan Targets</span> - <span data-i18n="common.app_name">HQG Security</span>{% endblock %}
+{% block page_title %}<span data-i18n="scan.page_title">Scan Targets</span>{% endblock %}
+
+{% block content %}
+<!-- Scan Configuration -->
+<div class="panel">
+    <h2 class="panel-title" data-i18n="scan.new_configuration">New Scan Configuration</h2>
+    
+    <form id="scan-form">
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label for="targets" data-i18n="scan.target_hosts">Target Hosts</label>
+                <textarea id="targets" name="targets" rows="5" data-i18n="scan.target_placeholder" data-i18n-attr="placeholder"></textarea>
+                <span class="form-help" data-i18n="scan.target_help">Supports: IP addresses, CIDR notation, hostnames</span>
+            </div>
+
+            <div class="form-group">
+                <label for="input-mode" data-i18n="scan.input_mode">Input Mode</label>
+                <select id="input-mode" name="input_mode">
+                    <option value="IP/CIDR" data-i18n="scan.ip_cidr">IP / CIDR (Direct Scan)</option>
+                    <option value="Hostname" data-i18n="scan.hostname_domain">Hostname (DNS Resolution)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="authenticated">
+                    <input type="checkbox" id="authenticated" name="authenticated">
+                    <span data-i18n="scan.authenticated_scan">Authenticated Scan</span>
+                </label>
+                <span class="form-help" data-i18n="scan.authenticated_help">Enable for credential-based scanning</span>
+            </div>
+        </div>
+
+        <!-- Authentication Section (Hidden by default) -->
+        <div id="auth-section" class="auth-section" style="display: none;">
+            <h3 class="section-title" data-i18n="scan.authentication_credentials">Authentication Credentials</h3>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="auth-type" data-i18n="scan.auth_type">Authentication Type</label>
+                    <select id="auth-type" name="auth_type">
+                        <option value="ssh" data-i18n="scan.ssh_linux">SSH (Linux)</option>
+                        <option value="winrm" data-i18n="scan.winrm_windows">WinRM (Windows)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" data-i18n="scan.username">Username</label>
+                    <input type="text" id="username" name="username" data-i18n="scan.username_placeholder" data-i18n-attr="placeholder">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" data-i18n="scan.password">Password</label>
+                    <input type="password" id="password" name="password" data-i18n="scan.password_placeholder" data-i18n-attr="placeholder">
+                </div>
+
+                <div class="form-group">
+                    <label for="port" data-i18n="scan.port">Port (Optional)</label>
+                    <input type="number" id="port" name="port" data-i18n="scan.port_placeholder" data-i18n-attr="placeholder">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="reset-btn">
+                <i class="fas fa-redo"></i>
+                <span data-i18n="scan.reset">Reset</span>
+            </button>
+            <button type="submit" class="btn btn-primary" id="start-scan-btn">
+                <i class="fas fa-play"></i>
+                <span data-i18n="scan.start_scan">Start Scan</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Active Scans -->
+<div class="panel">
+    <div class="panel-header">
+        <h2 class="panel-title" data-i18n="scan.active_scans">Active Scans</h2>
+        <button type="button" class="btn btn-secondary btn-sm" id="refresh-scans-btn">
+            <i class="fas fa-sync"></i>
+            <span data-i18n="scan.refresh">Refresh</span>
+        </button>
+    </div>
+    
+    <div class="scans-list" id="active-scans">
+        <div class="empty-state">
+            <i class="fas fa-info-circle"></i>
+            <p data-i18n="scan.no_active_scans">No active scans</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/scan.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let activeScanInterval = null;
+
+// Toggle auth section
+document.getElementById('authenticated').addEventListener('change', (e) => {
+    document.getElementById('auth-section').style.display = e.target.checked ? 'block' : 'none';
+});
+
+// Reset form
+document.getElementById('reset-btn').addEventListener('click', () => {
+    document.getElementById('scan-form').reset();
+    document.getElementById('auth-section').style.display = 'none';
+});
+
+// Load active scans with i18n support
+async function loadActiveScans() {
+    try {
+        const response = await fetch('/api/scans');
+        const data = await response.json();
+        
+        const scans = (data.scans || []).filter(s => s.status === 'running');
+        const container = document.getElementById('active-scans');
+        
+        if (scans.length === 0) {
+            // Use i18n for empty state
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-info-circle"></i>
+                    <p>${i18n.t('scan.no_active_scans')}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = '';
+        scans.forEach(scan => {
+            const progress = scan.progress || 0;
+            const targets = Array.isArray(scan.hosts) ? scan.hosts.slice(0, 3).join(', ') : scan.hosts;
+            const moreTargets = Array.isArray(scan.hosts) && scan.hosts.length > 3 ? 
+                ` +${scan.hosts.length - 3} ${i18n.t('scan.more')}` : '';
+            
+            const item = document.createElement('div');
+            item.className = 'scan-item';
+            item.innerHTML = `
+                <div class="scan-item-header">
+                    <div class="scan-item-id">${scan.scan_id}</div>
+                    <div class="scan-item-targets">${targets}${moreTargets}</div>
+                    <div class="scan-item-progress">
+                        <div class="scan-item-progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    } catch (error) {
+        console.error('Error loading active scans:', error);
+        const container = document.getElementById('active-scans');
+        container.innerHTML = `
+            <div class="empty-state error">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>${i18n.t('messages.error_loading_data')}</p>
+            </div>
+        `;
+    }
+}
+
+// Initial load and refresh
+loadActiveScans();
+activeScanInterval = setInterval(loadActiveScans, 3000);
+
+// Clean up interval
+window.addEventListener('beforeunload', () => {
+    if (activeScanInterval) clearInterval(activeScanInterval);
+});
+
+// Listen for language changes and reload scans to update text
+document.addEventListener('i18n:languageChanged', () => {
+    loadActiveScans();
+});
+</script>
+{% endblock %}

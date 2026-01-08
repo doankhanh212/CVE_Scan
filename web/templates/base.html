@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/logs.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/i18n.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {% block extra_css %}{% endblock %}
 </head>
@@ -16,34 +18,34 @@
         <div class="sidebar-header">
             <div class="logo">
                 <i class="fas fa-shield-alt"></i>
-                <span>HQG Security</span>
+                <span data-i18n="common.app_name">HQG Security</span>
             </div>
         </div>
         
         <nav class="sidebar-nav">
             <a href="/" class="nav-item {% if request.endpoint == 'dashboard.dashboard' or request.path == '/' %}active{% endif %}">
                 <i class="fas fa-th-large"></i>
-                <span>Dashboard</span>
+                <span data-i18n="sidebar.dashboard">Dashboard</span>
             </a>
             <a href="/scan" class="nav-item {% if 'scan' in request.endpoint %}active{% endif %}">
                 <i class="fas fa-crosshairs"></i>
-                <span>Scan Targets</span>
+                <span data-i18n="sidebar.scan_targets">Scan Targets</span>
             </a>
             <a href="/results" class="nav-item {% if 'results' in request.endpoint %}active{% endif %}">
                 <i class="fas fa-file-alt"></i>
-                <span>Scan Results</span>
+                <span data-i18n="sidebar.scan_results">Scan Results</span>
             </a>
             <a href="/vulnerabilities" class="nav-item {% if 'vuln' in request.endpoint %}active{% endif %}">
                 <i class="fas fa-exclamation-triangle"></i>
-                <span>Vulnerabilities</span>
+                <span data-i18n="sidebar.vulnerabilities">Vulnerabilities</span>
             </a>
             <a href="#" class="nav-item">
                 <i class="fas fa-download"></i>
-                <span>Reports</span>
+                <span data-i18n="sidebar.reports">Reports</span>
             </a>
             <a href="/settings" class="nav-item {% if 'settings' in request.endpoint %}active{% endif %}">
                 <i class="fas fa-cog"></i>
-                <span>Settings</span>
+                <span data-i18n="sidebar.settings">Settings</span>
             </a>
         </nav>
         
@@ -57,15 +59,23 @@
         <!-- Top Bar -->
         <header class="top-bar">
             <div class="page-title">
-                <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                <h1>{% block page_title %}<span data-i18n="dashboard.page_title">Dashboard</span>{% endblock %}</h1>
                 <span class="last-scan">
                     <i class="fas fa-circle status-active"></i>
-                    {% block last_scan %}Last scan: {{ last_scan_time or 'Never' }}{% endblock %}
+                    <span data-i18n="topbar.last_scan">Last scan</span>: <span id="last-scan-time">{{ last_scan_time or 'Never' }}</span>
                 </span>
             </div>
             
             <div class="top-bar-actions">
-                <button class="icon-button" id="notifications-btn">
+                <!-- Language Selector -->
+                <div id="language-selector-container"></div>
+                
+                <!-- Theme Toggle -->
+                <button class="icon-button" id="theme-toggle-btn" title="Toggle dark/light mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <button class="icon-button" id="notifications-btn" data-i18n="topbar.notifications" data-i18n-attr="title">
                     <i class="fas fa-bell"></i>
                     <span class="badge">3</span>
                 </button>
@@ -73,7 +83,7 @@
                     <div class="avatar">A</div>
                     <div class="user-info">
                         <div class="user-name">Khánh đẹp trai</div>
-                        <div class="user-role">Security Analyst</div>
+                        <div class="user-role" data-i18n="topbar.security_analyst">Security Analyst</div>
                     </div>
                 </div>
             </div>
@@ -86,8 +96,98 @@
     </div>
 
     <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/i18n-ui.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modal-handlers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    
+    <!-- Initialize language selector -->
+    <script>
+        // Ensure i18n initializes and creates selector with retry logic
+        async function initializeI18n() {
+            console.log('[base.html] Starting i18n initialization...');
+            
+            // Wait up to 5 seconds for i18n to be available
+            let retries = 50;
+            while (!window.i18n && retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                retries--;
+            }
+            
+            if (!window.i18n) {
+                console.error('[base.html] i18n library not loaded after 5 seconds!');
+                return;
+            }
+            
+            console.log('[base.html] i18n library found, initializing...');
+            
+            try {
+                await i18n.init({ detectBrowser: true });
+                console.log('[base.html] ✅ i18n initialized');
+            } catch (error) {
+                console.error('[base.html] Error initializing i18n:', error);
+                return;
+            }
+            
+            // Create language selector
+            if (!window.i18nUI) {
+                console.error('[base.html] i18nUI not available!');
+                return;
+            }
+            
+            try {
+                i18nUI.createLanguageSelector({
+                    containerId: 'language-selector-container',
+                    style: 'dropdown',
+                    onLanguageChange: (lang) => {
+                        console.log('[base.html] ✅ Language changed to:', lang);
+                    }
+                });
+                console.log('[base.html] ✅ Language selector created');
+            } catch (error) {
+                console.error('[base.html] Error creating language selector:', error);
+            }
+        }
+        
+        // Start initialization immediately if DOM is ready, otherwise wait
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeI18n);
+        } else {
+            initializeI18n();
+        }
+
+        // Setup theme toggle
+        function setupThemeToggle() {
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            if (!themeToggleBtn) {
+                console.warn('[base.html] theme-toggle-btn not found');
+                return;
+            }
+            
+            const themeIcon = themeToggleBtn.querySelector('i');
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            
+            // Set initial theme
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            console.log('[base.html] Initial theme:', currentTheme);
+            
+            themeToggleBtn.addEventListener('click', () => {
+                const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                console.log('[base.html] ✅ Theme changed to:', newTheme);
+            });
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupThemeToggle);
+        } else {
+            setupThemeToggle();
+        }
+    </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html>

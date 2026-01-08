@@ -389,3 +389,47 @@ def get_cve_likelihood(cve_id):
     except Exception as e:
         logger.error(f"Error calculating likelihood for {cve_id}: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+@vuln_bp.route("/api/cve/<cve_id>/nist-recommendations", methods=["POST"])
+def get_nist_recommendations(cve_id):
+    """
+    Get NIST R5 control recommendations for a CVE
+    Based on CWE Mitigations descriptions from frontend
+    
+    Request body:
+    {
+        "mitigation_texts": ["description1", "description2", ...],
+        "cve_description": "...",
+        "cwe_ids": [390, 123, ...]
+    }
+    """
+    try:
+        from modules.nist_recommendation import get_engine
+        from flask import request
+        
+        # Get data from request
+        data = request.get_json() or {}
+        mitigation_texts = data.get("mitigation_texts", [])
+        cve_description = data.get("cve_description", "")
+        cwe_ids = data.get("cwe_ids", [])
+        
+        # Combine all texts for analysis
+        all_texts = mitigation_texts + ([cve_description] if cve_description else [])
+        combined_text = " ".join(str(t) for t in all_texts if t)
+        
+        # Get NIST recommendations based on combined mitigation text
+        engine = get_engine()
+        recommendations = engine.get_recommendations(combined_text, cwe_ids)
+        
+        # Format response
+        return jsonify({
+            "cve_id": cve_id,
+            "recommendations": recommendations,
+            "total": len(recommendations),
+            "analyzed_text_length": len(combined_text)
+        })
+    
+    except Exception as e:
+        logger.error(f"Error getting NIST recommendations for {cve_id}: {e}", exc_info=True)
+        return jsonify({"error": str(e), "recommendations": []}), 500

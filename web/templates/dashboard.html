@@ -13,8 +13,8 @@
     <!-- Main Dashboard -->
     <div class="dashboard-container">
         <div class="dashboard-header">
-            <h2 class="dashboard-title">Security Dashboard</h2>
-            <p class="dashboard-subtitle">Real-time vulnerability overview and threat assessment</p>
+            <h2 class="dashboard-title" data-i18n="dashboard.page_title">Security Dashboard</h2>
+            <p class="dashboard-subtitle" data-i18n="dashboard.subtitle">Real-time vulnerability overview and threat assessment</p>
         </div>
 
         <!-- KPI Cards -->
@@ -22,7 +22,7 @@
             <!-- Total CVEs -->
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <span class="kpi-label">Total CVEs Detected</span>
+                    <span class="kpi-label" data-i18n="dashboard.total_cves">Total CVEs Detected</span>
                     <div class="kpi-icon red">
                         <i class="fas fa-triangle-exclamation"></i>
                     </div>
@@ -31,12 +31,12 @@
                 {% if stats.cves_change is defined and stats.cves_change != 0 %}
                 <div class="kpi-change {% if stats.cves_change > 0 %}negative{% else %}positive{% endif %}">
                     <i class="fas fa-arrow-{% if stats.cves_change > 0 %}up{% else %}down{% endif %}"></i>
-                    <span>{{ stats.cves_change|abs }} from last scan</span>
+                    <span>{{ stats.cves_change|abs }} <span data-i18n="dashboard.from_last_scan">from last scan</span></span>
                 </div>
                 {% else %}
                 <div class="kpi-change">
                     <i class="fas fa-minus"></i>
-                    <span>No change</span>
+                    <span data-i18n="dashboard.no_change">No change</span>
                 </div>
                 {% endif %}
             </div>
@@ -44,7 +44,7 @@
             <!-- Critical CVEs -->
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <span class="kpi-label">Critical Severity</span>
+                    <span class="kpi-label" data-i18n="dashboard.critical_severity">Critical Severity</span>
                     <div class="kpi-icon red">
                         <i class="fas fa-skull"></i>
                     </div>
@@ -53,12 +53,12 @@
                 {% if stats.critical_change is defined and stats.critical_change != 0 %}
                 <div class="kpi-change {% if stats.critical_change > 0 %}negative{% else %}positive{% endif %}">
                     <i class="fas fa-arrow-{% if stats.critical_change > 0 %}up{% else %}down{% endif %}"></i>
-                    <span>{{ stats.critical_change|abs }} from last scan</span>
+                    <span>{{ stats.critical_change|abs }} <span data-i18n="dashboard.from_last_scan">from last scan</span></span>
                 </div>
                 {% else %}
                 <div class="kpi-change">
                     <i class="fas fa-minus"></i>
-                    <span>No change</span>
+                    <span data-i18n="dashboard.no_change">No change</span>
                 </div>
                 {% endif %}
             </div>
@@ -66,7 +66,7 @@
             <!-- Hosts Affected -->
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <span class="kpi-label">Hosts Affected</span>
+                    <span class="kpi-label" data-i18n="dashboard.hosts_affected">Hosts Affected</span>
                     <div class="kpi-icon blue">
                         <i class="fas fa-server"></i>
                     </div>
@@ -75,12 +75,12 @@
                 {% if stats.hosts_change is defined and stats.hosts_change != 0 %}
                 <div class="kpi-change {% if stats.hosts_change > 0 %}positive{% else %}negative{% endif %}">
                     <i class="fas fa-arrow-{% if stats.hosts_change > 0 %}up{% else %}down{% endif %}"></i>
-                    <span>{{ stats.hosts_change|abs }} from last scan</span>
+                    <span>{{ stats.hosts_change|abs }} <span data-i18n="dashboard.from_last_scan">from last scan</span></span>
                 </div>
                 {% else %}
                 <div class="kpi-change">
                     <i class="fas fa-minus"></i>
-                    <span>No change</span>
+                    <span data-i18n="dashboard.no_change">No change</span>
                 </div>
                 {% endif %}
             </div>
@@ -88,7 +88,7 @@
             <!-- Security Posture -->
             <div class="kpi-card">
                 <div class="kpi-header">
-                    <span class="kpi-label">Security Score</span>
+                    <span class="kpi-label" data-i18n="dashboard.security_score">Security Score</span>
                     <div class="kpi-icon {% if security_posture >= 70 %}green{% elif security_posture >= 50 %}orange{% else %}red{% endif %}">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -96,7 +96,7 @@
                 <div class="kpi-value">{{ security_posture or 0 }}%</div>
                 <div class="kpi-change">
                     <i class="fas fa-shield-alt"></i>
-                    <span>Risk assessment</span>
+                    <span data-i18n="dashboard.risk_assessment">Risk assessment</span>
                 </div>
             </div>
         </div>
@@ -105,26 +105,26 @@
         <div class="severity-section">
             <div class="severity-card critical">
                 <div class="severity-number">{{ severity.critical or 0 }}</div>
-                <div class="severity-title">Critical</div>
-                <div class="severity-description">CVSS 9.0 - 10.0 | Immediate Action Required</div>
+                <div class="severity-title" data-i18n="dashboard.severity_critical">Critical</div>
+                <div class="severity-description" data-i18n="dashboard.critical_desc">CVSS 9.0 - 10.0 | Immediate Action Required</div>
             </div>
 
             <div class="severity-card high">
                 <div class="severity-number">{{ severity.high or 0 }}</div>
-                <div class="severity-title">High</div>
-                <div class="severity-description">CVSS 7.0 - 8.9 | High Priority</div>
+                <div class="severity-title" data-i18n="dashboard.severity_high">High</div>
+                <div class="severity-description" data-i18n="dashboard.high_desc">CVSS 7.0 - 8.9 | High Priority</div>
             </div>
 
             <div class="severity-card medium">
                 <div class="severity-number">{{ severity.medium or 0 }}</div>
-                <div class="severity-title">Medium</div>
-                <div class="severity-description">CVSS 4.0 - 6.9 | Schedule Remediation</div>
+                <div class="severity-title" data-i18n="dashboard.severity_medium">Medium</div>
+                <div class="severity-description" data-i18n="dashboard.medium_desc">CVSS 4.0 - 6.9 | Schedule Remediation</div>
             </div>
 
             <div class="severity-card low">
                 <div class="severity-number">{{ severity.low or 0 }}</div>
-                <div class="severity-title">Low</div>
-                <div class="severity-description">CVSS 0.1 - 3.9 | Monitor</div>
+                <div class="severity-title" data-i18n="dashboard.severity_low">Low</div>
+                <div class="severity-description" data-i18n="dashboard.low_desc">CVSS 0.1 - 3.9 | Monitor</div>
             </div>
         </div>
 
@@ -133,7 +133,7 @@
             <!-- CVE Distribution + Top Vulnerable Ports Combined -->
             <div class="panel panel-compact">
                 <div class="panel-header">
-                    <h3 class="panel-title">Vulnerability Analytics</h3>
+                    <h3 class="panel-title" data-i18n="dashboard.vulnerability_analytics">Vulnerability Analytics</h3>
                     <div class="panel-actions">
                         <button class="panel-btn" aria-label="Refresh"><i class="fas fa-redo"></i></button>
                         <button class="panel-btn" aria-label="Export"><i class="fas fa-download"></i></button>
@@ -141,13 +141,13 @@
                 </div>
                 <div class="dual-chart-container">
                     <div class="chart-section">
-                        <h4 class="chart-subtitle">CVE Distribution by Severity</h4>
+                        <h4 class="chart-subtitle" data-i18n="dashboard.cve_distribution">CVE Distribution by Severity</h4>
                         <div class="chart-container chart-container-sm">
                             <canvas id="severityChart"></canvas>
                         </div>
                     </div>
                     <div class="chart-section">
-                        <h4 class="chart-subtitle">Top Vulnerable Ports</h4>
+                        <h4 class="chart-subtitle" data-i18n="dashboard.top_vulnerable_ports">Top Vulnerable Ports</h4>
                         <div class="chart-container chart-container-sm">
                             <canvas id="portsChart"></canvas>
                         </div>
@@ -158,7 +158,7 @@
             <!-- CVE Trend Chart -->
             <div class="panel panel-trend">
                 <div class="panel-header">
-                    <h3 class="panel-title">CVE Discovery Trend</h3>
+                    <h3 class="panel-title" data-i18n="dashboard.cve_trend">CVE Discovery Trend</h3>
                     <div class="panel-actions">
                         <button class="panel-btn">7D</button>
                         <button class="panel-btn">30D</button>
@@ -173,12 +173,12 @@
             <!-- Host Risk Matrix -->
             <div class="panel">
                 <div class="panel-header">
-                    <h3 class="panel-title">Host Risk Assessment</h3>
+                    <h3 class="panel-title" data-i18n="dashboard.host_risk">Host Risk Assessment</h3>
                     <div class="panel-actions filter-controls">
-                        <select id="hostFilter" class="filter-select" aria-label="Filter by host">
-                            <option value="">All Hosts</option>
+                        <select id="hostFilter" class="filter-select" aria-label="Filter by host" data-i18n="dashboard.all_hosts" data-i18n-attr="data-default-text">
+                            <option value="" data-i18n="dashboard.all_hosts">All Hosts</option>
                         </select>
-                        <input type="text" id="hostSearch" placeholder="Search host..." class="filter-input">
+                        <input type="text" id="hostSearch" placeholder="Search host..." data-i18n="dashboard.search_host" data-i18n-attr="placeholder" class="filter-input">
                     </div>
                 </div>
                 <div class="chart-container-sm">
@@ -217,7 +217,7 @@
                         </div>
                     {% else %}
                         <div style="padding: 20px; text-align: center; color: #666;">
-                            No host risk data available yet
+                            <span data-i18n="dashboard.no_host_risk_data">No host risk data available yet</span>
                         </div>
                     {% endif %}
                     </div>
@@ -234,15 +234,15 @@
                         <i class="fas fa-bolt"></i>
                     </div>
                     <div class="alert-header-content">
-                        <h3 class="panel-title">Critical Vulnerabilities Detected</h3>
-                        <p class="alert-subtitle">{{ stats.critical or 0 }} critical-severity CVEs require immediate attention</p>
+                        <h3 class="panel-title" data-i18n="dashboard.critical_vulnerabilities">Critical Vulnerabilities Detected</h3>
+                        <p class="alert-subtitle">{{ stats.critical or 0 }} <span data-i18n="dashboard.critical_cves_attention">critical-severity CVEs require immediate attention</span></p>
                     </div>
                 </div>
                 <div class="alert-wrapper-scroll">
                     <div class="alert-list-compact">
                     {% if critical_cves %}
                         {% for cve in critical_cves %}
-                        <div class="alert-item-compact" data-cve-id="{{ cve.id }}" data-cve-description="{{ cve.description or 'No description available' }}" data-cve-cvss="{{ cve.cvss or 'N/A' }}" data-cve-host="{{ cve.host }}" data-cve-port="{{ cve.port }}" data-cve-service="{{ cve.service or 'Unknown' }}" data-cve-severity="{{ cve.severity }}" data-cve-remediation="{{ cve.remediation or 'Contact vendor for security updates' }}" style="cursor: pointer;">
+                        <div class="alert-item-compact" data-cve-id="{{ cve.id }}" data-cve-description="{{ cve.description or 'No description available' }}" data-cve-cvss="{{ cve.cvss or 'N/A' }}" data-cve-host="{{ cve.host }}" data-cve-port="{{ cve.port }}" data-cve-service="{{ cve.service or 'Unknown' }}" data-cve-severity="{{ cve.severity }}" data-cve-remediation="{{ cve.remediation or 'Contact vendor for security updates' }}" data-cve-cwe="{{ cve.cwe or '' }}" data-cve-cpe="{{ cve.cpe or '' }}" style="cursor: pointer;">
                             <div class="alert-content-compact">
                                 <div class="alert-cve-id-compact">{{ cve.id }}</div>
                                 <div class="alert-metadata-compact">
@@ -257,7 +257,7 @@
                     {% else %}
                     <div style="padding: 1.5rem; text-align: center; color: var(--text-secondary);">
                         <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--success);"></i>
-                        <p>No critical vulnerabilities detected</p>
+                        <p data-i18n="dashboard.no_critical_vulns">No critical vulnerabilities detected</p>
                     </div>
                     {% endif %}
                     </div>
@@ -268,28 +268,28 @@
             <!-- Recent Vulnerabilities Table -->
             <div class="panel table-section">
                 <div class="panel-header">
-                    <h3 class="panel-title">Recent Vulnerability Discoveries</h3>
+                    <h3 class="panel-title" data-i18n="dashboard.recent_vulnerabilities">Recent Vulnerability Discoveries</h3>
                     <div class="panel-actions filter-controls">
                         <select id="severityFilter" class="filter-select" aria-label="Filter by severity">
-                            <option value="">All Severity</option>
-                            <option value="Critical">Critical</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
+                            <option value="" data-i18n="dashboard.all_severity">All Severity</option>
+                            <option value="Critical" data-i18n="dashboard.severity_critical">Critical</option>
+                            <option value="High" data-i18n="dashboard.severity_high">High</option>
+                            <option value="Medium" data-i18n="dashboard.severity_medium">Medium</option>
+                            <option value="Low" data-i18n="dashboard.severity_low">Low</option>
                         </select>
-                        <input type="text" id="cveSearch" placeholder="Search CVE ID..." class="filter-input">
+                        <input type="text" id="cveSearch" placeholder="Search CVE ID..." data-i18n="dashboard.search_cve" data-i18n-attr="placeholder" class="filter-input">
                     </div>
                 </div>
                 <div class="table-wrapper-scroll">
                     <table class="data-table" id="cveTable">
                         <thead>
                             <tr>
-                                <th>CVE ID <span class="info-tooltip" title="Common Vulnerabilities and Exposures - A unique identifier for each known vulnerability"><i class="fas fa-info-circle"></i></span></th>
-                                <th>Host <span class="info-tooltip" title="The computer or server affected by the vulnerability"><i class="fas fa-info-circle"></i></span></th>
-                                <th>Port/Service <span class="info-tooltip" title="Network port number and service name"><i class="fas fa-info-circle"></i></span></th>
-                                <th>Severity <span class="info-tooltip" title="Impact level: Critical (most severe) to Low"><i class="fas fa-info-circle"></i></span></th>
-                                <th>CVSS Score <span class="info-tooltip" title="CVSS = Common Vulnerability Scoring System (0-10 scale)"><i class="fas fa-info-circle"></i></span></th>
-                                <th>Status</th>
+                                <th><span data-i18n="dashboard.table_cve_id">CVE ID</span> <span class="info-tooltip" title="Common Vulnerabilities and Exposures - A unique identifier for each known vulnerability"><i class="fas fa-info-circle"></i></span></th>
+                                <th><span data-i18n="dashboard.table_host">Host</span> <span class="info-tooltip" title="The computer or server affected by the vulnerability"><i class="fas fa-info-circle"></i></span></th>
+                                <th><span data-i18n="dashboard.table_port_service">Port/Service</span> <span class="info-tooltip" title="Network port number and service name"><i class="fas fa-info-circle"></i></span></th>
+                                <th><span data-i18n="dashboard.table_severity">Severity</span> <span class="info-tooltip" title="Impact level: Critical (most severe) to Low"><i class="fas fa-info-circle"></i></span></th>
+                                <th><span data-i18n="dashboard.table_cvss">CVSS Score</span> <span class="info-tooltip" title="CVSS = Common Vulnerability Scoring System (0-10 scale)"><i class="fas fa-info-circle"></i></span></th>
+                                <th data-i18n="dashboard.table_status">Status</th>
                             </tr>
                         </thead>
                         <tbody id="cveTableBody">
@@ -301,13 +301,13 @@
                                     <td class="table-port">{{ cve.port }} ({{ cve.service }})</td>
                                     <td><span class="severity-badge {% if cve.severity == 'Critical' %}critical{% else %}high{% endif %}">{{ cve.severity }}</span></td>
                                     <td><strong>{{ cve.cvss }}</strong></td>
-                                    <td style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> Needs Review</td>
+                                    <td style="color: #ef4444;"><i class="fas fa-exclamation-circle"></i> <span data-i18n="dashboard.status_needs_review">Needs Review</span></td>
                                 </tr>
                                 {% endfor %}
                             {% else %}
                                 <tr>
                                     <td colspan="6" style="text-align: center; padding: 2rem; color: #10b981;">
-                                        <i class="fas fa-check-circle"></i> No critical/high severity CVEs found
+                                        <i class="fas fa-check-circle"></i> <span data-i18n="dashboard.no_critical_high_cves">No critical/high severity CVEs found</span>
                                     </td>
                                 </tr>
                             {% endif %}
@@ -320,11 +320,11 @@
         <!-- Footer -->
         <div class="dashboard-footer">
             <div>
-                <span>Last Updated:</span>
+                <span data-i18n="dashboard.last_updated">Last Updated</span>:
                 <strong>{{ last_scan_time or 'Never' }}</strong>
             </div>
             <div>
-                <span>Total Scans: {{ recent_scans|length if recent_scans else 0 }} | Platform Version: 2.1.0 Enterprise</span>
+                <span><span data-i18n="dashboard.total_scans">Total Scans</span>: {{ recent_scans|length if recent_scans else 0 }} | <span data-i18n="dashboard.platform_version">Platform Version</span>: 2.1.0 Enterprise</span>
             </div>
         </div>
     </div>
@@ -337,42 +337,54 @@
                 <button class="modal-close" onclick="closeCveModal()">&times;</button>
             </div>
             <div class="modal-body">
+                <!-- Information Section -->
                 <div class="modal-section">
-                    <h3 class="modal-subtitle">Basic Information</h3>
+                    <h3 class="modal-subtitle" data-i18n="dashboard.modal_information">Information</h3>
                     <div class="modal-grid">
                         <div class="modal-field">
-                            <span class="field-label">Affected Host:</span>
+                            <span class="field-label" data-i18n="dashboard.modal_affected_host">Affected Host:</span>
                             <span class="field-value" id="modalHost">-</span>
                         </div>
                         <div class="modal-field">
-                            <span class="field-label">Port/Service:</span>
+                            <span class="field-label" data-i18n="dashboard.modal_port_service">Port/Service:</span>
                             <span class="field-value" id="modalPort">-</span>
                         </div>
                         <div class="modal-field">
-                            <span class="field-label">Severity:</span>
+                            <span class="field-label" data-i18n="dashboard.modal_severity">Severity:</span>
                             <span class="field-value" id="modalSeverity">-</span>
                         </div>
                         <div class="modal-field">
-                            <span class="field-label">CVSS Score:</span>
+                            <span class="field-label" data-i18n="dashboard.modal_cvss_score">CVSS Score:</span>
                             <span class="field-value" id="modalCvss">-</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-section">
-                    <h3 class="modal-subtitle">Vulnerability Description</h3>
-                    <p class="modal-text" id="modalDescription">No description available</p>
+                    <h3 class="modal-subtitle" data-i18n="dashboard.modal_description">Vulnerability Description</h3>
+                    <p class="modal-text" id="modalDescription" data-i18n="dashboard.modal_no_description">No description available</p>
                 </div>
 
+                <!-- CWE Consequences Section -->
                 <div class="modal-section">
-                    <h3 class="modal-subtitle">Remediation / Fix</h3>
-                    <div class="modal-remediation" id="modalRemediation">Contact vendor for security updates</div>
+                    <h3 class="modal-subtitle">CWE Consequences</h3>
+                    <div id="cwe-consequences-container" style="padding: 12px; background: var(--bg-secondary); border-radius: 6px; max-height: 250px; overflow-y: auto;">
+                        <p style="text-align: center; color: var(--text-secondary);" data-i18n="dashboard.modal_loading">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- NIST Recommendations Section -->
+                <div class="modal-section">
+                    <h3 class="modal-subtitle">NIST R5 Recommendations</h3>
+                    <div id="nist-recommendations-container" style="padding: 12px; background: var(--bg-secondary); border-radius: 6px; max-height: 250px; overflow-y: auto;">
+                        <p style="text-align: center; color: var(--text-secondary);" data-i18n="dashboard.modal_loading">Loading...</p>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn modal-btn-secondary" onclick="viewOnNVD()" title="Open in NVD"><i class="fas fa-external-link-alt"></i> View on NVD</button>
-                <button class="modal-btn modal-btn-secondary" onclick="copyToClipboard()" title="Copy CVE ID"><i class="fas fa-copy"></i> Copy CVE ID</button>
-                <button class="modal-btn modal-btn-primary" onclick="closeCveModal()">Close</button>
+                <button class="modal-btn modal-btn-secondary" onclick="viewOnNVD()" title="Open in NVD"><i class="fas fa-external-link-alt"></i> <span data-i18n="dashboard.modal_view_nvd">View on NVD</span></button>
+                <button class="modal-btn modal-btn-secondary" onclick="copyToClipboard()" title="Copy CVE ID"><i class="fas fa-copy"></i> <span data-i18n="dashboard.modal_copy_cve">Copy CVE ID</span></button>
+                <button class="modal-btn modal-btn-primary" onclick="closeCveModal()" data-i18n="dashboard.modal_close">Close</button>
             </div>
         </div>
     </div>

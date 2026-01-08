@@ -747,4 +747,50 @@ body {
     }
 }
 
+/* ============================================
+   LIGHT THEME SUPPORT
+   ============================================ */
+:root[data-theme="light"] {
+    /* Light Theme Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-card: #ffffff;
+    --bg-hover: #f3f4f6;
+    
+    /* Text Colors */
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    
+    /* Accent Colors - Keep same */
+    --accent-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --accent-green: #10b981;
+    --accent-orange: #f59e0b;
+    --accent-red: #ef4444;
+    --accent-purple: #8b5cf6;
+    
+    /* Severity Colors - Keep same */
+    --severity-critical: #ef4444;
+    --severity-high: #f97316;
+    --severity-medium: #fbbf24;
+    --severity-low: #3b82f6;
+    
+    /* Borders & Shadows */
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+:root[data-theme="light"] body {
+    background: var(--bg-primary);
+}
+
+:root[data-theme="light"] .dashboard-container {
+    background: var(--bg-primary);
+}
+
+
 

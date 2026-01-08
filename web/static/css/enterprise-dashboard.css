@@ -1201,3 +1201,119 @@ body {
         justify-content: center;
     }
 }
+
+/* ============================================
+   LIGHT THEME SUPPORT
+   ============================================ */
+:root[data-theme="light"] {
+    /* Light Theme Colors */
+    --primary-bg: #ffffff;
+    --secondary-bg: #f9fafb;
+    --tertiary-bg: #f3f4f6;
+    --card-bg: #ffffff;
+    --hover-bg: #f3f4f6;
+    
+    /* Text Colors for Light Theme */
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    
+    /* UI Elements - Keep severity colors */
+    --critical: #ef4444;
+    --high: #f97316;
+    --medium: #eab308;
+    --low: #3b82f6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --info: #0ea5e9;
+    
+    /* Border - Light version */
+    --border: #e5e7eb;
+    
+    /* Shadows - Lighter for light theme */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Light theme specific adjustments */
+:root[data-theme="light"] body {
+    background: var(--primary-bg);
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .kpi-card,
+:root[data-theme="light"] .severity-card,
+:root[data-theme="light"] .panel,
+:root[data-theme="light"] .alert-panel-2col {
+    background: var(--card-bg);
+    border-color: var(--border);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] .data-table {
+    background: var(--card-bg);
+}
+
+:root[data-theme="light"] .data-table th {
+    background: var(--tertiary-bg);
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .data-table tbody tr {
+    border-bottom-color: var(--border);
+}
+
+:root[data-theme="light"] .data-table tbody tr:hover {
+    background: var(--secondary-bg);
+}
+
+:root[data-theme="light"] .dashboard-container {
+    background: var(--primary-bg);
+}
+
+:root[data-theme="light"] .panel-header {
+    border-bottom-color: var(--border);
+}
+
+:root[data-theme="light"] .panel-title {
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .modal {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="light"] .modal-content {
+    background: var(--card-bg);
+}
+
+:root[data-theme="light"] .modal-header {
+    border-bottom-color: var(--border);
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .modal-section h3 {
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .modal-text {
+    color: var(--text-secondary);
+}
+
+:root[data-theme="light"] .filter-select,
+:root[data-theme="light"] .filter-input {
+    background: var(--tertiary-bg);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+:root[data-theme="light"] .filter-select:focus,
+:root[data-theme="light"] .filter-input:focus {
+    border-color: var(--info);
+}
+
+:root[data-theme="light"] .cve-row:hover {
+    background: var(--secondary-bg);
+}
+

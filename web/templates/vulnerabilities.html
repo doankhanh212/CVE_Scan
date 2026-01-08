@@ -91,6 +91,7 @@
                 <button class="modal-tab active" data-tab="overview">Overview</button>
                 <button class="modal-tab" data-tab="vector">CVSS Vector</button>
                 <button class="modal-tab" data-tab="cwe">CWE Explanations</button>
+                <button class="modal-tab" data-tab="nist">NIST Recommendations</button>
             </div>
             
             <!-- Tab Content -->
@@ -287,6 +288,31 @@
                         <h3>Extended Description</h3>
                         <div id="cwe-extended-desc" class="context-text">
                             <p>No extended description available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NIST Recommendations Tab -->
+                <div id="nist-tab" class="tab-pane">
+                    <div class="modal-section">
+                        <h3>NIST R5 Recommendations</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                            Based on CWE Mitigations descriptions, these NIST R5 controls are recommended to address this vulnerability.
+                        </p>
+                        <div class="nist-recommendations-wrapper">
+                            <table class="nist-recommendations-table">
+                                <thead>
+                                    <tr>
+                                        <th>Control ID</th>
+                                        <th>Control Name</th>
+                                        <th>Type</th>
+                                        <th>Recommended Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="nist-recommendations-tbody">
+                                    <tr><td colspan="4" style="text-align:center;">Loading recommendations...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -830,6 +856,69 @@
 
 .recommendation-item {
     border-left-color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+}
+
+/* NIST Recommendations Table */
+.nist-recommendations-wrapper {
+    overflow-x: auto;
+    margin-top: 12px;
+}
+
+.nist-recommendations-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.nist-recommendations-table th,
+.nist-recommendations-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.nist-recommendations-table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    color: var(--text-primary);
+    sticky: top;
+}
+
+.nist-recommendations-table tbody tr:hover {
+    background: var(--bg-tertiary);
+}
+
+.nist-recommendations-table td:first-child {
+    font-weight: 600;
+    color: var(--primary);
+    font-family: 'Courier New', monospace;
+}
+
+.nist-type-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.nist-type-badge.preventive {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.nist-type-badge.detective {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.nist-type-badge.corrective {
+    background: rgba(249, 115, 22, 0.2);
+    color: #f97316;
 }
 
 .modal-footer {
@@ -1394,6 +1483,9 @@ async function openCVEModal(cveId, vulnData) {
         console.log('Calling updateLikelihoodDisplay with:', {cveId, vulnData, cvss});
         await updateLikelihoodDisplay(cveId, vulnData, cvss);
         
+        // 🔹 Load NIST Recommendations
+        await loadNISTRecommendations(cveId);
+        
         // Affected Products
         const affectedDiv = document.getElementById('modal-affected-products');
         affectedDiv.innerHTML = '';
@@ -1513,6 +1605,8 @@ async function updateLikelihoodDisplay(cveId, vulnData, cvss) {
         document.getElementById('modal-likelihood-percentile').textContent = 'Error';
     }
 }
+
+
 
 function closeCVEModal() {
     const modal = document.getElementById('cve-detail-modal');
@@ -1674,6 +1768,111 @@ document.getElementById('export-vuln-csv-btn').addEventListener('click', async (
         btn.innerHTML = originalHTML;
     }
 });
+
+/**
+ * Load NIST R5 control recommendations for a CVE
+ * Extracts mitigation descriptions from CWE Mitigations table and sends to backend
+ */
+async function loadNISTRecommendations(cveId) {
+    const tbody = document.getElementById('nist-recommendations-tbody');
+    
+    try {
+        // Extract mitigation descriptions from CWE Mitigations table
+        const mitTable = document.querySelector('#cwe-mitigations-tbody');
+        const mitigationTexts = [];
+        
+        console.log('Looking for CWE Mitigations table...');
+        
+        if (mitTable) {
+            const rows = mitTable.querySelectorAll('tr');
+            console.log(`Found ${rows.length} rows in CWE Mitigations table`);
+            
+            rows.forEach((row, idx) => {
+                const cells = row.querySelectorAll('td');
+                console.log(`Row ${idx}: ${cells.length} cells`);
+                
+                if (cells.length >= 4) {
+                    // 4th column (index 3) is Description
+                    const description = cells[3]?.textContent?.trim();
+                    if (description && description !== 'No mitigation data') {
+                        console.log(`Extracted: ${description.substring(0, 50)}...`);
+                        mitigationTexts.push(description);
+                    }
+                }
+            });
+        } else {
+            console.warn('CWE Mitigations table not found');
+        }
+        
+        console.log(`Total extracted texts: ${mitigationTexts.length}`);
+        console.log('Extracted texts:', mitigationTexts);
+        
+        // Get CVE description from modal
+        const cveDescription = document.getElementById('modal-description')?.textContent || '';
+        
+        // Call backend API with POST request
+        console.log(`Calling POST /api/cve/${cveId}/nist-recommendations`);
+        const response = await fetch(`/api/cve/${cveId}/nist-recommendations`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                mitigation_texts: mitigationTexts,
+                cve_description: cveDescription,
+                cwe_ids: []
+            })
+        });
+        
+        console.log(`API Response Status: ${response.status}`);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`API Error: ${errorText}`);
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
+        const data = await response.json();
+        const recommendations = data.recommendations || [];
+        
+        console.log('NIST recommendations received:', recommendations);
+        
+        tbody.innerHTML = '';
+        
+        if (recommendations.length === 0) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td colspan="4" style="text-align:center; padding: 20px; color: #999;">No NIST recommendations found</td>';
+            tbody.appendChild(tr);
+            return;
+        }
+        
+        // Sort by type: Preventive, Detective, Corrective
+        const typeOrder = { 'Preventive': 0, 'Detective': 1, 'Corrective': 2 };
+        recommendations.sort((a, b) => {
+            return (typeOrder[a.type] || 99) - (typeOrder[b.type] || 99);
+        });
+        
+        // Populate table
+        recommendations.forEach(rec => {
+            const tr = document.createElement('tr');
+            const typeBadgeClass = (rec.type || '').toLowerCase();
+            tr.innerHTML = `
+                <td><strong>${rec.control_id || '-'}</strong></td>
+                <td>${rec.control_name || '-'}</td>
+                <td><span class="nist-type-badge ${typeBadgeClass}">${rec.type || 'Unknown'}</span></td>
+                <td>${rec.action || '-'}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        console.log(`✅ Loaded ${recommendations.length} NIST recommendations for ${cveId}`);
+        
+    } catch (error) {
+        console.error(`Error loading NIST recommendations for ${cveId}:`, error);
+        tbody.innerHTML = '';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="4" style="text-align:center; padding: 20px; color: #f87171;">Error: ${error.message}</td>`;
+        tbody.appendChild(tr);
+    }
+}
 
 document.addEventListener('DOMContentLoaded', loadVulnerabilities);
 </script>

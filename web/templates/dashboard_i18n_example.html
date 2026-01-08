@@ -1,0 +1,131 @@
+<!-- Example: Refactored dashboard.html snippet with i18n -->
+<!-- This shows the pattern for converting dashboard.html to use i18n keys -->
+
+{% extends "base.html" %}
+
+{% block title %}<span data-i18n="common.app_name">HQG Security</span> - <span data-i18n="dashboard.page_title">Dashboard</span>{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/enterprise-dashboard.css') }}?v=11">
+{% endblock %}
+
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css" rel="stylesheet">
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h2 class="dashboard-title" data-i18n="dashboard.title">Security Dashboard</h2>
+            <p class="dashboard-subtitle" data-i18n="dashboard.subtitle">Real-time vulnerability overview and threat assessment</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <!-- Total CVEs -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label" data-i18n="dashboard.total_cves">Total CVEs Detected</span>
+                    <div class="kpi-icon red">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ stats.total_cves or 0 }}</div>
+                {% if stats.cves_change is defined and stats.cves_change != 0 %}
+                <div class="kpi-change {% if stats.cves_change > 0 %}negative{% else %}positive{% endif %}">
+                    <i class="fas fa-arrow-{% if stats.cves_change > 0 %}up{% else %}down{% endif %}"></i>
+                    <span>
+                        <span id="cves-change-count">{{ stats.cves_change|abs }}</span>
+                        <span data-i18n="dashboard.from_last_scan">from last scan</span>
+                    </span>
+                </div>
+                {% else %}
+                <div class="kpi-change">
+                    <i class="fas fa-minus"></i>
+                    <span data-i18n="dashboard.no_change">No change</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Critical CVEs -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label" data-i18n="dashboard.critical_severity">Critical Severity</span>
+                    <div class="kpi-icon red">
+                        <i class="fas fa-skull"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ stats.critical or 0 }}</div>
+                {% if stats.critical_change is defined and stats.critical_change != 0 %}
+                <div class="kpi-change {% if stats.critical_change > 0 %}negative{% else %}positive{% endif %}">
+                    <i class="fas fa-arrow-{% if stats.critical_change > 0 %}up{% else %}down{% endif %}"></i>
+                    <span>
+                        <span id="critical-change-count">{{ stats.critical_change|abs }}</span>
+                        <span data-i18n="dashboard.from_last_scan">from last scan</span>
+                    </span>
+                </div>
+                {% else %}
+                <div class="kpi-change">
+                    <i class="fas fa-minus"></i>
+                    <span data-i18n="dashboard.no_change">No change</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Hosts Affected -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label" data-i18n="dashboard.hosts_affected">Hosts Affected</span>
+                    <div class="kpi-icon blue">
+                        <i class="fas fa-server"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ stats.hosts_scanned or 0 }}</div>
+                {% if stats.hosts_change is defined and stats.hosts_change != 0 %}
+                <div class="kpi-change {% if stats.hosts_change > 0 %}positive{% else %}negative{% endif %}">
+                    <i class="fas fa-arrow-{% if stats.hosts_change > 0 %}up{% else %}down{% endif %}"></i>
+                    <span>
+                        <span id="hosts-change-count">{{ stats.hosts_change|abs }}</span>
+                        <span data-i18n="dashboard.from_last_scan">from last scan</span>
+                    </span>
+                </div>
+                {% else %}
+                <div class="kpi-change">
+                    <i class="fas fa-minus"></i>
+                    <span data-i18n="dashboard.no_change">No change</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Security Posture -->
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label" data-i18n="dashboard.security_score">Security Score</span>
+                    <div class="kpi-icon {% if security_posture >= 70 %}green{% elif security_posture >= 50 %}orange{% else %}red{% endif %}">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="kpi-value">{{ security_posture or 0 }}%</div>
+                <div class="kpi-change">
+                    <i class="fas fa-shield-alt"></i>
+                    <span data-i18n="dashboard.risk_assessment">Risk assessment</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ... rest of dashboard content with i18n keys ... -->
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard_charts.js') }}"></script>
+<script>
+    // Listen for language changes and update dynamic content if needed
+    document.addEventListener('i18n:languageChanged', (e) => {
+        console.log('Dashboard language switched to:', e.detail.newLanguage);
+        // Optional: Refresh any charts or dynamic content that might need translation
+    });
+</script>
+{% endblock %}

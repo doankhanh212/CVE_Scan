@@ -1,0 +1,86 @@
+/**
+ * theme.css - Light/Dark Theme Support
+ */
+
+/* Dark Theme (Default) */
+:root[data-theme="dark"] {
+  --bg-primary: #1a1d29;
+  --bg-secondary: #23263a;
+  --bg-tertiary: #2b2f45;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+  --hover-bg: #374151;
+}
+
+/* Light Theme */
+:root[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --hover-bg: #f3f4f6;
+}
+
+/* Apply theme variables */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar {
+  background-color: var(--bg-secondary);
+}
+
+.top-bar {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+.panel, .kpi-card, .severity-card {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.nav-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.data-table {
+  background-color: var(--bg-secondary);
+}
+
+.data-table th {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.data-table td {
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.icon-button {
+  color: var(--text-secondary);
+}
+
+.icon-button:hover {
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+/* Light theme specific adjustments */
+:root[data-theme="light"] .sidebar {
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="light"] .panel {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] .kpi-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

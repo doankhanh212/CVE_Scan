@@ -1,0 +1,125 @@
+{
+  "SI-2": {
+    "keywords": ["patch", "update", "upgrade", "firmware", "remediate", "fix", "vulnerability"],
+    "group": "SI (System Integrity)",
+    "control_name": "Patch Management",
+    "iso_27001": "A.12.6",
+    "type": "Preventive",
+    "action": "Thực hiện cập nhật bản vá hệ điều hành và phần mềm để xóa bỏ lỗ hổng gốc."
+  },
+  "SC-7": {
+    "keywords": ["firewall", "waf", "boundary", "filter", "ips", "gateway", "isolation", "proxy", "dmz"],
+    "group": "SC (System & Comm)",
+    "control_name": "Firewall / WAF",
+    "iso_27001": "A.13.1",
+    "type": "Preventive",
+    "action": "Thiết lập tường lửa hoặc WAF tại cửa ngõ để chặn các vector tấn công từ xa."
+  },
+  "SC-7": {
+    "keywords": [
+      "firewall", "waf", "filter", "block", "deny", 
+      "sql injection", "sqli", "xss", "cross-site scripting", 
+      "csrf", "request forgery", "payload filtering", 
+      "signature-based", "anomaly detection"
+    ],
+    "group": "SC (System & Comm Protection)",
+    "control_name": "Boundary Protection (WAF Focus)",
+    "iso_27001": "A.13.1",
+    "type": "Preventive",
+    "action": "Triển khai WAF để lọc và ngăn chặn các payload tấn công ứng dụng web phổ biến (SQLi, XSS, CSRF) ngay tại cửa ngõ."
+  },
+  "SC-7": {
+    "keywords": [
+      "firewall", "waf", "ngfw", "ips", "ids", "proxy", "reverse proxy", 
+      "gateway", "vpn", "tunneling", "filter", "filtering", "block", 
+      "deny", "whitelist", "allow-list", "isolate", "isolation", 
+      "segmentation", "dmz", "boundary", "perimeter", "virtual patching", 
+      "rate limiting", "packet inspection", "chokepoint", "edge protection"
+    ],
+    "group": "SC (System & Comm Protection)",
+    "control_name": "Boundary Protection",
+    "iso_27001": "A.13.1",
+    "type": "Preventive",
+    "action": "Thiết lập các chốt chặn tại ranh giới mạng (Firewall/WAF/IPS) để lọc, cô lập và ngăn chặn các truy cập hoặc mã độc từ bên ngoài."
+  },
+  "AC-3": {
+    "keywords": ["least privilege", "permission", "rbac", "access control", "authorization", "privilege escalation"],
+    "group": "AC (Access Control)",
+    "control_name": "Access Control / MFA",
+    "iso_27001": "A.9.1",
+    "type": "Preventive",
+    "action": "Giới hạn quyền hạn tối thiểu và phân tách đặc quyền để giảm thiểu thiệt hại."
+  },
+  "IA-2": {
+    "keywords": ["mfa", "multi-factor", "authentication", "identity", "credential", "authenticator", "2fa"],
+    "group": "IA (Identification & Auth)",
+    "control_name": "Identification & Authentication",
+    "iso_27001": "A.9.1",
+    "type": "Preventive",
+    "action": "Triển khai xác thực đa yếu tố để ngăn chặn truy cập trái phép từ tài khoản bị lộ."
+  },
+  "SI-4": {
+    "keywords": ["ids", "ips", "intrusion detection", "monitoring", "threat detection", "alert"],
+    "group": "SI (System Integrity)",
+    "control_name": "IDS/IPS",
+    "iso_27001": "A.12.4",
+    "type": "Detective",
+    "action": "Giám sát lưu lượng mạng để phát hiện sớm các hành vi thăm dò hoặc khai thác lỗ hổng."
+  },
+  "AU-6": {
+    "keywords": ["siem", "logging", "audit", "log monitoring", "event log", "audit trail"],
+    "group": "AU (Audit & Accountability)",
+    "control_name": "SIEM / Log Monitoring",
+    "iso_27001": "A.12.4",
+    "type": "Detective",
+    "action": "Phân tích nhật ký hệ thống tập trung để truy vết các nỗ lực xâm nhập."
+  },
+  "CP-9": {
+    "keywords": ["backup", "restore", "recovery", "disaster recovery", "redundancy"],
+    "group": "CP (Contingency Planning)",
+    "control_name": "Backup & Restore",
+    "iso_27001": "A.12.3",
+    "type": "Corrective",
+    "action": "Đảm bảo có bản sao lưu dữ liệu an toàn để phục hồi khi bị tấn công mã hóa (Ransomware)."
+  },
+  "IR-4": {
+    "keywords": ["incident response", "containment", "breach", "incident plan", "response strategy"],
+    "group": "IR (Incident Response)",
+    "control_name": "Incident Response Plan",
+    "iso_27001": "A.16",
+    "type": "Corrective",
+    "action": "Kích hoạt quy trình ứng phó để cô lập và xử lý sự cố khi lỗ hổng bị khai thác."
+  },
+  "SA-11": {
+    "keywords": ["secure coding", "sdlc", "devsecops", "code review", "static analysis", "sast"],
+    "group": "SA (System Acquisition)",
+    "control_name": "Secure Coding / Policy",
+    "iso_27001": "A.14",
+    "type": "Preventive",
+    "action": "Áp dụng tiêu chuẩn lập trình an toàn để ngăn chặn lỗ hổng từ giai đoạn phát triển."
+  },
+  "SI-7": {
+    "keywords": ["integrity", "fim", "checksum", "file integrity", "digital signature", "unauthorized change"],
+    "group": "SI (System Integrity)",
+    "control_name": "File Integrity Monitoring",
+    "iso_27001": "A.12.4",
+    "type": "Detective",
+    "action": "Theo dõi sự thay đổi trái phép của các tệp tin hệ thống và cấu hình quan trọng."
+  },
+  "CM-6": {
+    "keywords": ["hardening", "baseline", "default credentials", "config management", "secure settings"],
+    "group": "CM (Configuration Management)",
+    "control_name": "Configuration Settings",
+    "iso_27001": "A.12.1",
+    "type": "Preventive",
+    "action": "Thiết lập cấu hình an toàn và thay đổi mật khẩu mặc định của thiết bị/phần mềm."
+  },
+  "SI-10": {
+    "keywords": ["input validation", "sanitization", "encoding", "filter input", "check bounds", "parameterized"],
+    "group": "SI (System Integrity)",
+    "control_name": "Information Input Validation",
+    "iso_27001": "A.14.2",
+    "type": "Preventive",
+    "action": "Kiểm tra và làm sạch dữ liệu đầu vào để ngăn chặn các lỗi Injection (SQL, XSS)."
+  }
+}

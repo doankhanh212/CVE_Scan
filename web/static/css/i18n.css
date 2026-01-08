@@ -1,0 +1,293 @@
+/**
+ * i18n.css - Internationalization UI Styles
+ * 
+ * Styles for language selector components and i18n-related elements
+ */
+
+/* ================== LANGUAGE SELECTOR DROPDOWN ================== */
+
+.language-selector-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.language-selector-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--color-text, #333);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.language-selector-button:hover {
+  background-color: var(--color-hover, #f5f5f5);
+  border-color: var(--color-primary, #0066cc);
+}
+
+.language-selector-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  border-color: var(--color-primary, #0066cc);
+}
+
+.language-selector-button .flag {
+  font-size: 1.2rem;
+}
+
+.language-selector-button .label {
+  font-weight: 500;
+}
+
+.language-selector-button i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.language-selector-button[aria-expanded="true"] i {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.language-selector-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 200px;
+  background-color: var(--color-bg-secondary, #fff);
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+
+.language-selector-menu.visible {
+  display: block;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown Options */
+.language-selector-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  color: var(--color-text, #333);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.language-selector-option:hover {
+  background-color: var(--color-hover, #f5f5f5);
+}
+
+.language-selector-option:focus {
+  outline: none;
+  background-color: var(--color-focus, #e8f0ff);
+}
+
+.language-selector-option.active {
+  background-color: var(--color-bg-active, #e8f0ff);
+  color: var(--color-primary, #0066cc);
+  font-weight: 600;
+}
+
+.language-selector-option.active::before {
+  content: '✓';
+  display: inline-block;
+  width: 1.2rem;
+  margin-left: -1.95rem;
+  margin-right: 0.75rem;
+  color: var(--color-primary, #0066cc);
+  font-weight: bold;
+}
+
+.language-selector-option .flag {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.language-selector-option .label {
+  flex: 1;
+}
+
+/* ================== LANGUAGE SELECTOR BUTTONS ================== */
+
+.language-selector-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.language-selector-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background-color: var(--color-bg-secondary, #fff);
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--color-text, #333);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.language-selector-btn:hover {
+  background-color: var(--color-hover, #f5f5f5);
+  border-color: var(--color-primary, #0066cc);
+}
+
+.language-selector-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  border-color: var(--color-primary, #0066cc);
+}
+
+.language-selector-btn.active {
+  background-color: var(--color-primary, #0066cc);
+  color: white;
+  border-color: var(--color-primary, #0066cc);
+  font-weight: 600;
+}
+
+.language-selector-btn .flag {
+  font-size: 1rem;
+}
+
+.language-selector-btn .label {
+  font-weight: 500;
+}
+
+/* ================== THEME SUPPORT (Dark Mode) ================== */
+
+body.dark-mode .language-selector-button,
+body.dark-mode .language-selector-btn {
+  --color-bg-secondary: #2d2d2d;
+  --color-border: #444;
+  --color-text: #e0e0e0;
+  --color-hover: #3d3d3d;
+}
+
+body.dark-mode .language-selector-menu {
+  --color-bg-secondary: #2d2d2d;
+  --color-border: #444;
+  --color-text: #e0e0e0;
+}
+
+body.dark-mode .language-selector-option:hover {
+  --color-hover: #3d3d3d;
+}
+
+body.dark-mode .language-selector-option.active {
+  --color-bg-active: #1a3a52;
+  --color-text: #4da3ff;
+}
+
+/* ================== RESPONSIVE ================== */
+
+@media (max-width: 768px) {
+  .language-selector-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  .language-selector-button .label {
+    display: none;
+  }
+
+  .language-selector-option .label {
+    display: none;
+  }
+
+  .language-selector-btn .label {
+    display: none;
+  }
+
+  .language-selector-menu {
+    min-width: 150px;
+  }
+
+  .language-selector-option {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .language-selector-buttons {
+    gap: 0.25rem;
+  }
+
+  .language-selector-btn {
+    padding: 0.5rem;
+  }
+}
+
+/* ================== ACCESSIBILITY ================== */
+
+/* Skip to language selector (for screen readers) */
+.language-selector-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  .language-selector-button,
+  .language-selector-option,
+  .language-selector-btn {
+    border-width: 2px;
+  }
+
+  .language-selector-button:focus,
+  .language-selector-option:focus,
+  .language-selector-btn:focus {
+    box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.3);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .language-selector-button,
+  .language-selector-option,
+  .language-selector-btn,
+  .language-selector-menu {
+    transition: none;
+  }
+
+  .language-selector-menu {
+    animation: none;
+  }
+
+  .language-selector-button i {
+    transform: none;
+  }
+}
