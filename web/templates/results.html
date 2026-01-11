@@ -12,7 +12,7 @@
         </div>
         <div class="stat-details">
             <div class="stat-value" id="total-scans">0</div>
-            <div class="stat-label">Total Scans</div>
+            <div class="stat-label" data-i18n="results_page.total_scans">Total Scans</div>
         </div>
     </div>
     
@@ -22,7 +22,7 @@
         </div>
         <div class="stat-details">
             <div class="stat-value" id="running-scans">0</div>
-            <div class="stat-label">Running</div>
+            <div class="stat-label" data-i18n="results_page.running">Running</div>
         </div>
     </div>
     
@@ -32,7 +32,7 @@
         </div>
         <div class="stat-details">
             <div class="stat-value" id="completed-scans">0</div>
-            <div class="stat-label">Completed</div>
+            <div class="stat-label" data-i18n="results_page.completed">Completed</div>
         </div>
     </div>
     
@@ -42,40 +42,41 @@
         </div>
         <div class="stat-details">
             <div class="stat-value" id="failed-scans">0</div>
-            <div class="stat-label">Failed</div>
+            <div class="stat-label" data-i18n="results_page.failed">Failed</div>
         </div>
+    </div>
+</div>
+
+<!-- Scans Section Header -->
+<div class="scans-header">
+    <h2 class="scans-title" data-i18n="results_page.all_scans">All Scans</h2>
+    <div class="scans-actions">
+        <button class="btn btn-secondary btn-sm" id="refresh-btn">
+            <i class="fas fa-sync"></i>
+            <span data-i18n="results_page.refresh">Refresh</span>
+        </button>
+        <a href="/scan" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i>
+            <span data-i18n="results_page.new_scan">New Scan</span>
+        </a>
     </div>
 </div>
 
 <!-- Scans Table -->
 <div class="panel">
-    <div class="panel-header">
-        <h2 class="panel-title">All Scans</h2>
-        <div class="panel-actions">
-            <button class="btn btn-secondary btn-sm" id="refresh-btn">
-                <i class="fas fa-sync"></i>
-                Refresh
-            </button>
-            <a href="/scan" class="btn btn-primary btn-sm">
-                <i class="fas fa-plus"></i>
-                New Scan
-            </a>
-        </div>
-    </div>
-
     <div class="table-wrapper">
         <table class="vuln-table">
             <thead>
                 <tr>
-                    <th>SCAN ID</th>
-                    <th>TARGETS</th>
-                    <th>START TIME</th>
-                    <th>DURATION</th>
-                    <th>STATUS</th>
-                    <th>HOSTS</th>
-                    <th>CVES</th>
-                    <th>CRITICAL</th>
-                    <th>ACTIONS</th>
+                    <th data-i18n="results_page.scan_id">SCAN ID</th>
+                    <th data-i18n="results_page.targets">TARGETS</th>
+                    <th data-i18n="results_page.start_time">START TIME</th>
+                    <th data-i18n="results_page.duration">DURATION</th>
+                    <th data-i18n="results_page.status">STATUS</th>
+                    <th data-i18n="results_page.hosts">HOSTS</th>
+                    <th data-i18n="results_page.cves">CVES</th>
+                    <th data-i18n="results_page.critical">CRITICAL</th>
+                    <th data-i18n="results_page.actions">ACTIONS</th>
                 </tr>
             </thead>
             <tbody id="scans-tbody">
@@ -161,6 +162,26 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.scans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 0 4px;
+}
+
+.scans-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.scans-actions {
+    display: flex;
+    gap: 8px;
 }
 
 .panel-actions {

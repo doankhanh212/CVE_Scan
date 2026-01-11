@@ -46,6 +46,7 @@ const i18nUI = (function () {
     }
 
     const languages = i18n.getSupportedLanguages();
+
     const currentLang = i18n.getLanguage();
 
     // Create wrapper

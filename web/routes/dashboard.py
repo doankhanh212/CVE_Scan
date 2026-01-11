@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, request
 from web.services.scan_service import scan_service
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -497,46 +497,146 @@ def dashboard():
 @dashboard_bp.route("/api/cve/<cve_id>/cwe-data", methods=["GET"])
 def get_cve_cwe_data(cve_id):
     """
-    Get CWE Consequences for a CVE
+    Get CWE consequences for a CVE. If a CWE ID is provided (query param
+    `cwe`), fetch the real consequences from the CWE database and return
+    the raw text (not split by C/I/A) so the UI can display it directly.
     """
     print(f"\n[DASHBOARD API] Fetching CWE data for CVE: {cve_id}")
-    
+
+    from flask import request
+    from modules.cve.cwe_lookup import CWELookup
+
+    def _parse_cwe_id(raw_cwe):
+        """Extract a single CWE ID from various formats (JSON string/list, comma-separated, plain)."""
+        if not raw_cwe:
+            return None
+        # Already looks like CWE-123?
+        if isinstance(raw_cwe, str):
+            # Try JSON first
+            import json
+            try:
+                parsed = json.loads(raw_cwe)
+                raw_cwe = parsed
+            except Exception:
+                pass
+
+        # If now list, take first
+        if isinstance(raw_cwe, list):
+            if not raw_cwe:
+                return None
+            first = raw_cwe[0]
+            return _parse_cwe_id(first)
+
+        # If dict, try keys
+        if isinstance(raw_cwe, dict):
+            for key in ["id", "cwe", "cwe_id"]:
+                if raw_cwe.get(key):
+                    return _parse_cwe_id(raw_cwe[key])
+            return None
+
+        # If string, split on commas
+        if isinstance(raw_cwe, str):
+            candidate = raw_cwe.split(",")[0].strip()
+            if candidate and not candidate.startswith("CWE-"):
+                candidate = f"CWE-{candidate}"
+            return candidate or None
+        return None
+
     try:
         import json
-        
-        # Default CWE consequences for critical vulnerabilities
+        import requests
+
+        # First, try to get CWE from query param (legacy frontend support)
+        raw_cwe = request.args.get("cwe")
+        cwe_id = _parse_cwe_id(raw_cwe)
+        print(f"[DASHBOARD API] Parsed CWE from query: {cwe_id} from raw '{raw_cwe}'")
+
+        # If no CWE provided, fetch from NVD API
+        if not cwe_id:
+            try:
+                print(f"[DASHBOARD API] Fetching CWE from NVD for CVE: {cve_id}")
+                nvd_url = f"https://services.nvd.nist.gov/rest/json/cves/2.0?cveId={cve_id}"
+                response = requests.get(nvd_url, timeout=10)
+                if response.status_code == 200:
+                    nvd_data = response.json()
+                    vulnerabilities = nvd_data.get("vulnerabilities", [])
+                    if vulnerabilities:
+                        cve_item = vulnerabilities[0].get("cve", {})
+                        weaknesses = cve_item.get("weaknesses", [])
+                        for weakness in weaknesses:
+                            descriptions = weakness.get("description", [])
+                            for desc in descriptions:
+                                if desc.get("lang") == "en":
+                                    cwe_value = desc.get("value", "")
+                                    if cwe_value.startswith("CWE-"):
+                                        cwe_id = cwe_value
+                                        print(f"[DASHBOARD API] Found CWE from NVD: {cwe_id}")
+                                        break
+                            if cwe_id:
+                                break
+            except Exception as nvd_err:
+                print(f"[DASHBOARD API] Failed to fetch CWE from NVD: {nvd_err}")
+
+        lookup = CWELookup()
+        consequences_list = []
+        plain_text = None
+
+        if cwe_id:
+            try:
+                consequences_list = lookup.get_consequences(cwe_id)
+                plain_text = lookup.get_consequence_plain_text(cwe_id)
+                print(f"[DASHBOARD API] Found {len(consequences_list)} consequences for {cwe_id}, plain_text={plain_text is not None}")
+            except Exception as fetch_err:
+                print(f"[DASHBOARD API] Failed to fetch consequences for {cwe_id}: {fetch_err}")
+
+        # Fallback to building plain text from structured data if not in DB
+        if plain_text is None and consequences_list:
+            impacts = [c.get("impact", "") for c in consequences_list if c.get("impact")]
+            if impacts:
+                plain_text = "\n".join(f"• {impact}" for impact in impacts)
+
+        # Fallback defaults
+        if not consequences_list:
+            consequences_list = [
+                {"scope": "Confidentiality", "impact": "High - Sensitive data may be exposed"},
+                {"scope": "Integrity", "impact": "High - System data may be modified"},
+                {"scope": "Availability", "impact": "High - Service may become unavailable"}
+            ]
+            if plain_text is None:
+                plain_text = "\n".join(f"• {c['impact']}" for c in consequences_list)
+
+        response_payload = {
+            "success": True,
+            "cve_id": cve_id,
+            "cwe_id": cwe_id,
+            "cwe_consequences": {
+                "consequences": consequences_list,
+                "plain_text": plain_text,
+            },
+        }
+
+        print(f"[DASHBOARD API] Response: {json.dumps(response_payload, indent=2)}")
+        return jsonify(response_payload)
+    except Exception as e:
+        print(f"[DASHBOARD API] ERROR for {cve_id}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+
+        # Safe fallback
         default_consequences = {
             "consequences": [
                 {"scope": "Confidentiality", "impact": "High - Sensitive data may be exposed"},
                 {"scope": "Integrity", "impact": "High - System data may be modified"},
                 {"scope": "Availability", "impact": "High - Service may become unavailable"}
-            ]
+            ],
+            "plain_text": "• High - Sensitive data may be exposed\n• High - System data may be modified\n• High - Service may become unavailable",
         }
-        
-        print(f"[DASHBOARD API] Returning default consequences for {cve_id}")
-        print(f"[DASHBOARD API] Response: {json.dumps(default_consequences, indent=2)}")
-        
+
         return jsonify({
             "success": True,
             "cve_id": cve_id,
+            "cwe_id": None,
             "cwe_consequences": default_consequences,
-        })
-    except Exception as e:
-        print(f"[DASHBOARD API] ERROR for {cve_id}: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        
-        # Return default consequences even on error
-        return jsonify({
-            "success": True,
-            "cve_id": cve_id,
-            "cwe_consequences": {
-                "consequences": [
-                    {"scope": "Confidentiality", "impact": "High - Sensitive data may be exposed"},
-                    {"scope": "Integrity", "impact": "High - System data may be modified"},
-                    {"scope": "Availability", "impact": "High - Service may become unavailable"}
-                ]
-            }
         })
 
 

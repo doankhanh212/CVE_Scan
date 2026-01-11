@@ -12,24 +12,24 @@
     <!-- Settings Header -->
     <div class="settings-header">
         <div class="header-info">
-            <h2><i class="fas fa-cogs"></i> Application Settings</h2>
-            <p class="subtitle">Manage CVE Scan Platform configuration</p>
+            <h2><i class="fas fa-cogs"></i> <span data-i18n="settings_page.title">Application Settings</span></h2>
+            <p class="subtitle" data-i18n="settings_page.subtitle">Manage CVE Scan Platform configuration</p>
         </div>
     </div>
 
     <!-- Tab Navigation -->
     <div class="settings-tabs">
         <button type="button" class="tab-btn active" data-tab="general">
-            <i class="fas fa-sliders-h"></i> General
+            <i class="fas fa-sliders-h"></i> <span data-i18n="settings_page.general">General</span>
         </button>
         <button type="button" class="tab-btn" data-tab="database">
-            <i class="fas fa-database"></i> Database
+            <i class="fas fa-database"></i> <span data-i18n="settings_page.database">Database</span>
         </button>
         <button type="button" class="tab-btn" data-tab="scan">
-            <i class="fas fa-radar"></i> Scan
+            <i class="fas fa-radar"></i> <span data-i18n="settings_page.scan">Scan</span>
         </button>
         <button type="button" class="tab-btn" data-tab="advanced">
-            <i class="fas fa-tools"></i> Advanced
+            <i class="fas fa-tools"></i> <span data-i18n="settings_page.advanced">Advanced</span>
         </button>
     </div>
 
@@ -38,21 +38,21 @@
         <!-- TAB 1: GENERAL -->
         <div id="general" class="tab-content active">
             <div class="settings-group">
-                <h3><i class="fas fa-key"></i> NVD API Configuration</h3>
+                <h3><i class="fas fa-key"></i> <span data-i18n="settings_page.nvd_api_config">NVD API Configuration</span></h3>
                 
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i>
-                    <strong>How it works:</strong>
+                    <strong data-i18n="settings_page.how_it_works">How it works:</strong>
                     <ul style="margin: 8px 0 0 20px; font-size: 13px;">
-                        <li><strong>Local Database ON:</strong> Uses offline SQLite database (faster, no rate limits)</li>
-                        <li><strong>Local Database OFF:</strong> Uses NVD API with your API key (real-time, requires internet)</li>
+                        <li><strong data-i18n="settings_page.local_db_on">Local Database ON:</strong> <span data-i18n="settings_page.local_db_on_desc">Uses offline SQLite database (faster, no rate limits)</span></li>
+                        <li><strong data-i18n="settings_page.local_db_off">Local Database OFF:</strong> <span data-i18n="settings_page.local_db_off_desc">Uses NVD API with your API key (real-time, requires internet)</span></li>
                     </ul>
                 </div>
                 
                 <div class="form-group">
                     <label for="nvdApiKey">
-                        NVD API Key
-                        <span class="badge-optional">Optional if using Local DB</span>
+                        <span data-i18n="settings_page.nvd_api_key">NVD API Key</span>
+                        <span class="badge-optional" data-i18n="settings_page.optional_local_db">Optional if using Local DB</span>
                         <span class="help-tooltip" title="Only used when Local Database is disabled. Get from nvd.nist.gov">
                             <i class="fas fa-question-circle"></i>
                         </span>

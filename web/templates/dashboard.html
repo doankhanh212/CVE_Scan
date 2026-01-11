@@ -250,6 +250,7 @@
                                     <span class="meta-item"><i class="fas fa-shield-alt"></i> {{ cve.port }}</span>
                                     <span class="meta-item"><i class="fas fa-star"></i> {{ cve.cvss }}</span>
                                 </div>
+                                <div class="alert-description-compact">{{ cve.description or 'No description available' }}</div>
                             </div>
                             <div class="severity-badge {% if cve.severity == 'Critical' %}critical{% else %}high{% endif %}">{{ cve.severity }}</div>
                         </div>
@@ -367,7 +368,7 @@
 
                 <!-- CWE Consequences Section -->
                 <div class="modal-section">
-                    <h3 class="modal-subtitle">CWE Consequences</h3>
+                    <h3 class="modal-subtitle" data-i18n="dashboard.modal_cwe_consequences">CWE Consequences</h3>
                     <div id="cwe-consequences-container" style="padding: 12px; background: var(--bg-secondary); border-radius: 6px; max-height: 250px; overflow-y: auto;">
                         <p style="text-align: center; color: var(--text-secondary);" data-i18n="dashboard.modal_loading">Loading...</p>
                     </div>
@@ -375,7 +376,7 @@
 
                 <!-- NIST Recommendations Section -->
                 <div class="modal-section">
-                    <h3 class="modal-subtitle">NIST R5 Recommendations</h3>
+                    <h3 class="modal-subtitle" data-i18n="dashboard.modal_nist_r5">NIST R5 Recommendations</h3>
                     <div id="nist-recommendations-container" style="padding: 12px; background: var(--bg-secondary); border-radius: 6px; max-height: 250px; overflow-y: auto;">
                         <p style="text-align: center; color: var(--text-secondary);" data-i18n="dashboard.modal_loading">Loading...</p>
                     </div>
@@ -412,7 +413,7 @@
 <!-- Scripts - load at end to ensure DOM is ready -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
 <script src="{{ url_for('static', filename='js/dashboard_charts.js') }}"></script>
-<script src="{{ url_for('static', filename='js/cve_modal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cve_modal.js') }}?v=2"></script>
 <script src="{{ url_for('static', filename='js/host_filter.js') }}"></script>
 
 {% endblock %}

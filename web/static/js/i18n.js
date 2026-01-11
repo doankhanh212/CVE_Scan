@@ -151,14 +151,16 @@ const i18n = (function () {
       const {
         defaultLanguage = DEFAULT_LANGUAGE,
         detectBrowser = true,
-        supportedLangs = supportedLanguages
+        supportedLangs = null  // Changed: null indicates use default
       } = options;
 
       console.log('[i18n] Initializing...');
 
-      // Set supported languages
-      supportedLanguages.length = 0;
-      supportedLanguages.push(...supportedLangs);
+      // Set supported languages (only if explicitly provided)
+      if (supportedLangs && Array.isArray(supportedLangs) && supportedLangs.length > 0) {
+        supportedLanguages.length = 0;
+        supportedLanguages.push(...supportedLangs);
+      }
 
       // Determine initial language
       const storedLanguage = localStorage.getItem(STORAGE_KEY);

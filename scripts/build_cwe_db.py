@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import csv
 import datetime
 import os
 import sqlite3
@@ -29,6 +30,7 @@ def init_database(db_path):
         DROP TABLE IF EXISTS cwe_consequence;
         DROP TABLE IF EXISTS cwe_mitigation;
         DROP TABLE IF EXISTS cwe_metadata;
+        DROP TABLE IF EXISTS cwe_consequence_plain;
 
         CREATE TABLE cwe (
             cwe_id TEXT PRIMARY KEY,
@@ -41,6 +43,11 @@ def init_database(db_path):
             cwe_id TEXT,
             scope TEXT,
             impact TEXT
+        );
+
+        CREATE TABLE cwe_consequence_plain (
+            cwe_id TEXT PRIMARY KEY,
+            plain_text TEXT
         );
 
         CREATE TABLE cwe_mitigation (
@@ -153,6 +160,34 @@ def import_cwe_catalog(xml_path, conn):
     conn.commit()
 
 
+def import_common_consequences(csv_path: str, conn):
+    """Import Common Consequences free-form text from attack_mitigations.csv."""
+    if not os.path.exists(csv_path):
+        print(f"[WARN] Common Consequences CSV not found: {csv_path}")
+        return 0
+
+    inserted = 0
+    with open(csv_path, newline="", encoding="utf-8-sig") as fh:
+        reader = csv.DictReader(fh)
+        cursor = conn.cursor()
+        for row in reader:
+            cwe_raw = (row.get("CWE-ID") or "").strip()
+            text = (row.get("Common Consequences") or "").strip()
+            if not cwe_raw or not text:
+                continue
+
+            cwe_id = cwe_raw if cwe_raw.startswith("CWE-") else f"CWE-{cwe_raw}"
+            cursor.execute(
+                "INSERT OR REPLACE INTO cwe_consequence_plain (cwe_id, plain_text) VALUES (?, ?)",
+                (cwe_id, text),
+            )
+            inserted += 1
+
+    conn.commit()
+    print(f"✓ Imported {inserted} plain-text consequences from {csv_path}")
+    return inserted
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Import MITRE CWE catalog XML into SQLite database"
@@ -162,6 +197,11 @@ def main():
         "--db",
         default=os.path.join("modules", "cve", "cwe.db"),
         help="Output database path (default: modules/cve/cwe.db)",
+    )
+    parser.add_argument(
+        "--common-consequence-csv",
+        default=os.path.join("modules", "cve", "attack_mitigations.csv"),
+        help="Path to attack_mitigations.csv containing Common Consequences text",
     )
 
     args = parser.parse_args()
@@ -180,6 +220,9 @@ def main():
     print(f"Parsing XML: {args.xml_path}")
     import_cwe_catalog(args.xml_path, conn)
 
+    if args.common_consequence_csv:
+        import_common_consequences(args.common_consequence_csv, conn)
+
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM cwe")
     cwe_count = cursor.fetchone()[0]
@@ -190,11 +233,15 @@ def main():
     cursor.execute("SELECT COUNT(*) FROM cwe_mitigation")
     mitigation_count = cursor.fetchone()[0]
 
+    cursor.execute("SELECT COUNT(*) FROM cwe_consequence_plain")
+    plain_count = cursor.fetchone()[0]
+
     conn.close()
 
     print(f"✓ Imported {cwe_count} CWEs")
     print(f"✓ Imported {consequence_count} consequences")
     print(f"✓ Imported {mitigation_count} mitigations")
+    print(f"✓ Imported {plain_count} plain-text consequences")
     print(f"✓ Database saved to: {args.db}")
 
     return 0

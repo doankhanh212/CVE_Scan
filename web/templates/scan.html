@@ -6,58 +6,58 @@
 {% block content %}
 <!-- Scan Configuration -->
 <div class="panel">
-    <h2 class="panel-title">New Scan Configuration</h2>
+    <h2 class="panel-title" data-i18n="scan_page.new_configuration">New Scan Configuration</h2>
     
     <form id="scan-form">
         <div class="form-grid">
             <div class="form-group full-width">
-                <label for="targets">Target Hosts</label>
-                <textarea id="targets" name="targets" rows="5" placeholder="Enter IP addresses, CIDR ranges, or hostnames (one per line)&#10;Example:&#10;192.168.1.10&#10;192.168.1.0/24&#10;example.com"></textarea>
-                <span class="form-help">Supports: IP addresses, CIDR notation, hostnames</span>
+                <label for="targets" data-i18n="scan_page.target_hosts">Target Hosts</label>
+                <textarea id="targets" name="targets" rows="5" data-i18n="scan.target_placeholder" data-i18n-attr="placeholder"></textarea>
+                <span class="form-help" data-i18n="scan.target_help">Supports: IP addresses, CIDR notation, hostnames</span>
             </div>
 
             <div class="form-group">
-                <label for="input-mode">Input Mode</label>
+                <label for="input-mode" data-i18n="scan_page.input_mode">Input Mode</label>
                 <select id="input-mode" name="input_mode">
-                    <option value="IP/CIDR">IP / CIDR (Direct Scan)</option>
-                    <option value="Hostname (Domain)">Hostname (DNS Resolution)</option>
+                    <option value="IP/CIDR" data-i18n="scan_page.ip_cidr">IP / CIDR (Direct Scan)</option>
+                    <option value="Hostname (Domain)" data-i18n="scan_page.hostname">Hostname (DNS Resolution)</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="authenticated">
                     <input type="checkbox" id="authenticated" name="authenticated">
-                    Authenticated Scan
+                    <span data-i18n="scan_page.authenticated_scan">Authenticated Scan</span>
                 </label>
-                <span class="form-help">Enable for credential-based scanning</span>
+                <span class="form-help" data-i18n="scan_page.enable_credentials">Enable for credential-based scanning</span>
             </div>
         </div>
 
         <!-- Authentication Section (Hidden by default) -->
         <div id="auth-section" class="auth-section" style="display: none;">
-            <h3 class="section-title">Authentication Credentials</h3>
+            <h3 class="section-title" data-i18n="scan_page.auth_credentials">Authentication Credentials</h3>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="auth-type">Authentication Type</label>
+                    <label for="auth-type" data-i18n="scan_page.auth_type">Authentication Type</label>
                     <select id="auth-type" name="auth_type">
-                        <option value="ssh">SSH (Linux)</option>
-                        <option value="winrm">WinRM (Windows)</option>
+                        <option value="ssh" data-i18n="scan_page.ssh_linux">SSH (Linux)</option>
+                        <option value="winrm" data-i18n="scan_page.winrm_windows">WinRM (Windows)</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username" data-i18n="scan_page.username">Username</label>
                     <input type="text" id="username" name="username" placeholder="admin">
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password" data-i18n="scan_page.password">Password</label>
                     <input type="password" id="password" name="password" placeholder="••••••••">
                 </div>
 
                 <div class="form-group">
-                    <label for="port">Port (Optional)</label>
+                    <label for="port" data-i18n="scan_page.port">Port (Optional)</label>
                     <input type="number" id="port" name="port" placeholder="22 or 5985">
                 </div>
             </div>
@@ -66,11 +66,11 @@
         <div class="form-actions">
             <button type="button" class="btn btn-secondary" id="reset-btn">
                 <i class="fas fa-redo"></i>
-                Reset
+                <span data-i18n="scan_page.reset">Reset</span>
             </button>
             <button type="submit" class="btn btn-primary" id="start-scan-btn">
                 <i class="fas fa-play"></i>
-                Start Scan
+                <span data-i18n="scan_page.start_scan">Start Scan</span>
             </button>
         </div>
     </form>

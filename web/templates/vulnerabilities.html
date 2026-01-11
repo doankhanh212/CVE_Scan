@@ -26,18 +26,18 @@
         </div>
 
         <div class="filter-group">
-            <label for="searchInput">Search</label>
-            <input type="text" id="searchInput" class="filter-input" placeholder="Search CVE, service, description...">
+            <label for="searchInput" data-i18n="common.search">Search</label>
+            <input type="text" id="searchInput" class="filter-input" placeholder="Search CVE, service, description..." data-i18n="vulnerabilities.search_placeholder" data-i18n-attr="placeholder">
         </div>
 
         <div class="filter-actions">
             <button class="btn btn-secondary" id="reset-filter-btn">
                 <i class="fas fa-redo"></i>
-                Reset
+                <span data-i18n="common.reset">Reset</span>
             </button>
             <button class="btn btn-primary" id="export-vuln-csv-btn">
                 <i class="fas fa-download"></i>
-                Export CSV
+                <span data-i18n="results.export_csv">Export CSV</span>
             </button>
         </div>
     </div>
@@ -46,7 +46,7 @@
 <!-- Vulnerabilities Table -->
 <div class="panel">
     <div class="panel-header">
-        <h2 class="panel-title">All Vulnerabilities (<span id="vuln-count">0</span>)</h2>
+        <h2 class="panel-title"><span data-i18n="vulnerabilities.all_vulnerabilities">All Vulnerabilities</span> (<span id="vuln-count">0</span>)</h2>
     </div>
 
     <div class="table-wrapper">
@@ -249,45 +249,45 @@
                 <!-- CWE Explanations Tab -->
                 <div id="cwe-tab" class="tab-pane">
                     <div class="modal-section">
-                        <h3>CWE Consequences</h3>
+                        <h3 data-i18n="dashboard.modal_cwe_consequences">CWE Consequences</h3>
                         <div class="cwe-table-wrapper">
                             <table class="cwe-table">
                                 <thead>
                                     <tr>
-                                        <th>CWE ID</th>
-                                        <th>CWE Name</th>
-                                        <th>Scope</th>
-                                        <th>Impact</th>
+                                        <th data-i18n="vulnerabilities.cwe_id">CWE ID</th>
+                                        <th data-i18n="vulnerabilities.cwe_name">CWE Name</th>
+                                        <th data-i18n="vulnerabilities.scope">Scope</th>
+                                        <th data-i18n="vulnerabilities.impact">Impact</th>
                                     </tr>
                                 </thead>
                                 <tbody id="cwe-consequences-tbody">
-                                    <tr><td colspan="4" style="text-align:center;">No CWE data available</td></tr>
+                                    <tr><td colspan="4" style="text-align:center;" data-i18n="dashboard.modal_cwe_no_data">No CWE data available</td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="modal-section">
-                        <h3>CWE Mitigations</h3>
+                        <h3 data-i18n="vulnerabilities.modal_cwe_mitigations">CWE Mitigations</h3>
                         <div class="cwe-table-wrapper">
                             <table class="cwe-table">
                                 <thead>
                                     <tr>
-                                        <th>CWE ID</th>
-                                        <th>CWE Name</th>
-                                        <th>Phase</th>
-                                        <th>Description</th>
+                                        <th data-i18n="vulnerabilities.cwe_id">CWE ID</th>
+                                        <th data-i18n="vulnerabilities.cwe_name">CWE Name</th>
+                                        <th data-i18n="vulnerabilities.phase">Phase</th>
+                                        <th data-i18n="common.description">Description</th>
                                     </tr>
                                 </thead>
                                 <tbody id="cwe-mitigations-tbody">
-                                    <tr><td colspan="4" style="text-align:center;">No CWE data available</td></tr>
+                                    <tr><td colspan="4" style="text-align:center;" data-i18n="dashboard.modal_cwe_no_data">No CWE data available</td></tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="modal-section">
-                        <h3>Extended Description</h3>
+                        <h3 data-i18n="vulnerabilities.modal_extended_description">Extended Description</h3>
                         <div id="cwe-extended-desc" class="context-text">
-                            <p>No extended description available</p>
+                            <p data-i18n="vulnerabilities.modal_no_extended_description">No extended description available</p>
                         </div>
                     </div>
                 </div>
@@ -295,22 +295,22 @@
                 <!-- NIST Recommendations Tab -->
                 <div id="nist-tab" class="tab-pane">
                     <div class="modal-section">
-                        <h3>NIST R5 Recommendations</h3>
-                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                        <h3 data-i18n="dashboard.modal_nist_r5">NIST R5 Recommendations</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;" data-i18n="vulnerabilities.nist_description">
                             Based on CWE Mitigations descriptions, these NIST R5 controls are recommended to address this vulnerability.
                         </p>
                         <div class="nist-recommendations-wrapper">
                             <table class="nist-recommendations-table">
                                 <thead>
                                     <tr>
-                                        <th>Control ID</th>
-                                        <th>Control Name</th>
-                                        <th>Type</th>
-                                        <th>Recommended Action</th>
+                                        <th data-i18n="vulnerabilities.control_id">Control ID</th>
+                                        <th data-i18n="vulnerabilities.control_name">Control Name</th>
+                                        <th data-i18n="vulnerabilities.type">Type</th>
+                                        <th data-i18n="vulnerabilities.recommended_action">Recommended Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="nist-recommendations-tbody">
-                                    <tr><td colspan="4" style="text-align:center;">Loading recommendations...</td></tr>
+                                    <tr><td colspan="4" style="text-align:center;" data-i18n="vulnerabilities.loading_recommendations">Loading recommendations...</td></tr>
                                 </tbody>
                             </table>
                         </div>
