@@ -13,7 +13,6 @@ def _extract_top_ports(scan_results):
     if not scan_results:
         return [], []
     
-    # scan_results is a dict: { "host_label": { "hosts": [...], ... }, ... }
     if not isinstance(scan_results, dict):
         return [], []
     
@@ -22,42 +21,29 @@ def _extract_top_ports(scan_results):
         if not isinstance(host_data, dict):
             continue
         
-        # NEW: Handle nested 'hosts' structure
-        hosts_list = host_data.get("hosts", [])
-        if not isinstance(hosts_list, list):
-            continue
+        # Handle GUI-style structure: { "gui": { "ports": [...] } }
+        ports = []
+        if "gui" in host_data:
+            ports = host_data.get("gui", {}).get("ports", [])
+        elif "ports" in host_data:
+            ports = host_data.get("ports", [])
         
-        for host in hosts_list:
-            if not isinstance(host, dict):
+        # Count CVEs by port
+        for port_data in ports:
+            if not isinstance(port_data, dict):
                 continue
             
-            # Get vulnerabilities from this host
-            vulnerabilities = host.get("vulnerabilities", [])
-            if not isinstance(vulnerabilities, list):
-                continue
+            port_num = port_data.get("port", "unknown")
+            service_name = port_data.get("service", "unknown")
+            cves = port_data.get("cves", [])
             
-            # Count CVEs by service (e.g., "ssh:22")
-            for vuln in vulnerabilities:
-                if not isinstance(vuln, dict):
-                    continue
-                
-                service_name = vuln.get("service", "unknown")  # e.g., "ssh:22"
-                
-                # Extract port number from service name
-                if ":" in service_name:
-                    service_label, port_str = service_name.rsplit(":", 1)
-                    try:
-                        port_num = int(port_str)
-                    except:
-                        port_num = port_str
-                else:
-                    service_label = service_name
-                    port_num = "unknown"
-                
-                port_services[port_num] = service_label
-                port_count[port_num] += 1  # Count each CVE
+            # Count CVEs for this port
+            cve_count = len(cves) if isinstance(cves, list) else 0
+            if cve_count > 0:
+                port_services[port_num] = service_name
+                port_count[port_num] += cve_count
     
-    # Sort by CVE count descending - show top 10 ports (or all if less than 10)
+    # Sort by CVE count descending - show top 10 ports
     sorted_ports = sorted(port_count.items(), key=lambda x: x[1], reverse=True)[:10]
     
     # Format labels with service:port format
@@ -65,7 +51,13 @@ def _extract_top_ports(scan_results):
     for p in sorted_ports:
         port_num = p[0]
         service = port_services.get(port_num, "unknown")
-        labels.append(f"{service}:{port_num}")
+        
+        # Check if service name already contains port (e.g., "ssh:22")
+        # If yes, use as-is; if no, append port number
+        if ":" in service and service.split(":")[-1].strip().isdigit():
+            labels.append(service)  # Already has port
+        else:
+            labels.append(f"{service}:{port_num}")  # Add port
     
     values = [p[1] for p in sorted_ports]
     
@@ -679,3 +671,104 @@ def get_nist_recommendations(cve_id):
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e), "recommendations": []}), 500
+
+
+@dashboard_bp.route("/api/dashboard/refresh", methods=["GET"])
+def refresh_dashboard_data():
+    """API endpoint to refresh dashboard data without page reload"""
+    try:
+        # Get all scans with results
+        completed = [s for s in scan_service.list_scans(include_results=False) if s['status'] == 'completed']
+        completed.sort(key=lambda s: s.get('end_time', ''), reverse=True)
+        
+        scans_with_results = [s for s in completed if s.get("scan_id")]
+        
+        # Aggregate data from all scans
+        all_scan_results = {}
+        total_cve_count = 0
+        severity_totals = {"critical": 0, "high": 0, "medium": 0, "low": 0}
+        all_critical_cves = []
+        
+        for scan in scans_with_results:
+            scan_id = scan.get("scan_id")
+            if scan_id:
+                scan_results = scan_service.get_scan_results(scan_id)
+                if scan_results and isinstance(scan_results, dict):
+                    for host, host_data in scan_results.items():
+                        if isinstance(host_data, dict) and "ports" in host_data:
+                            ports = host_data.get("ports", [])
+                        else:
+                            ports = []
+                        
+                        host_severity_count = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0}
+                        for port_data in ports:
+                            for cve in port_data.get("cves", []):
+                                total_cve_count += 1
+                                
+                                severity = cve.get("severity")
+                                if isinstance(severity, dict):
+                                    severity_label = severity.get("label", "UNKNOWN").upper()
+                                elif isinstance(severity, str):
+                                    severity_label = severity.upper()
+                                else:
+                                    severity_label = "UNKNOWN"
+                                
+                                if severity_label in ["CRITICAL", "HIGH", "MEDIUM", "LOW"]:
+                                    host_severity_count[severity_label] += 1
+                                    severity_totals[severity_label.lower()] += 1
+                                
+                                if severity_label == "CRITICAL":
+                                    cvss = 0
+                                    if isinstance(cve.get("cvss_v3"), (int, float)):
+                                        cvss = float(cve.get("cvss_v3", 0))
+                                    elif isinstance(cve.get("cvss_v2"), (int, float)):
+                                        cvss = float(cve.get("cvss_v2", 0))
+                                    
+                                    cve_id = cve.get("id", "unknown")
+                                    cve_year = 0
+                                    if cve_id.startswith("CVE-"):
+                                        try:
+                                            cve_year = int(cve_id.split("-")[1])
+                                        except (IndexError, ValueError):
+                                            cve_year = 0
+                                    
+                                    all_critical_cves.append({
+                                        "id": cve_id,
+                                        "host": host,
+                                        "port": port_data.get("port"),
+                                        "service": port_data.get("service"),
+                                        "severity": "Critical",
+                                        "cvss": cvss,
+                                        "description": cve.get("description", "")[:100],
+                                        "year": cve_year
+                                    })
+                        
+                        if host not in all_scan_results:
+                            all_scan_results[host] = host_data
+                            all_scan_results[host]["severity_count"] = host_severity_count
+                        else:
+                            existing_severity = all_scan_results[host].get("severity_count", {})
+                            for sev_key, sev_count in host_severity_count.items():
+                                existing_severity[sev_key] = existing_severity.get(sev_key, 0) + sev_count
+                            all_scan_results[host]["severity_count"] = existing_severity
+        
+        # Extract data
+        top_ports_labels = []
+        top_ports_values = []
+        if all_scan_results:
+            top_ports_labels, top_ports_values = _extract_top_ports(all_scan_results)
+        
+        return jsonify({
+            "total_cves": total_cve_count,
+            "critical": severity_totals["critical"],
+            "severity": severity_totals,
+            "ports": {
+                "labels": top_ports_labels,
+                "values": top_ports_values
+            },
+            "critical_cves": all_critical_cves[:20]
+        }), 200
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500

@@ -416,4 +416,38 @@
 <script src="{{ url_for('static', filename='js/cve_modal.js') }}?v=2"></script>
 <script src="{{ url_for('static', filename='js/host_filter.js') }}"></script>
 
+<script>
+// Refresh button handler for dashboard data
+document.querySelector('.panel-compact .panel-actions .panel-btn:first-child')?.addEventListener('click', async function() {
+    const btn = this;
+    const icon = btn.querySelector('i');
+    const originalClass = icon.className;
+    
+    try {
+        icon.className = 'fas fa-spinner fa-spin';
+        btn.disabled = true;
+        
+        const response = await fetch('/api/dashboard/refresh');
+        const data = await response.json();
+        
+        if (response.ok && data.ports) {
+            console.log('Dashboard data refreshed:', data);
+            
+            // Reload page to show new charts with fresh data from template
+            // OR: Update charts in-place (requires recreating Chart.js instances)
+            location.reload();
+        } else {
+            console.error('Failed to refresh:', data.error);
+            alert('Lỗi: Không thể refresh dashboard');
+        }
+    } catch (error) {
+        console.error('Refresh error:', error);
+        alert('Lỗi: ' + error.message);
+    } finally {
+        icon.className = originalClass;
+        btn.disabled = false;
+    }
+});
+</script>
+
 {% endblock %}

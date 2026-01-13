@@ -123,6 +123,7 @@
         const ctx = portsEl.getContext('2d');
         const labels = (data.ports && data.ports.labels) || ['Port 1723 (pptp)', 'Port 3306 (mysql)', 'Port 3389 (rdp)', 'Port 8043 (https)', 'Port 5050 (http)'];
         const values = (data.ports && data.ports.values) || [145, 132, 98, 87, 76];
+        console.log('Ports Chart Data:', { labels, values, hasData: data.ports && data.ports.labels && data.ports.labels.length > 0 });
         new Chart(ctx, {
             type: 'bar',
             data: {
